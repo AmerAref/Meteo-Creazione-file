@@ -1,0 +1,10 @@
+/home/amer/Meteo/bin/Debug/netcoreapp2.0/Meteo.deps.json
+/home/amer/Meteo/bin/Debug/netcoreapp2.0/Meteo.runtimeconfig.json
+/home/amer/Meteo/bin/Debug/netcoreapp2.0/Meteo.runtimeconfig.dev.json
+/home/amer/Meteo/bin/Debug/netcoreapp2.0/Meteo.dll
+/home/amer/Meteo/bin/Debug/netcoreapp2.0/Meteo.pdb
+/home/amer/Meteo/obj/Debug/netcoreapp2.0/Meteo.csproj.CoreCompileInputs.cache
+/home/amer/Meteo/obj/Debug/netcoreapp2.0/Meteo.AssemblyInfoInputs.cache
+/home/amer/Meteo/obj/Debug/netcoreapp2.0/Meteo.AssemblyInfo.cs
+/home/amer/Meteo/obj/Debug/netcoreapp2.0/Meteo.dll
+/home/amer/Meteo/obj/Debug/netcoreapp2.0/Meteo.pdb

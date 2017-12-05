@@ -1,0 +1,10 @@
+﻿<Properties StartupConfiguration="{BF66486B-70C8-41E6-8880-28480EFE0682}|Default">
+  <MonoDevelop.Ide.ItemProperties.Meteo PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
