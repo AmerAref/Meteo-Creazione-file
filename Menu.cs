@@ -10,7 +10,7 @@ namespace Meteo
             Console.WriteLine("*************    Digitare il valore del menu    ***********");
             Console.WriteLine("****1 - Cerca dati relativi ad oggi                       *");
             Console.WriteLine("****2 -  Cerca dati riferiti agli ultimi 5 giorni         *");
-            Console.WriteLine("****3 - Sessione terminata                                *");
+            Console.WriteLine("****3 - Termina sessione                                  *");
             Console.WriteLine("***********************************************************");
         }
         public void ShowMenu()
@@ -42,7 +42,39 @@ namespace Meteo
             Console.WriteLine("****4 - Torna al menu secondario                          *");
             Console.WriteLine("***********************************************************");
         }
-        
+        public void PrintForData(MeasureForToday jsonObj)
+        {
+            Console.WriteLine(jsonObj.main.pressure);
+            Console.WriteLine("Temperature");
+            Console.WriteLine(jsonObj.main.temp);
+            Console.WriteLine("Humidity");
+            Console.WriteLine(jsonObj.main.humidity);
+            Console.WriteLine("Temperature min");
+            Console.WriteLine(jsonObj.main.temp_min);
+            Console.WriteLine("Temperature max");
+            Console.WriteLine(jsonObj.main.temp_max);
+        }
+        public void PrintDataLast5Day(Repo jsonObj)
+        {
+            foreach (var measure in jsonObj.list)
+            {
+
+                Console.WriteLine("Pressure");
+                Console.WriteLine(measure.main.pressure);
+                Console.WriteLine("Temperature");
+                Console.WriteLine(measure.main.temp);
+                Console.WriteLine("Humidity");
+                Console.WriteLine(measure.main.humidity);
+                Console.WriteLine("Temperature min");
+                Console.WriteLine(measure.main.temp_min);
+                Console.WriteLine("Temperature max");
+                Console.WriteLine(measure.main.temp_max);
+
+            }
+
+
+        }
+
 
     }
 }
