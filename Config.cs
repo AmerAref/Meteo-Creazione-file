@@ -25,43 +25,44 @@ namespace Meteo
             Client = CreateClient();
             Url = url;
         }
-        public async Task ProcessMeteoByPlaceToday(string url)
+        public async Task ProcessMeteoByPlaceToday(string url, string fileName)
         {
             var jsonStr = await (Client.GetStringAsync(url));
             var jsonObj = JsonConvert.DeserializeObject<MeasureForToday>(jsonStr);
             PrintDataForToday.PrintForData(jsonObj);
             var firstValueHeader = jsonObj.main.GetType().GetProperties();
             //Console.WriteLine(t);
-            for(var i =0; i< firstValueHeader.Length ; i++) 
+            for (var i = 0; i < firstValueHeader.Length; i++)
             {
-              var valueWithoutSplit = firstValueHeader.GetValue(i);
-            var valueForHeader = Convert.ToString(valueWithoutSplit).Split(' ')[1];
-            Console.WriteLine(valueForHeader);
+                var valueWithoutSplit = firstValueHeader.GetValue(i);
+                var valueForHeader = Convert.ToString(valueWithoutSplit).Split(' ')[1];// Nome campi Header
             }
-            //System.IO.File.WriteAllText("Meteo odierno.json", jsonStr); // creazione file;
+            System.IO.File.WriteAllText(fileName, jsonStr); // creazione file;
         }
-        public async Task ProcessMeteoByCoordinatesToday(string url)
+        public async Task ProcessMeteoByCoordinatesToday(string url, string fileName)
         {
 
             var jsonStr = await (Client.GetStringAsync(url));
             var jsonObj = JsonConvert.DeserializeObject<MeasureForToday>(jsonStr);
             PrintDataForToday.PrintForData(jsonObj);
+            System.IO.File.WriteAllText(fileName, jsonStr);
 
         }
-        public async Task ProcessMeteoByPlaceLast5Day(string url)
+        public async Task ProcessMeteoByPlaceLast5Day(string url, string fileName)
         {
             var jsonStr = await (Client.GetStringAsync(url));
             var jsonObj = JsonConvert.DeserializeObject<Repo>(jsonStr);
             PrintAllDataDay.PrintDataLast5Day(jsonObj);
-            System.IO.File.WriteAllText("Meteo ultimi 5 .json", jsonStr);
+            System.IO.File.WriteAllText(fileName, jsonStr);
         }
-        public async Task ProcessMeteoByCoordinatesLast5Day(string url)
+        public async Task ProcessMeteoByCoordinatesLast5Day(string url, string fileName)
         {
 
 
             var jsonStr = await (Client.GetStringAsync(url));
             var jsonObj = JsonConvert.DeserializeObject<Repo>(jsonStr);
             PrintAllDataDay.PrintDataLast5Day(jsonObj);
+            System.IO.File.WriteAllText(fileName, jsonStr);
 
 
         }
