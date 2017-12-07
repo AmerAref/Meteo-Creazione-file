@@ -1,15 +1,18 @@
 using System;
 using System.Collections.Generic;
  
-namespace Meteo
+namespace Meteo.Services
 {
-   
+    public class Repo
+    {
+        public List<Measure>  list { get; set; }
+    }
 
-   public class MeasureForToday{
-       public MeasuresParam main { get; set; }
-
+   public class Measure{
+       public ParamMeasures main { get; set; }
+      
    }
-    public class MeasuresParam
+    public class ParamMeasures
     {
         public float pressure { get; set; }
         public float temp { get; set; }

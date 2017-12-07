@@ -8,20 +8,19 @@ using System.Linq;
 using System.Text;
 using System.Data;
 
-namespace Meteo
+namespace Meteo.Services
 {
-    public class Config
+    public class MeteoAPI
     {
-
         HttpClient Client { get; set; }
         string Url { get; set; }
-        Menu PrintDataForToday { get; set; }
-        Menu PrintAllDataDay { get; set; }
+        //Menu PrintDataForToday { get; set; }
+        //Menu PrintAllDataDay { get; set; }
 
-        public Config(string url)
+        public MeteoAPI(string url)
         {
-            PrintDataForToday = new Menu();
-            PrintAllDataDay = new Menu();
+            //PrintDataForToday = new Menu();
+            //PrintAllDataDay = new Menu();
             Client = CreateClient();
             Url = url;
         }
@@ -29,7 +28,7 @@ namespace Meteo
         {
             var jsonStr = await (Client.GetStringAsync(url));
             var jsonObj = JsonConvert.DeserializeObject<MeasureForToday>(jsonStr);
-            PrintDataForToday.PrintForData(jsonObj);
+            //PrintDataForToday.PrintForData(jsonObj);
             var firstValueHeader = jsonObj.main.GetType().GetProperties();
             //Console.WriteLine(t);
             for (var i = 0; i < firstValueHeader.Length; i++)
@@ -39,32 +38,29 @@ namespace Meteo
             }
             System.IO.File.WriteAllText(fileName, jsonStr); // creazione file;
         }
-        public async Task ProcessMeteoByCoordinatesToday(string url, string fileName)
+        public async Task<string> ProcessMeteoByCoordinatesToday(string url, string fileName)
         {
-
             var jsonStr = await (Client.GetStringAsync(url));
             var jsonObj = JsonConvert.DeserializeObject<MeasureForToday>(jsonStr);
-            PrintDataForToday.PrintForData(jsonObj);
+            //PrintDataForToday.PrintForData(jsonObj);
             System.IO.File.WriteAllText(fileName, jsonStr);
-
+            return jsonStr;
         }
-        public async Task ProcessMeteoByPlaceLast5Day(string url, string fileName)
+        public async Task<string> ProcessMeteoByPlaceLast5Day(string url, string fileName)
         {
             var jsonStr = await (Client.GetStringAsync(url));
             var jsonObj = JsonConvert.DeserializeObject<Repo>(jsonStr);
-            PrintAllDataDay.PrintDataLast5Day(jsonObj);
+            //PrintAllDataDay.PrintDataLast5Day(jsonObj);
             System.IO.File.WriteAllText(fileName, jsonStr);
+            return jsonStr;
         }
-        public async Task ProcessMeteoByCoordinatesLast5Day(string url, string fileName)
+        public async Task<string> ProcessMeteoByCoordinatesLast5Day(string url, string fileName)
         {
-
-
             var jsonStr = await (Client.GetStringAsync(url));
             var jsonObj = JsonConvert.DeserializeObject<Repo>(jsonStr);
-            PrintAllDataDay.PrintDataLast5Day(jsonObj);
+            //PrintAllDataDay.PrintDataLast5Day(jsonObj);
             System.IO.File.WriteAllText(fileName, jsonStr);
-
-
+            return jsonStr;
         }
         public async Task FiltredMeteoByHumidityLast5Day(string url, string humidity)
         {

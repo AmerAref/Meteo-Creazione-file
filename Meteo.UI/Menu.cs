@@ -1,6 +1,7 @@
 using System;
+using Meteo.Services;
 
-namespace Meteo
+namespace Meteo.UI
 {
     public class Menu
     {
@@ -58,7 +59,6 @@ namespace Meteo
         {
             foreach (var measure in jsonObj.list)
             {
-
                 Console.WriteLine("Pressure");
                 Console.WriteLine(measure.main.pressure);
                 Console.WriteLine("Temperature");
@@ -69,12 +69,7 @@ namespace Meteo
                 Console.WriteLine(measure.main.temp_min);
                 Console.WriteLine("Temperature max");
                 Console.WriteLine(measure.main.temp_max);
-
             }
-
-
         }
-
-
     }
 }

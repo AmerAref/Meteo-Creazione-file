@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-namespace Meteo
+namespace Meteo.Services
 {
     public class DataFiltredTime
     {
@@ -9,7 +9,6 @@ namespace Meteo
     public class Dati
     {
         public List<Wheaters> weather { get; set; }
-
         public string dt_txt { get; set; }
     }
     public class Wheaters
