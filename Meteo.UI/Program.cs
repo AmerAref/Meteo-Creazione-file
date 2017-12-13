@@ -11,8 +11,28 @@ namespace Meteo.UI
     {
         static void Main(string[] args)
         {
+            var filemenager = new FileMenager();
             var menu = new Menu();
+            var print = new PrintData();
             var exit = true;
+            var insertNameFile = "Inserisci nome file da creare con tipo di estensione (nomefile.estensione)";
+            var meteoApi = new MeteoAPI();
+            var success = "Richiesta elaborata con successo";
+            var choiceDoFile = "Vuoi creare il file con i dati precedentemente rischiesti? (S/n)";
+            var choiceSendEmail = "Vuoi inviare tramite email il file appena creato?(S/n)";
+            var insertPassword = "Inserisci password email mittente ";
+            var insertNamePlace = "Inserisci località richiesta";
+            var insertLon = "Insersci longitudine";
+            var insertLat = "Inserisci latitudine";
+            var insertSender = "inserisci email mittente";
+            var insertReciver = "Inserisci email destinatario";
+            var insertBody = "Iserisci Testo all'interno dell'email";
+            var insertSubject = "Inserisci oggetto";
+            var successCreateFile = "File creato con successo";
+            var successEmailSend = "Email inviata con successo";
+            var nameFileDelete = "Inserisci nome file da eliminare, con tipo di estensione (nomefile.estensione)";
+
+
             while (exit)
             {
                 menu.ShowFirst();
@@ -25,16 +45,52 @@ namespace Meteo.UI
                         switch (choseThisDay)
                         {
                             case "1":
-                                menu.InsertNamePlace();
+                                Console.WriteLine(insertNamePlace);
                                 var place = Console.ReadLine();
                                 try
                                 {
-                                    var url = $"http://api.openweathermap.org/data/2.5/weather?q={place}&appid=0dc9854b15fa5612e84597073b150cd3";
-                                    var MeteoAPI = new MeteoAPI(url);
-                                    Console.WriteLine("Inserisci nome file da creare con tipo di estensione (nomefile.estensione)");
-                                    var fileName = Console.ReadLine();
-                                    MeteoAPI.ProcessMeteoByPlaceToday(url, fileName).Wait();
-                                    Console.WriteLine("Richiesta elaborata con successo");
+                                    var jsonObj = meteoApi.ProcessMeteoByPlaceToday(place).Result;
+                                    print.PrintForData(jsonObj);
+                                    Console.WriteLine(success);
+                                    Console.WriteLine(choiceDoFile);
+                                    var choiceSelected = Console.ReadLine();
+                                    if (choiceSelected == "S")
+                                    {
+                                        Console.WriteLine(insertNameFile);
+                                        var fileName = Console.ReadLine();
+                                        var jsonStr = JsonConvert.SerializeObject(jsonObj);
+                                        var file = filemenager.CreateNewFile(fileName, jsonStr);
+                                        Console.WriteLine(choiceSendEmail);
+                                        choiceSelected = Console.ReadLine();
+                                        Console.WriteLine(successCreateFile);
+
+                                        if (choiceSelected == "S")
+                                        {
+                                            Console.WriteLine(insertSender);
+                                            var sender = Console.ReadLine();
+                                            Console.WriteLine(insertReciver);
+                                            var receiver = Console.ReadLine();
+
+                                            Console.WriteLine(insertBody);
+                                            var body = Console.ReadLine();
+                                            Console.WriteLine(insertSubject);
+                                            var subject = Console.ReadLine();
+                                            var user = sender.Split('@')[0];
+                                            Console.WriteLine(insertPassword);
+                                            var password = Console.ReadLine();
+                                            filemenager.SendFile(fileName, sender, receiver, body, subject, user, password);
+                                            Console.WriteLine(successEmailSend);
+
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine(success);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine(success);
+                                    }
                                 }
                                 catch
                                 {
@@ -42,17 +98,56 @@ namespace Meteo.UI
                                 }
                                 break;
                             case "2":
-                                menu.InsertCoordinates();
+                                Console.WriteLine(insertLat);
                                 var lat = Console.ReadLine();
+                                Console.WriteLine(insertLon);
                                 var lon = Console.ReadLine();
                                 try
                                 {
-                                    var url = $"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=0dc9854b15fa5612e84597073b150cd3";
-                                    var MeteoAPI = new MeteoAPI(url);
-                                    Console.WriteLine("Inserisci nome file da creare con tipo di estensione (nomefile.estensione)");
-                                    var fileName = Console.ReadLine();
-                                    MeteoAPI.ProcessMeteoByCoordinatesToday(url, fileName).Wait();
-                                    Console.WriteLine("Richiesta elaborata con successo");
+
+                                    Console.WriteLine(insertNameFile);
+                                    var jsonObj = meteoApi.ProcessMeteoByCoordinatesToday(lon, lat).Result;
+                                    print.PrintForData(jsonObj);
+                                    Console.WriteLine(success);
+                                    Console.WriteLine(choiceDoFile);
+                                    Console.WriteLine(choiceDoFile);
+                                    var choiceSelected = Console.ReadLine();
+                                    if (choiceSelected == "S")
+                                    {
+                                        Console.WriteLine(insertNameFile);
+                                        var fileName = Console.ReadLine();
+                                        var jsonStr = JsonConvert.SerializeObject(jsonObj);
+                                        var file = filemenager.CreateNewFile(fileName, jsonStr);
+                                        Console.WriteLine(choiceSendEmail);
+                                        choiceSelected = Console.ReadLine();
+                                        Console.WriteLine(successCreateFile);
+
+                                        if (choiceSelected == "S")
+                                        {
+                                            Console.WriteLine(insertSender);
+                                            var sender = Console.ReadLine();
+                                            Console.WriteLine(insertReciver);
+                                            var receiver = Console.ReadLine();
+
+                                            Console.WriteLine(insertBody);
+                                            var body = Console.ReadLine();
+                                            Console.WriteLine(insertSubject);
+                                            var subject = Console.ReadLine();
+                                            var user = sender.Split('@')[0];
+                                            Console.WriteLine(insertPassword);
+                                            var password = Console.ReadLine();
+                                            filemenager.SendFile(fileName, sender, receiver, body, subject, user, password);
+                                            Console.WriteLine(successEmailSend);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine(success);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine(success);
+                                    }
                                 }
                                 catch
                                 {
@@ -70,48 +165,51 @@ namespace Meteo.UI
                         switch (choseLast5Day)
                         {
                             case "1":
-                                menu.InsertNamePlace();
+                                Console.WriteLine(insertNamePlace);
                                 var place = Console.ReadLine();
                                 try
                                 {
-                                    var url = $"http://samples.openweathermap.org/data/2.5/forecast?q={place}&appid=0dc9854b15fa5612e84597073b150cd3";
-                                    var MeteoAPI = new MeteoAPI(url);
-                                    Console.WriteLine("Inserisci nome file da creare con tipo di estensione (nomefile.estensione)");
-                                    var fileName = Console.ReadLine();
-                                    MeteoAPI.ProcessMeteoByPlaceLast5Day(url, fileName).Wait();
-                                    Console.WriteLine("Richiesta elaborata con successo");
-                                    menu.ShowFiltredMenu();
-                                    var choseFilter = Console.ReadLine();
-                                    switch (choseFilter)
+                                    var jsonObj = meteoApi.ProcessMeteoByPlaceLast5Day(place).Result;
+                                    print.PrintDataLast5Day(jsonObj);
+                                    Console.WriteLine(success);
+                                    Console.WriteLine(choiceDoFile);
+                                    Console.WriteLine(choiceDoFile);
+                                    var choiceSelected = Console.ReadLine();
+                                    if (choiceSelected == "S")
                                     {
-                                        case "1":
+                                        Console.WriteLine(insertNameFile);
+                                        var fileName = Console.ReadLine();
+                                        var jsonStr = JsonConvert.SerializeObject(jsonObj);
+                                        var file = filemenager.CreateNewFile(fileName, jsonStr);
+                                        Console.WriteLine(choiceSendEmail);
+                                        choiceSelected = Console.ReadLine();
+                                        Console.WriteLine(successCreateFile);
 
-                                            Console.WriteLine("Inserisci valore umidità richiesta riguardante gli ultimi 5 giorni");
-                                            var humidity = Console.ReadLine();
-                                            try
-                                            {
-                                                MeteoAPI.FiltredMeteoByHumidityLast5Day(url, humidity).Wait();
-                                                Console.WriteLine("Richiesta elaborata con successo");
-                                            }
-                                            catch
-                                            {
-                                                Console.WriteLine("Errore");
-                                            }
-                                            break;
-                                        case "2":
-                                            Console.WriteLine("Inserisci data con il seguente formato YYYY-mm-GG");
-                                            var date = Console.ReadLine();
-                                            Console.WriteLine("Inserisci orario con il seguente formato HH:MM:SS");
-                                            var time = Console.ReadLine();
-                                            MeteoAPI.FiltredMeteoByDateTimeLast5Day(url, date, time).Wait();
-                                            break;
-                                        case "3":
-                                            Console.WriteLine("Iserisci tipologia di tempo richiesta");
-                                            var typeWeather = Console.ReadLine();
-                                            MeteoAPI.FiltredMeteoByWeatherLast5Day(url, typeWeather).Wait();
-                                            break;
-                                        case "4":
-                                            break;
+                                        if (choiceSelected == "S")
+                                        {
+                                            Console.WriteLine(insertSender);
+                                            var sender = Console.ReadLine();
+                                            Console.WriteLine(insertReciver);
+                                            var receiver = Console.ReadLine();
+
+                                            Console.WriteLine(insertBody);
+                                            var body = Console.ReadLine();
+                                            Console.WriteLine(insertSubject);
+                                            var subject = Console.ReadLine();
+                                            var user = sender.Split('@')[0];
+                                            Console.WriteLine(insertPassword);
+                                            var password = Console.ReadLine();
+                                            filemenager.SendFile(fileName, sender, receiver, body, subject, user, password);
+                                            Console.WriteLine(successEmailSend);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine(success);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine(success);
                                     }
                                 }
                                 catch
@@ -120,17 +218,56 @@ namespace Meteo.UI
                                 }
                                 break;
                             case "2":
-                                menu.InsertCoordinates();
+                                Console.WriteLine(insertLat);
                                 var lat = Console.ReadLine();
+                                Console.WriteLine(insertLon);
                                 var lon = Console.ReadLine();
                                 try
                                 {
-                                    var url = $"http://samples.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid=0dc9854b15fa5612e84597073b150cd3";
-                                    var MeteoAPI = new MeteoAPI(url);
-                                    Console.WriteLine("Inserisci nome file da creare con tipo di estensione (nomefile.estensione)");
-                                    var fileName = Console.ReadLine();
-                                    MeteoAPI.ProcessMeteoByCoordinatesLast5Day(url, fileName).Wait();
-                                    Console.WriteLine("Richiesta elaborata con successo");
+                                    Console.WriteLine(insertNameFile);
+                                    var jsonObj = meteoApi.ProcessMeteoByCoordinatesLast5Day(lon, lat).Result;
+                                    print.PrintDataLast5Day(jsonObj);
+                                    Console.WriteLine(success);
+                                    Console.WriteLine(choiceDoFile);
+                                    Console.WriteLine(choiceDoFile);
+                                    var choiceSelected = Console.ReadLine();
+                                    if (choiceSelected == "S")
+                                    {
+                                        Console.WriteLine(insertNameFile);
+                                        var fileName = Console.ReadLine();
+                                        var jsonStr = JsonConvert.SerializeObject(jsonObj);
+                                        var file = filemenager.CreateNewFile(fileName, jsonStr);
+                                        Console.WriteLine(choiceSendEmail);
+                                        choiceSelected = Console.ReadLine();
+                                        Console.WriteLine(successCreateFile);
+
+                                        if (choiceSelected == "S")
+                                        {
+                                            Console.WriteLine(insertSender);
+                                            var sender = Console.ReadLine();
+                                            Console.WriteLine(insertReciver);
+                                            var receiver = Console.ReadLine();
+
+                                            Console.WriteLine(insertBody);
+                                            var body = Console.ReadLine();
+                                            Console.WriteLine(insertSubject);
+                                            var subject = Console.ReadLine();
+                                            var user = sender.Split('@')[0];
+                                            Console.WriteLine(insertPassword);
+                                            var password = Console.ReadLine();
+                                            
+                                            filemenager.SendFile(fileName, sender, receiver, body, subject, user, password);
+                                            Console.WriteLine(successEmailSend);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine(success);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine(success);
+                                    }
                                 }
                                 catch
                                 {
@@ -140,16 +277,69 @@ namespace Meteo.UI
                             case "3":
                                 break;
                             case "4":
-                                Console.WriteLine("Sessione terminata");
-                                break;
+                                return;
                         }
                         break;
                     case "3":
+
+                        menu.ShowFiltredMenu();
+                        var choseFilter = Console.ReadLine();
+                        switch (choseFilter)
+                        {
+                            case "1":
+                                menu.InsertNamePlace();
+                                var place = Console.ReadLine();
+                                Console.WriteLine("Inserisci valore umidità richiesta riguardante gli ultimi 5 giorni");
+                                var humidity = Console.ReadLine();
+                                try
+                                {
+                                    meteoApi.FiltredMeteoByHumidityLast5Day(humidity, place).Wait();
+                                    Console.WriteLine(success);
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("Errore");
+                                }
+                                break;
+                            case "2":
+                                menu.InsertNamePlace();
+                                place = Console.ReadLine();
+                                Console.WriteLine("Inserisci data con il seguente formato YYYY-mm-GG");
+                                var date = Console.ReadLine();
+                                Console.WriteLine("Inserisci orario con il seguente formato HH:MM:SS");
+                                var time = Console.ReadLine();
+                                meteoApi.FiltredMeteoByDateTimeLast5Day(date, time, place).Wait();
+                                Console.WriteLine(success);
+                                break;
+                            case "3":
+                                menu.InsertNamePlace();
+                                place = Console.ReadLine();
+                                Console.WriteLine("Iserisci tipologia di tempo richiesta");
+                                var typeWeather = Console.ReadLine();
+                                meteoApi.FiltredMeteoByWeatherLast5Day(typeWeather, place).Wait();
+                                Console.WriteLine(success);
+                                break;
+                            case "4":
+                                break;
+                        }
+                        break;
+                    case "4":
+                        Console.WriteLine(nameFileDelete);
+                        var fileNameDelete = Console.ReadLine();
+                        filemenager.DeleteFile(fileNameDelete);
+
+                        break;
+                    case "5":
                         exit = false;
                         Console.WriteLine("Sessione terminata");
                         break;
+
                 }
             }
+
         }
     }
 }
+
+
+
