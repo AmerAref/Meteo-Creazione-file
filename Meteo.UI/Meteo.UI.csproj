@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Meteo.Services\Meteo.Services.csproj" />
+    <ProjectReference Include="..\Meteo.ExcelManager\Meteo.ExcelManager.csproj" />
  </ItemGroup>
 
   <PropertyGroup>

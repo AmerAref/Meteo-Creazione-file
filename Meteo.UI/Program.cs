@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Meteo.Services;
+using Meteo.ExcelManager;
 
 namespace Meteo.UI
 {
@@ -11,6 +12,7 @@ namespace Meteo.UI
     {
         static void Main(string[] args)
         {
+            var getFile = new GetFile ();
             var filemenager = new FileMenager();
             var menu = new Menu();
             var print = new PrintData();
@@ -76,15 +78,33 @@ namespace Meteo.UI
                                             Console.WriteLine(insertSubject);
                                             var subject = Console.ReadLine();
                                             var user = sender.Split('@')[0];
+                                            var password = "";
                                             Console.WriteLine(insertPassword);
-                                            var password = Console.ReadLine();
+                                            ConsoleKeyInfo key;
+
+                                            do
+                                            {
+                                                key = Console.ReadKey(true);
+
+                                                if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
+                                                {
+                                                    password += key.KeyChar;
+                                                    Console.Write("*");
+                                                }
+                                               
+                                            }
+                                            while (key.Key != ConsoleKey.Enter);
+
+                                            
+
                                             filemenager.SendFile(fileName, sender, receiver, body, subject, user, password);
                                             Console.WriteLine(successEmailSend);
 
                                         }
                                         else
                                         {
-                                            Console.WriteLine(success);
+                                            string stamp = getFile.ReciveFile();
+                                            Console.WriteLine(stamp);
                                         }
                                     }
                                     else
@@ -255,7 +275,7 @@ namespace Meteo.UI
                                             var user = sender.Split('@')[0];
                                             Console.WriteLine(insertPassword);
                                             var password = Console.ReadLine();
-                                            
+
                                             filemenager.SendFile(fileName, sender, receiver, body, subject, user, password);
                                             Console.WriteLine(successEmailSend);
                                         }
