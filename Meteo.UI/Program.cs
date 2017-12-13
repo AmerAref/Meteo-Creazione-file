@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Meteo.Services;
-using Meteo.ExcelManager;
 
 namespace Meteo.UI
 {
@@ -12,7 +11,8 @@ namespace Meteo.UI
     {
         static void Main(string[] args)
         {
-            var getFile = new GetFile ();
+
+            var pswManager = new PswManager();
             var filemenager = new FileMenager();
             var menu = new Menu();
             var print = new PrintData();
@@ -33,7 +33,8 @@ namespace Meteo.UI
             var successCreateFile = "File creato con successo";
             var successEmailSend = "Email inviata con successo";
             var nameFileDelete = "Inserisci nome file da eliminare, con tipo di estensione (nomefile.estensione)";
-
+            var password = "";
+            var passwordVisibile = "";
 
             while (exit)
             {
@@ -78,33 +79,36 @@ namespace Meteo.UI
                                             Console.WriteLine(insertSubject);
                                             var subject = Console.ReadLine();
                                             var user = sender.Split('@')[0];
-                                            var password = "";
-                                            Console.WriteLine(insertPassword);
-                                            ConsoleKeyInfo key;
+                                            var countAttempts = 2;
 
-                                            do
+                                            for (var i = 0; i < 3; i++)
                                             {
-                                                key = Console.ReadKey(true);
-
-                                                if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
+                                                try
                                                 {
-                                                    password += key.KeyChar;
-                                                    Console.Write("*");
+                                                    password = pswManager.MaskPassword(passwordVisibile);
+                                                    //autenticazione mail
+                                                    filemenager.SendFile(fileName, sender, receiver, body, subject, user, password);
+                                                    i = 3;
                                                 }
-                                               
+                                                catch
+                                                {
+                                                    if (i == 3)
+                                                    {
+                                                        Console.WriteLine("Tentativi finiti");
+                                                    }
+                                                    Console.WriteLine($"Tentavi rimasti {countAttempts}");
+                                                    countAttempts = -1;
+
+                                                }
                                             }
-                                            while (key.Key != ConsoleKey.Enter);
 
-                                            
-
-                                            filemenager.SendFile(fileName, sender, receiver, body, subject, user, password);
+                                            password = pswManager.MaskPassword(passwordVisibile);
                                             Console.WriteLine(successEmailSend);
 
                                         }
                                         else
                                         {
-                                            string stamp = getFile.ReciveFile();
-                                            Console.WriteLine(stamp);
+                                            Console.WriteLine(success);
                                         }
                                     }
                                     else
@@ -155,7 +159,7 @@ namespace Meteo.UI
                                             var subject = Console.ReadLine();
                                             var user = sender.Split('@')[0];
                                             Console.WriteLine(insertPassword);
-                                            var password = Console.ReadLine();
+                                            password = Console.ReadLine();
                                             filemenager.SendFile(fileName, sender, receiver, body, subject, user, password);
                                             Console.WriteLine(successEmailSend);
                                         }
@@ -218,7 +222,7 @@ namespace Meteo.UI
                                             var subject = Console.ReadLine();
                                             var user = sender.Split('@')[0];
                                             Console.WriteLine(insertPassword);
-                                            var password = Console.ReadLine();
+                                            password = Console.ReadLine();
                                             filemenager.SendFile(fileName, sender, receiver, body, subject, user, password);
                                             Console.WriteLine(successEmailSend);
                                         }
@@ -274,7 +278,7 @@ namespace Meteo.UI
                                             var subject = Console.ReadLine();
                                             var user = sender.Split('@')[0];
                                             Console.WriteLine(insertPassword);
-                                            var password = Console.ReadLine();
+                                            password = Console.ReadLine();
 
                                             filemenager.SendFile(fileName, sender, receiver, body, subject, user, password);
                                             Console.WriteLine(successEmailSend);

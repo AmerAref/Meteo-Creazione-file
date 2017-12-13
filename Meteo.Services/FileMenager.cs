@@ -41,5 +41,6 @@ namespace Meteo.Services
         {
             File.Delete(fileNameDelete);
         }
+    
     }
 }
