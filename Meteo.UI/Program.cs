@@ -102,11 +102,9 @@ namespace Meteo.UI
                                 try
                                 {
 
-                                    Console.WriteLine(insertNameFile);
                                     var jsonObj = meteoApi.ProcessMeteoByCoordinatesToday(lon, lat).Result;
                                     print.PrintForData(jsonObj);
                                     Console.WriteLine(success);
-                                    Console.WriteLine(choiceDoFile);
                                     Console.WriteLine(choiceDoFile);
                                     var choiceSelected = Console.ReadLine();
                                     if (choiceSelected == "S")
@@ -115,9 +113,9 @@ namespace Meteo.UI
                                         var fileName = Console.ReadLine();
                                         var jsonStr = JsonConvert.SerializeObject(jsonObj);
                                         var file = filemenager.CreateNewFile(fileName, jsonStr);
+                                        Console.WriteLine(successCreateFile);
                                         Console.WriteLine(choiceSendEmail);
                                         choiceSelected = Console.ReadLine();
-                                        Console.WriteLine(successCreateFile);
 
                                         if (choiceSelected == "S")
                                         {
@@ -132,7 +130,6 @@ namespace Meteo.UI
                                             var subject = Console.ReadLine();
                                             var user = sender.Split('@')[0];
                                             Console.WriteLine(insertPassword);
-                                            password = Console.ReadLine();
                                             emailManager.AttempsPasswordAndSendEmail(fileName, sender, receiver, body, subject, user, password);
                                         }
                                         else
@@ -169,7 +166,6 @@ namespace Meteo.UI
                                     print.PrintDataLast5Day(jsonObj);
                                     Console.WriteLine(success);
                                     Console.WriteLine(choiceDoFile);
-                                    Console.WriteLine(choiceDoFile);
                                     var choiceSelected = Console.ReadLine();
                                     if (choiceSelected == "S")
                                     {
@@ -194,7 +190,6 @@ namespace Meteo.UI
                                             var subject = Console.ReadLine();
                                             var user = sender.Split('@')[0];
                                             Console.WriteLine(insertPassword);
-                                            password = Console.ReadLine();
                                             emailManager.AttempsPasswordAndSendEmail(fileName, sender, receiver, body, subject, user, password);
                                         }
                                         else
@@ -224,7 +219,6 @@ namespace Meteo.UI
                                     print.PrintDataLast5Day(jsonObj);
                                     Console.WriteLine(success);
                                     Console.WriteLine(choiceDoFile);
-                                    Console.WriteLine(choiceDoFile);
                                     var choiceSelected = Console.ReadLine();
                                     if (choiceSelected == "S")
                                     {
@@ -234,7 +228,6 @@ namespace Meteo.UI
                                         var file = filemenager.CreateNewFile(fileName, jsonStr);
                                         Console.WriteLine(choiceSendEmail);
                                         choiceSelected = Console.ReadLine();
-                                        Console.WriteLine(successCreateFile);
 
                                         if (choiceSelected == "S")
                                         {
@@ -242,15 +235,12 @@ namespace Meteo.UI
                                             var sender = Console.ReadLine();
                                             Console.WriteLine(insertReciver);
                                             var receiver = Console.ReadLine();
-
                                             Console.WriteLine(insertBody);
                                             var body = Console.ReadLine();
                                             Console.WriteLine(insertSubject);
                                             var subject = Console.ReadLine();
                                             var user = sender.Split('@')[0];
                                             Console.WriteLine(insertPassword);
-                                            password = Console.ReadLine();
-
                                             emailManager.AttempsPasswordAndSendEmail(fileName, sender, receiver, body, subject, user, password);
                                         }
                                         else

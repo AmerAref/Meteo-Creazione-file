@@ -20,7 +20,7 @@ namespace Meteo.Services
         {
             Client = CreateClient();
             appId = "0dc9854b15fa5612e84597073b150cd3";
-            appUri = "http://samples.openweathermap.org/data/2.5/";
+            appUri = "http://api.openweathermap.org/data/2.5/";
         }
         public async Task<MeasureToday> ProcessMeteoByPlaceToday(string place)
         {

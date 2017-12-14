@@ -22,9 +22,6 @@ namespace Meteo.Services
             client.Credentials = new System.Net.NetworkCredential(user, password);
             client.EnableSsl = true;
             client.Send(message);
-
-
-
             data.Dispose();
         }
         public void AttempsPasswordAndSendEmail(string fileName, string sender, string receiver, string body, string subject, string user, string password)
@@ -39,7 +36,6 @@ namespace Meteo.Services
                     SendFile(fileName, sender, receiver, body, subject, user, password);
                     i = 3;
                     Console.WriteLine("Email inviata con successo!");
-
                 }
                 catch
                 {
