@@ -313,7 +313,25 @@ namespace Meteo.UI
                         filemenager.DeleteFile(fileNameDelete);
 
                         break;
+
                     case "5":
+                        Console.WriteLine("Inserisci nome file da inviare tramite email");
+                        var fileNameToSend = Console.ReadLine();
+                        Console.WriteLine(insertSender);
+                        var senderAnyFile = Console.ReadLine();
+                        Console.WriteLine(insertReciver);
+                        var receiverAnyFile = Console.ReadLine();
+                        Console.WriteLine(insertBody);
+                        var bodyAnyFile = Console.ReadLine();
+                        Console.WriteLine(insertSubject);
+                        var subjectAnyFile = Console.ReadLine();
+                        var userAnyFile = senderAnyFile.Split('@')[0];
+                        Console.WriteLine(insertPassword);
+                        emailManager.AttempsPasswordAndSendEmail(fileNameToSend, senderAnyFile, receiverAnyFile, bodyAnyFile, subjectAnyFile, userAnyFile, password);
+
+
+                        break;
+                    case "6":
                         exit = false;
                         Console.WriteLine("Sessione terminata");
                         break;
