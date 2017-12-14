@@ -5,10 +5,9 @@ namespace Meteo.Services
 {
     public class PswManager
     {
-        public string MaskPassword(string passwordVisibile)
+        public static string MaskPassword(string passwordVisibile)
         {
             {
-                Console.WriteLine("Inserisci password");
                 ConsoleKeyInfo key;
 
                 do
