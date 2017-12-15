@@ -14,7 +14,7 @@ namespace Meteo.UI
             Console.WriteLine("****3 - Accedi al menu filtraggio dati per città          *");
             Console.WriteLine("****4 - Vuoi eliminare file nella cartella ?              *");
             Console.WriteLine("****5 - Invia file tramite email                          *");
-            Console.WriteLine("****6 - Termina sessione                                  *");
+            Console.WriteLine("****7 - Termina sessione                                  *");
             Console.WriteLine("***********************************************************");
         }
         public void ShowMenu()
@@ -28,14 +28,7 @@ namespace Meteo.UI
             Console.WriteLine("***********************************************************");
         }
 
-        public void InsertNamePlace()
-        {
-            Console.WriteLine("Inserisci nome città");
-        }
-        public void InsertCoordinates()
-        {
-            Console.WriteLine("Inserisci longitudine e latitudine");
-        }
+       
         public void ShowFiltredMenu()
         {
             Console.WriteLine("***********************************************************");

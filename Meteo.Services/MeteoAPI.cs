@@ -59,7 +59,7 @@ namespace Meteo.Services
             var jsonStr = await (Client.GetStringAsync(url));
             var jsonObj = JsonConvert.DeserializeObject<ListMeasureLast5Day>(jsonStr);
             float humidityForFilter = float.Parse(humidity);
-            var objFiltred = jsonObj.ListForFilter.Where(x => x.Main.Humidity.Equals(humidityForFilter)).ToList();
+            var objFiltred = jsonObj.List.Where(x => x.Main.Humidity.Equals(humidityForFilter)).ToList();
             foreach (var item in objFiltred)
             {
                 Console.WriteLine(item.Main.Pressure);
@@ -73,7 +73,7 @@ namespace Meteo.Services
             var jsonStr = await (Client.GetStringAsync(url));
             var jsonObj = JsonConvert.DeserializeObject<ListDataFiltred>(jsonStr);
             var dateTime = date + " " + time;
-            var objFiltred = jsonObj.List.Where(x => x.Date.Equals(dateTime)).ToList();
+            var objFiltred = jsonObj.ListForFilter.Where(x => x.Date.Equals(dateTime)).ToList();
             foreach (var item in objFiltred)
             {
                 foreach (var main in item.Weather)
@@ -88,7 +88,7 @@ namespace Meteo.Services
 
             var jsonStr = await (Client.GetStringAsync(url));
             var jsonObj = JsonConvert.DeserializeObject<ListDataFiltred>(jsonStr);
-            foreach (var item in jsonObj.List)
+            foreach (var item in jsonObj.ListForFilter)
             {
                 var objFiltred = item.Weather.Where(x => x.Main.Equals(typeWeather)).ToList();
                 foreach (var main in objFiltred)

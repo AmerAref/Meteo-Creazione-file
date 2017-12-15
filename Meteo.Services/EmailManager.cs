@@ -35,7 +35,7 @@ namespace Meteo.Services
                     //autenticazione mail
                     SendFile(fileName, sender, receiver, body, subject, user, password);
                     i = 3;
-                    Console.WriteLine("Email inviata con successo!");
+                    Console.WriteLine("\nEmail inviata con successo!");
                 }
                 catch
                 {
@@ -48,6 +48,7 @@ namespace Meteo.Services
                     countAttempts--;
                     if (i != 3)
                     {
+                        Console.WriteLine("Autenticazione non riuscita");
                         Console.WriteLine("Inserisci password");
                     }
 

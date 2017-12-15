@@ -8,6 +8,6 @@ namespace Meteo.Services
     {
         [JsonProperty("list")]
 
-        public List<Measure> ListForFilter { get; set; }
+        public List<Measure> List { get; set; }
     }
 }

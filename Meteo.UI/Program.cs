@@ -4,11 +4,43 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Meteo.Services;
+using System.Collections.Generic;
 
 namespace Meteo.UI
 {
     public static class Program
     {
+        private static Dictionary<string, string> InsertDataForEmail()
+        {
+            var dictionaryForEmail = new Dictionary<string, string>();
+            var insertSender = "inserisci email mittente";
+            var insertReciver = "Inserisci email destinatario";
+            var insertBody = "Iserisci Testo all'interno dell'email";
+            var insertSubject = "Inserisci oggetto";
+            Console.WriteLine(insertSender);
+            var sender = Console.ReadLine();
+            dictionaryForEmail.Add("senderKey", sender);
+
+            Console.WriteLine();
+
+            Console.WriteLine(insertReciver);
+            var receiver = Console.ReadLine();
+            Console.WriteLine(insertBody);
+            var body = Console.ReadLine();
+            Console.WriteLine(insertSubject);
+            var subject = Console.ReadLine();
+
+            var user = sender.Split('@')[0];
+
+
+            dictionaryForEmail.Add("receiverKey", receiver);
+            dictionaryForEmail.Add("bodyKey", body);
+            dictionaryForEmail.Add("subjectKey", subject);
+            dictionaryForEmail.Add("userKey", user);
+            Console.WriteLine("Inserisci password");
+
+            return dictionaryForEmail;
+        }
         static void Main(string[] args)
         {
             var emailManager = new EmailManager();
@@ -22,14 +54,9 @@ namespace Meteo.UI
             var success = "Richiesta elaborata con successo";
             var choiceDoFile = "Vuoi creare il file con i dati precedentemente rischiesti? (S/n)";
             var choiceSendEmail = "Vuoi inviare tramite email il file appena creato?(S/n)";
-            var insertPassword = "Inserisci password email mittente ";
             var insertNamePlace = "Inserisci località richiesta";
             var insertLon = "Insersci longitudine";
             var insertLat = "Inserisci latitudine";
-            var insertSender = "inserisci email mittente";
-            var insertReciver = "Inserisci email destinatario";
-            var insertBody = "Iserisci Testo all'interno dell'email";
-            var insertSubject = "Inserisci oggetto";
             var successCreateFile = "File creato con successo";
             var nameFileDelete = "Inserisci nome file da eliminare, con tipo di estensione (nomefile.estensione)";
             var password = "";
@@ -53,6 +80,10 @@ namespace Meteo.UI
                                     var jsonObj = meteoApi.ProcessMeteoByPlaceToday(place).Result;
                                     print.PrintForData(jsonObj);
                                     Console.WriteLine(success);
+                                    var prop = "Pressure";
+                                    var Propr = jsonObj.Main.GetType().GetProperty(prop).GetValue(jsonObj.Main, null);
+                                    Console.WriteLine(Propr);
+
                                     Console.WriteLine(choiceDoFile);
                                     var choiceSelected = Console.ReadLine();
                                     if (choiceSelected == "S")
@@ -67,17 +98,13 @@ namespace Meteo.UI
 
                                         if (choiceSelected == "S")
                                         {
-                                            Console.WriteLine(insertSender);
-                                            var sender = Console.ReadLine();
-                                            Console.WriteLine(insertReciver);
-                                            var receiver = Console.ReadLine();
-                                            Console.WriteLine(insertBody);
-                                            var body = Console.ReadLine();
-                                            Console.WriteLine(insertSubject);
-                                            var subject = Console.ReadLine();
-                                            var user = sender.Split('@')[0];
-                                            Console.WriteLine("Inserisci password");
-                                            emailManager.AttempsPasswordAndSendEmail(fileName, sender, receiver, body, subject, user, password);
+                                            var dataForEmail = Program.InsertDataForEmail();
+                                            var senderValue = dataForEmail["senderKey"];
+                                            var receiverValue = dataForEmail["receiverKey"];
+                                            var bodyValue = dataForEmail["bodyKey"];
+                                            var subjectValue = dataForEmail["subjectKey"];
+                                            var userValue = dataForEmail["userKey"];
+                                            emailManager.AttempsPasswordAndSendEmail(fileName, senderValue, receiverValue, bodyValue, subjectValue, userValue, password);
                                         }
                                         else
                                         {
@@ -119,18 +146,13 @@ namespace Meteo.UI
 
                                         if (choiceSelected == "S")
                                         {
-                                            Console.WriteLine(insertSender);
-                                            var sender = Console.ReadLine();
-                                            Console.WriteLine(insertReciver);
-                                            var receiver = Console.ReadLine();
-
-                                            Console.WriteLine(insertBody);
-                                            var body = Console.ReadLine();
-                                            Console.WriteLine(insertSubject);
-                                            var subject = Console.ReadLine();
-                                            var user = sender.Split('@')[0];
-                                            Console.WriteLine(insertPassword);
-                                            emailManager.AttempsPasswordAndSendEmail(fileName, sender, receiver, body, subject, user, password);
+                                            var dataForEmail = Program.InsertDataForEmail();
+                                            var senderValue = dataForEmail["senderKey"];
+                                            var receiverValue = dataForEmail["receiverKey"];
+                                            var bodyValue = dataForEmail["bodyKey"];
+                                            var subjectValue = dataForEmail["subjectKey"];
+                                            var userValue = dataForEmail["userKey"];
+                                            emailManager.AttempsPasswordAndSendEmail(fileName, senderValue, receiverValue, bodyValue, subjectValue, userValue, password);
                                         }
                                         else
                                         {
@@ -179,18 +201,13 @@ namespace Meteo.UI
 
                                         if (choiceSelected == "S")
                                         {
-                                            Console.WriteLine(insertSender);
-                                            var sender = Console.ReadLine();
-                                            Console.WriteLine(insertReciver);
-                                            var receiver = Console.ReadLine();
-
-                                            Console.WriteLine(insertBody);
-                                            var body = Console.ReadLine();
-                                            Console.WriteLine(insertSubject);
-                                            var subject = Console.ReadLine();
-                                            var user = sender.Split('@')[0];
-                                            Console.WriteLine(insertPassword);
-                                            emailManager.AttempsPasswordAndSendEmail(fileName, sender, receiver, body, subject, user, password);
+                                            var dataForEmail = Program.InsertDataForEmail();
+                                            var senderValue = dataForEmail["senderKey"];
+                                            var receiverValue = dataForEmail["receiverKey"];
+                                            var bodyValue = dataForEmail["bodyKey"];
+                                            var subjectValue = dataForEmail["subjectKey"];
+                                            var userValue = dataForEmail["userKey"];
+                                            emailManager.AttempsPasswordAndSendEmail(fileName, senderValue, receiverValue, bodyValue, subjectValue, userValue, password);
                                         }
                                         else
                                         {
@@ -231,17 +248,13 @@ namespace Meteo.UI
 
                                         if (choiceSelected == "S")
                                         {
-                                            Console.WriteLine(insertSender);
-                                            var sender = Console.ReadLine();
-                                            Console.WriteLine(insertReciver);
-                                            var receiver = Console.ReadLine();
-                                            Console.WriteLine(insertBody);
-                                            var body = Console.ReadLine();
-                                            Console.WriteLine(insertSubject);
-                                            var subject = Console.ReadLine();
-                                            var user = sender.Split('@')[0];
-                                            Console.WriteLine(insertPassword);
-                                            emailManager.AttempsPasswordAndSendEmail(fileName, sender, receiver, body, subject, user, password);
+                                            var dataForEmail = Program.InsertDataForEmail();
+                                            var senderValue = dataForEmail["senderKey"];
+                                            var receiverValue = dataForEmail["receiverKey"];
+                                            var bodyValue = dataForEmail["bodyKey"];
+                                            var subjectValue = dataForEmail["subjectKey"];
+                                            var userValue = dataForEmail["userKey"];
+                                            emailManager.AttempsPasswordAndSendEmail(fileName, senderValue, receiverValue, bodyValue, subjectValue, userValue, password);
                                         }
                                         else
                                         {
@@ -271,7 +284,7 @@ namespace Meteo.UI
                         switch (choseFilter)
                         {
                             case "1":
-                                menu.InsertNamePlace();
+                                Console.WriteLine();
                                 var place = Console.ReadLine();
                                 Console.WriteLine("Inserisci valore umidità richiesta riguardante gli ultimi 5 giorni");
                                 var humidity = Console.ReadLine();
@@ -286,7 +299,7 @@ namespace Meteo.UI
                                 }
                                 break;
                             case "2":
-                                menu.InsertNamePlace();
+                                Console.WriteLine(insertNamePlace);
                                 place = Console.ReadLine();
                                 Console.WriteLine("Inserisci data con il seguente formato YYYY-mm-GG");
                                 var date = Console.ReadLine();
@@ -296,7 +309,7 @@ namespace Meteo.UI
                                 Console.WriteLine(success);
                                 break;
                             case "3":
-                                menu.InsertNamePlace();
+                                Console.WriteLine(insertNamePlace);
                                 place = Console.ReadLine();
                                 Console.WriteLine("Iserisci tipologia di tempo richiesta");
                                 var typeWeather = Console.ReadLine();
@@ -311,25 +324,18 @@ namespace Meteo.UI
                         Console.WriteLine(nameFileDelete);
                         var fileNameDelete = Console.ReadLine();
                         filemenager.DeleteFile(fileNameDelete);
-
                         break;
 
                     case "5":
                         Console.WriteLine("Inserisci nome file da inviare tramite email");
-                        var fileNameToSend = Console.ReadLine();
-                        Console.WriteLine(insertSender);
-                        var senderAnyFile = Console.ReadLine();
-                        Console.WriteLine(insertReciver);
-                        var receiverAnyFile = Console.ReadLine();
-                        Console.WriteLine(insertBody);
-                        var bodyAnyFile = Console.ReadLine();
-                        Console.WriteLine(insertSubject);
-                        var subjectAnyFile = Console.ReadLine();
-                        var userAnyFile = senderAnyFile.Split('@')[0];
-                        Console.WriteLine(insertPassword);
-                        emailManager.AttempsPasswordAndSendEmail(fileNameToSend, senderAnyFile, receiverAnyFile, bodyAnyFile, subjectAnyFile, userAnyFile, password);
-
-
+                        var fileNameToSendAnyFile = Console.ReadLine();
+                        var dataForEmailAnyFile = Program.InsertDataForEmail();
+                        var senderValueAnyFile = dataForEmailAnyFile["senderKey"];
+                        var receiverValueAnyFile = dataForEmailAnyFile["receiverKey"];
+                        var bodyValueAnyFile = dataForEmailAnyFile["bodyKey"];
+                        var subjectValueAnyFile = dataForEmailAnyFile["subjectKey"];
+                        var userValueAnyFile = dataForEmailAnyFile["userKey"];
+                        emailManager.AttempsPasswordAndSendEmail(fileNameToSendAnyFile, senderValueAnyFile, receiverValueAnyFile, bodyValueAnyFile, subjectValueAnyFile, userValueAnyFile, password);
                         break;
                     case "6":
                         exit = false;
