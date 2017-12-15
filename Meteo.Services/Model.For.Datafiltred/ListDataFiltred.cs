@@ -6,7 +6,7 @@ namespace Meteo.Services
 {
     public class ListDataFiltred
     {
-        public List<Data> List { get; set; }
+        public List<Data> ListForFilter { get; set; }
     }
        
 }

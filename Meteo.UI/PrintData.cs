@@ -24,7 +24,7 @@ namespace Meteo.UI
 
         public void PrintDataLast5Day(ListMeasureLast5Day jsonObj)
         {
-            foreach (var measure in jsonObj.ListForFilter)
+            foreach (var measure in jsonObj.List)
             {
                 Console.WriteLine("Pressure");
                 Console.WriteLine(measure.Main.Pressure);
