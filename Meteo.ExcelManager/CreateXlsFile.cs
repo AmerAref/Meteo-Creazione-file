@@ -50,29 +50,25 @@ namespace Meteo.ExcelManager
                 foreach (var measure in jsonObjForExcel.List)
                 {
                     var firstValueHeader = measure.Main.GetType().GetProperties();
-                    for (i = 1; i < 6; i++)
+                    for (i = 0; i < firstValueHeader.Length; i++, c++)
                     {
-                        for (j = 2; j < 42; j++)
+                        var valueWithoutSplit = firstValueHeader.GetValue(i);
+                        var valueForHeader = Convert.ToString(valueWithoutSplit).Split(' ')[1];
+                        if (c <= firstValueHeader.Length)
                         {
-                            var valueWithoutSplit = firstValueHeader.GetValue(i);
-                            var valueForHeader = Convert.ToString(valueWithoutSplit).Split(' ')[1];
-                            worksheet.Cells[1, i].Value = valueForHeader;
-
-                            var valueForColoumn = measure.Main.GetType().GetProperty(valueForHeader).GetValue(measure.Main, null);
-                            worksheet.Cells[j, i].Value = valueForColoumn;
+                            worksheet.Cells[1, c].Value = valueForHeader;
                         }
 
-                        /* Console.WriteLine(valueForHeader);
-                        for (var c = 2; c < 42; c++)
+                        for (j = 2; j < firstValueHeader.Length + 1; j++)
                         {
-                            for (var j = 3; j < 5; j++)
-
-                            {  
-
-                                worksheet.Cells [c,j].Value=valueForColoumn;
-                                
+                            var valueForColoumn = measure.Main.GetType().GetProperty(valueForHeader).GetValue(measure.Main, null);
+                            worksheet.Cells[r, c].Value = valueForColoumn;
+                            if (c == firstValueHeader.Length+1)
+                            {
+                                r++;
+                                c = 1;
                             }
-                        } */
+                        }
                     }
                 }
                 pkg.Save();
