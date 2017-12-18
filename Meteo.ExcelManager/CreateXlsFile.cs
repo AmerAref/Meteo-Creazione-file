@@ -10,7 +10,7 @@ namespace Meteo.ExcelManager
     public class CreateXlsFile
     {
         string path, xlsFile;
-        int i, j, c = 1, r = 2;
+        int i, j = 2, c = 1;
         public void CreateXlsFileForToday(string fileNameExcel, MeasureToday jsonObjForExcel, string place)
         {
             path = $"/home/gabriel/Scrivania/Progetti/Meteo-Creazione-file/Meteo.UI/{fileNameExcel}";
@@ -54,22 +54,22 @@ namespace Meteo.ExcelManager
                     {
                         var valueWithoutSplit = firstValueHeader.GetValue(i);
                         var valueForHeader = Convert.ToString(valueWithoutSplit).Split(' ')[1];
-                        if (c <= firstValueHeader.Length)
+                        if (c <= 5)
                         {
                             worksheet.Cells[1, c].Value = valueForHeader;
                         }
-
-                        for (j = 2; j < firstValueHeader.Length + 1; j++)
-                        {
-                            var valueForColoumn = measure.Main.GetType().GetProperty(valueForHeader).GetValue(measure.Main, null);
-                            worksheet.Cells[r, c].Value = valueForColoumn;
-                            if (c == firstValueHeader.Length+1)
-                            {
-                                r++;
-                                c = 1;
-                            }
-                        }
                     }
+                }
+                foreach (var measure in jsonObjForExcel.List)
+                {
+                    Console.WriteLine(measure.Main.Pressure);
+                    worksheet.Cells[j, 1].Value = measure.Main.Pressure;
+                    worksheet.Cells[j, 2].Value = measure.Main.Temp;
+                    worksheet.Cells[j, 3].Value = measure.Main.Humidity;
+                    worksheet.Cells[j, 4].Value = measure.Main.TempMin;
+                    worksheet.Cells[j, 5].Value = measure.Main.TempMax;
+
+                    j++;
                 }
                 pkg.Save();
             }
