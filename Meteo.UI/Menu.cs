@@ -14,7 +14,8 @@ namespace Meteo.UI
             Console.WriteLine("****3 - Accedi al menu filtraggio dati per città          *");
             Console.WriteLine("****4 - Vuoi eliminare file nella cartella ?              *");
             Console.WriteLine("****5 - Invia file tramite email                          *");
-            Console.WriteLine("****7 - Termina sessione                                  *");
+            Console.WriteLine("****6 - Termina sessione                                  *");
+            Console.WriteLine("****7 - Aggiungi utente alla tabella                      *");
             Console.WriteLine("***********************************************************");
         }
         public void ShowMenu()
@@ -28,7 +29,7 @@ namespace Meteo.UI
             Console.WriteLine("***********************************************************");
         }
 
-       
+
         public void ShowFiltredMenu()
         {
             Console.WriteLine("***********************************************************");

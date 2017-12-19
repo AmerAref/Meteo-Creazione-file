@@ -43,6 +43,7 @@ namespace Meteo.UI
         }
         static void Main(string[] args)
         {
+            var dbcon = new DatabaseContext();
             var emailManager = new EmailManager();
             var pswManager = new PswManager();
             var filemenager = new FileMenager();
@@ -341,7 +342,9 @@ namespace Meteo.UI
                         exit = false;
                         Console.WriteLine("Sessione terminata");
                         break;
-
+                    case "7":
+                        dbcon.ConnectToDatabase();
+                        break;
                 }
             }
 
