@@ -7,7 +7,6 @@ namespace Meteo.Services
     {
         public void ConnectToDatabase()
         {
-
             var builder = new ConfigurationBuilder()
             .AddJsonFile("/home/gabriel/Scrivania/Progetti/Meteo-Creazione-file/Meteo.Services/Connection.To.Database/DatabaseConnection.json", optional: false, reloadOnChange: true);
 
@@ -16,20 +15,18 @@ namespace Meteo.Services
             string connectionString = configuration.GetConnectionString("SampleConnection");
 
             Console.WriteLine("Inserisci il nome dell'utente");
-            string mioNome = Console.ReadLine();
+            string nomeInput = Console.ReadLine();
             Console.WriteLine("Inserisci il cognome dell'utente");
-            string mioCognome = Console.ReadLine();
+            string cognomeInput = Console.ReadLine();
 
-            // Create an employee instance and save the entity to the database
-            var entry = new User() { nome = mioNome, cognome = mioCognome };
+            var context = UsersContextFactory.Create(connectionString);
 
-            using (var context = UsersContextFactory.Create(connectionString))
+            context.Users.Add(new User
             {
-                context.Add(entry);
-                context.SaveChanges();
-            }
-
-            Console.WriteLine($"Employee was saved in the database with id: {entry.idUtente}");
+                nome = nomeInput,
+                cognome = cognomeInput
+            });
+            context.SaveChanges();
         }
     }
 }
