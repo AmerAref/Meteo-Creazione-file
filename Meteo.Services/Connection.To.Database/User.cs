@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
-using MySql;
 
 namespace Meteo.Services
 {

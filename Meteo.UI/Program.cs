@@ -56,6 +56,7 @@ namespace Meteo.UI
             var choiceDoFile = "Vuoi creare il file con i dati precedentemente rischiesti? (S/n)";
             var choiceSendEmail = "Vuoi inviare tramite email il file appena creato?(S/n)";
             var insertNamePlace = "Inserisci località richiesta";
+            var insertMeasureUnit = "Inserisci l'unità di misura Celsius (metric) o Fahrenheit (imperial)";
             var insertLon = "Insersci longitudine";
             var insertLat = "Inserisci latitudine";
             var successCreateFile = "File creato con successo";
@@ -82,7 +83,7 @@ namespace Meteo.UI
             while (attempts)
             {
                 menu.ShowMenuAuthentication();
-                
+
                 var choseCreateNewAccuout = Console.ReadLine();
 
                 if (choseCreateNewAccuout == "1")
@@ -94,7 +95,6 @@ namespace Meteo.UI
                         Console.WriteLine(insertPsw);
                         var passwordAuthentication = Console.ReadLine();
                         var autentication = login.LoginAttempts(context, usernameAuthentication, passwordAuthentication);
-                        i++;
                         if (i >= 1 && i < 3)
                         {
                             Console.WriteLine("\nReinsersci Username e password");
@@ -107,9 +107,9 @@ namespace Meteo.UI
                             attempts = false;
                             i = 3;
                         }
+                        i++;
                     }
                 }
-
                 if (choseCreateNewAccuout == "2")
                 {
                     Console.WriteLine(insertName);
@@ -148,9 +148,11 @@ namespace Meteo.UI
                             case "1":
                                 Console.WriteLine(insertNamePlace);
                                 var place = Console.ReadLine();
+                                Console.WriteLine(insertMeasureUnit);
+                                var measureUnitToday = Console.ReadLine();
                                 try
                                 {
-                                    var jsonObj = meteoApi.ProcessMeteoByPlaceToday(place).Result;
+                                    var jsonObj = meteoApi.ProcessMeteoByPlaceToday(place, measureUnitToday).Result;
                                     print.PrintForData(jsonObj);
                                     Console.WriteLine(success);
                                     var prop = "Pressure";
@@ -199,9 +201,11 @@ namespace Meteo.UI
                                 var lat = Console.ReadLine();
                                 Console.WriteLine(insertLon);
                                 var lon = Console.ReadLine();
+                                Console.WriteLine(insertMeasureUnit);
+                                var measureUnitCoordinates = Console.ReadLine();
                                 try
                                 {
-                                    var jsonObj = meteoApi.ProcessMeteoByCoordinatesToday(lon, lat).Result;
+                                    var jsonObj = meteoApi.ProcessMeteoByCoordinatesToday(lon, lat, measureUnitCoordinates).Result;
                                     print.PrintForData(jsonObj);
                                     Console.WriteLine(success);
                                     Console.WriteLine(choiceDoFile);
@@ -253,9 +257,11 @@ namespace Meteo.UI
                             case "1":
                                 Console.WriteLine(insertNamePlace);
                                 var place = Console.ReadLine();
+                                Console.WriteLine(insertMeasureUnit);
+                                var measureUnitFiveDays = Console.ReadLine();
                                 try
                                 {
-                                    var jsonObj = meteoApi.ProcessMeteoByPlaceLast5Day(place).Result;
+                                    var jsonObj = meteoApi.ProcessMeteoByPlaceLast5Day(place, measureUnitFiveDays).Result;
                                     print.PrintDataLast5Day(jsonObj);
                                     Console.WriteLine(success);
                                     Console.WriteLine(choiceDoFile);
@@ -300,10 +306,12 @@ namespace Meteo.UI
                                 var lat = Console.ReadLine();
                                 Console.WriteLine(insertLon);
                                 var lon = Console.ReadLine();
+                                Console.WriteLine(insertMeasureUnit);
+                                var measureUnitCoordinatesFiveDays = Console.ReadLine();
                                 try
                                 {
                                     Console.WriteLine(insertNameFile);
-                                    var jsonObj = meteoApi.ProcessMeteoByCoordinatesLast5Day(lon, lat).Result;
+                                    var jsonObj = meteoApi.ProcessMeteoByCoordinatesLast5Day(lon, lat, measureUnitCoordinatesFiveDays).Result;
                                     print.PrintDataLast5Day(jsonObj);
                                     Console.WriteLine(success);
                                     Console.WriteLine(choiceDoFile);
@@ -354,13 +362,15 @@ namespace Meteo.UI
                         switch (choseFilter)
                         {
                             case "1":
-                                Console.WriteLine();
+                                Console.WriteLine(insertNamePlace);
                                 var place = Console.ReadLine();
+                                Console.WriteLine(insertMeasureUnit);
+                                var measureUnitFilteredHum = Console.ReadLine();
                                 Console.WriteLine("Inserisci valore umidità richiesta riguardante gli ultimi 5 giorni");
                                 var humidity = Console.ReadLine();
                                 try
                                 {
-                                    meteoApi.FiltredMeteoByHumidityLast5Day(humidity, place).Wait();
+                                    meteoApi.FiltredMeteoByHumidityLast5Day(humidity, place, measureUnitFilteredHum).Wait();
                                     Console.WriteLine(success);
                                 }
                                 catch
@@ -371,19 +381,23 @@ namespace Meteo.UI
                             case "2":
                                 Console.WriteLine(insertNamePlace);
                                 place = Console.ReadLine();
+                                Console.WriteLine(insertMeasureUnit);
+                                var measureUnitFilteredTime = Console.ReadLine();
                                 Console.WriteLine("Inserisci data con il seguente formato YYYY-mm-GG");
                                 var date = Console.ReadLine();
                                 Console.WriteLine("Inserisci orario con il seguente formato HH:MM:SS");
                                 var time = Console.ReadLine();
-                                meteoApi.FiltredMeteoByDateTimeLast5Day(date, time, place).Wait();
+                                meteoApi.FiltredMeteoByDateTimeLast5Day(date, time, place, measureUnitFilteredTime).Wait();
                                 Console.WriteLine(success);
                                 break;
                             case "3":
                                 Console.WriteLine(insertNamePlace);
                                 place = Console.ReadLine();
+                                Console.WriteLine(insertMeasureUnit);
+                                var measureUnitFilteredFiveDays = Console.ReadLine();
                                 Console.WriteLine("Iserisci tipologia di tempo richiesta");
                                 var typeWeather = Console.ReadLine();
-                                meteoApi.FiltredMeteoByWeatherLast5Day(typeWeather, place).Wait();
+                                meteoApi.FiltredMeteoByWeatherLast5Day(typeWeather, place, measureUnitFilteredFiveDays).Wait();
                                 Console.WriteLine(success);
                                 break;
                             case "4":
