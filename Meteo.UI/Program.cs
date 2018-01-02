@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using Meteo.Services;
 using Microsoft.Extensions.Configuration;
@@ -112,24 +113,46 @@ namespace Meteo.UI
                 }
                 if (choseCreateNewAccuout == "2")
                 {
-                    Console.WriteLine(insertName);
-                    var nameNewAccuont = Console.ReadLine();
-                    Console.WriteLine(insertSurname);
-                    var surnameNewAccount = Console.ReadLine();
-                    Console.WriteLine(insertUser);
-                    var usernameNewAccount = Console.ReadLine();
-                    Console.WriteLine(insertPsw);
-                    var pswNewAccount = Console.ReadLine();
-                    context.Users.Add(
-                        new User
+                    while (i < 3)
+                    {
+                        Console.WriteLine(insertName);
+                        var nameNewAccuont = Console.ReadLine();
+                        Console.WriteLine(insertSurname);
+                        var surnameNewAccount = Console.ReadLine();
+                        Console.WriteLine(insertUser);
+                        var usernameNewAccount = Console.ReadLine();
+                        Console.WriteLine(insertPsw);
+                        var pswNewAccount = Console.ReadLine();
+                        Console.WriteLine("Inserisci ancora una volta la password");
+                        var pswNewAccountComparison = Console.ReadLine();
+
+                        if (pswNewAccount == pswNewAccountComparison)
                         {
-                            Password = pswNewAccount,
-                            Username = usernameNewAccount,
-                            Surname = surnameNewAccount,
-                            Name = nameNewAccuont
+                            byte[] bytePwd = Encoding.Unicode.GetBytes(pswNewAccount);
+                            var hasher = System.Security.Cryptography.SHA256.Create();
+                            byte[] hashedBytes = hasher.ComputeHash(bytePwd);
+                            var hashedPwd = Convert.ToBase64String(hashedBytes);
+
+                            context.Users.Add(
+                                new User
+                                {
+                                    Password = hashedPwd,
+                                    Username = usernameNewAccount,
+                                    Surname = surnameNewAccount,
+                                    Name = nameNewAccuont
+                                }
+                            );
+                            i = 3;
+                            attempts = false;
                         }
-                    );
-                    attempts = false;
+                        else
+                        {
+                            Console.WriteLine("\nLe due password inserite non corrispondono! Reinsersci Username e password");
+                            Console.WriteLine($"Numero dei tenativi rimasti {c}\n");
+                            c--;
+                        }
+                        i++;
+                    }
                 }
             }
             context.SaveChanges();
