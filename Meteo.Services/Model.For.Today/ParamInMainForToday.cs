@@ -18,4 +18,3 @@ namespace Meteo.Services
         public float TempMax { get; set; } // 
     }
 }
-

@@ -19,7 +19,6 @@ namespace Meteo.Services
                         passwordVisibile += key.KeyChar;
                         Console.Write("*");
                     }
-
                 }
                 while (key.Key != ConsoleKey.Enter);
                 return passwordVisibile;

@@ -9,13 +9,10 @@ namespace Meteo.Services
         {
             System.IO.File.WriteAllText(fileName, jsonStr);
             return fileName;
-
         }
-      
         public void DeleteFile(string fileNameDelete)
         {
             File.Delete(fileNameDelete);
         }
-
     }
 }

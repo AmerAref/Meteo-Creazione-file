@@ -7,15 +7,12 @@ namespace Meteo.Services
     {
         public void SendFile(string fileName, string sender, string receiver, string body, string subject, string user, string password)
         {
-            MailMessage message = new MailMessage(sender, receiver);
-
-
             Attachment data = new Attachment(fileName);
 
+            MailMessage message = new MailMessage(sender, receiver);
             message.Attachments.Add(data);
             message.Body = body;
             message.Subject = subject;
-
 
             SmtpClient client = new SmtpClient("smtp.gmail.com");
             client.Port = 587;
@@ -51,10 +48,8 @@ namespace Meteo.Services
                         Console.WriteLine("Autenticazione non riuscita");
                         Console.WriteLine("Inserisci password");
                     }
-
                 }
             }
-
         }
     }
 }

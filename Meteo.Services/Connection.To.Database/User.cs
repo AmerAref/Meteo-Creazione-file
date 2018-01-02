@@ -3,9 +3,11 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using MySql;
 
-namespace Meteo.Services {
-    public class User {
-        public User () { }
+namespace Meteo.Services
+{
+    public class User
+    {
+        public User() { }
 
         [Key]
         public int idUtente { get; set; }
@@ -13,6 +15,5 @@ namespace Meteo.Services {
         public string Surname { get; set; }
         public string Password { get; set; }
         public string Username { get; set; }
-
     }
 }

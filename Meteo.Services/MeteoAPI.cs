@@ -68,8 +68,6 @@ namespace Meteo.Services
         public async Task FiltredMeteoByDateTimeLast5Day(string place, string date, string time)
         {
             var url = $"{appUri}forecast?q={place}&appid={appId}";
-
-
             var jsonStr = await (Client.GetStringAsync(url));
             var jsonObj = JsonConvert.DeserializeObject<ListDataFiltred>(jsonStr);
             var dateTime = date + " " + time;
@@ -85,7 +83,6 @@ namespace Meteo.Services
         public async Task FiltredMeteoByWeatherLast5Day(string typeWeather, string place)
         {
             var url = $"{appUri}forecast?q={place}&appid={appId}";
-
             var jsonStr = await (Client.GetStringAsync(url));
             var jsonObj = JsonConvert.DeserializeObject<ListDataFiltred>(jsonStr);
             foreach (var item in jsonObj.ListForFilter)

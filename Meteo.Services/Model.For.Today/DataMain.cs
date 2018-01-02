@@ -9,5 +9,4 @@ namespace Meteo.Services
         [JsonProperty("main")]
         public MeasuresParam Main { get; set; }
     }
-   
 }

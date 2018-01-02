@@ -68,7 +68,6 @@ namespace Meteo.ExcelManager
                     worksheet.Cells[j, 3].Value = measure.Main.Humidity;
                     worksheet.Cells[j, 4].Value = measure.Main.TempMin;
                     worksheet.Cells[j, 5].Value = measure.Main.TempMax;
-
                     j++;
                 }
                 pkg.Save();
