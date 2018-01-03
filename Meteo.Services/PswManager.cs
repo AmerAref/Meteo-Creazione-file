@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 namespace Meteo.Services
 {
     public static class PswManager
@@ -38,7 +39,7 @@ namespace Meteo.Services
                         {
                             passwordLogin = passwordLogin.Remove(passwordLogin.Length - 1, 1);
                             ClearCurrentConsoleLine();
-                            foreach(var i in passwordLogin )
+                            foreach (var i in passwordLogin)
                             {
                                 Console.Write("*");
 
@@ -67,6 +68,21 @@ namespace Meteo.Services
             Console.SetCursorPosition(0, Console.CursorTop);
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, currentLineCursor);
+        }
+
+        public static bool CheckPassword(string password)
+        {
+            string MatchEmailPattern = "^(?=.*[a - z])(?=.*[A - Z])(?=.*\"d)(?=.*[#$^+=!*()@%&]).{8,}$";
+
+            if (password != null)
+
+                return Regex.IsMatch(password, MatchEmailPattern);
+
+            else 
+
+                return false;
+
+
         }
     }
 }

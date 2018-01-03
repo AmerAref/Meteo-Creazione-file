@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Meteo.Services;
 using Meteo.ExcelManager;
 using Microsoft.Extensions.Configuration;
@@ -50,7 +49,7 @@ namespace Meteo.UI
             var menu = new Menu();
             var print = new PrintData();
             var exit = true;
-            var choseConfigurationPc = new ChoseConfigurationPc(); 
+            var choseConfigurationPc = new ChoseConfigurationPc();
             var insertNameFile = "Inserisci nome file da creare con tipo di estensione (nomefile.estensione)";
             var meteoApi = new MeteoAPI();
             var success = "Richiesta elaborata con successo";
@@ -72,7 +71,8 @@ namespace Meteo.UI
             var countAttempts = 2;
             var passwordLogin = "";
             var passwordRegistration = "";
-
+            var validationManagerPsw = true;
+            var pswNewAccount = "";
             var builder = new ConfigurationBuilder()
                 .AddJsonFile(choseConfigurationPc.ConfigAmer(), optional: false, reloadOnChange: true);
 
@@ -94,7 +94,7 @@ namespace Meteo.UI
                 countAttempts = 2;
                 if (choseCreateNewAccuout == "1")
                 {
-                    while (controlWhilePsw < 3 )
+                    while (controlWhilePsw < 3)
                     {
                         Console.WriteLine(insertUser);
                         var usernameAuthentication = Console.ReadLine();
@@ -102,13 +102,13 @@ namespace Meteo.UI
                         var passwordAuthentication = PswManager.MaskPasswordLogin(passwordLogin);
 
 
-                       
+
                         var authPwd = login.EncryptInsertedPwd(passwordAuthentication);
 
 
                         var autentication = login.LoginAttempts(context, usernameAuthentication, authPwd);
 
-                       
+
                         if (autentication.Any())
                         {
                             Console.WriteLine($"Benvenuto {usernameAuthentication}");
@@ -126,45 +126,55 @@ namespace Meteo.UI
                 }
                 if (choseCreateNewAccuout == "2")
                 {
-                    var i = 0;
-                    while (i < 100)
+
+
+                    Console.WriteLine(insertName);
+                    var nameNewAccuont = Console.ReadLine();
+                    Console.WriteLine(insertSurname);
+                    var surnameNewAccount = Console.ReadLine();
+                    Console.WriteLine(insertUser);
+                    var usernameNewAccount = Console.ReadLine();
+                    Console.WriteLine(insertPsw);
+                    while (validationManagerPsw)
                     {
-                        Console.WriteLine(insertName);
-                        var nameNewAccuont = Console.ReadLine();
-                        Console.WriteLine(insertSurname);
-                        var surnameNewAccount = Console.ReadLine();
-                        Console.WriteLine(insertUser);
-                        var usernameNewAccount = Console.ReadLine();
-                        Console.WriteLine(insertPsw);
-                        var pswNewAccount = PswManager.MaskPasswordLogin(passwordRegistration);
-                        Console.WriteLine("\nReinserisci password");
-                        var pswNewAccountComparison = PswManager.MaskPasswordLogin(passwordRegistration);
+                        pswNewAccount = PswManager.MaskPasswordLogin(passwordRegistration);
 
-                        if (pswNewAccount == pswNewAccountComparison)
+                        if (PswManager.CheckPassword(passwordRegistration) == false)
                         {
-                            var encryptedPwd = registration.EncryptPwd(pswNewAccount);
-
-                            context.Users.Add(
-                                new User
-                                {
-                                    Password = encryptedPwd,
-                                    Username = usernameNewAccount,
-                                    Surname = surnameNewAccount,
-                                    Name = nameNewAccuont
-                                }
-                            );
-                            controlWhilePsw = 3;
-                            attempts = false;
+                            Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
+                            Console.WriteLine("\nReinserisci Password");
                         }
                         else
                         {
-                            Console.WriteLine("\nLe due password inserite non corrispondono! Reinsersci Username e password");
-                        }
-                            i = 100;
-                            attempts = false;
+                            Console.WriteLine("\nReinserisci password");
+                            var pswNewAccountComparison = PswManager.MaskPasswordLogin(passwordRegistration);
+
+                            if (pswNewAccount == pswNewAccountComparison)
+                            {
+                                var encryptedPwd = registration.EncryptPwd(pswNewAccount);
+
+                                context.Users.Add(
+                                    new User
+                                    {
+                                        Password = encryptedPwd,
+                                        Username = usernameNewAccount,
+                                        Surname = surnameNewAccount,
+                                        Name = nameNewAccuont
+                                    }
+                                );
+                            }
+                            else
+                            {
+                                Console.WriteLine("\nLe due password inserite non corrispondono! Reinsersci Username e password");
+                            }
                         }
                     }
+
+
+
+
                 }
+            }
             //}
             context.SaveChanges();
 
