@@ -73,6 +73,7 @@ namespace Meteo.UI
             var passwordRegistration = "";
             var validationManagerPsw = true;
             var pswNewAccount = "";
+            var countAttemptsPswRegister = 0;
             var builder = new ConfigurationBuilder()
                 .AddJsonFile(choseConfigurationPc.ConfigAmer(), optional: false, reloadOnChange: true);
 
@@ -142,7 +143,15 @@ namespace Meteo.UI
                         if (PswManager.CheckPassword(passwordRegistration) == false)
                         {
                             Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
-                            Console.WriteLine("\nReinserisci Password");
+                            Console.WriteLine("\nReinserisci Password.");
+                            countAttemptsPswRegister++;
+                            if (countAttemptsPswRegister == 3)
+                            {
+                                Console.WriteLine("Mi Dispiace ma hai esaurito i tentativi");
+                                return;
+                            }
+
+
                         }
                         else
                         {
@@ -162,6 +171,7 @@ namespace Meteo.UI
                                         Name = nameNewAccuont
                                     }
                                 );
+                                attempts = false;
                             }
                             else
                             {
