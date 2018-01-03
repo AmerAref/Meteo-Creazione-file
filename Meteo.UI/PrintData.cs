@@ -1,7 +1,5 @@
 using System;
 using Meteo.Services;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace Meteo.UI
 {

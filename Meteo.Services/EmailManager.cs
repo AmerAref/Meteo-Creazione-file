@@ -1,6 +1,5 @@
 using System;
 using System.Net.Mail;
-using System.IO;
 namespace Meteo.Services
 {
     public class EmailManager
