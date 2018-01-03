@@ -72,7 +72,7 @@ namespace Meteo.Services
 
         public static bool CheckPassword(string password)
         {
-            string MatchEmailPattern = "^(?=.*[a - z])(?=.*[A - Z])(?=.*\"d)(?=.*[#$^+=!*()@%&]).{8,}$";
+            string MatchEmailPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*)(?=.*[#$^+=!*()@%&]).{8,}$";
 
             if (password != null)
 
