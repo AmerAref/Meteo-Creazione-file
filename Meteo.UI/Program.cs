@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Meteo.Services;
+using Meteo.ExcelManager;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 namespace Meteo.UI
@@ -45,9 +46,11 @@ namespace Meteo.UI
         static void Main(string[] args)
         {
             var login = new Login();
+            var registration = new Registration();
             var emailManager = new EmailManager();
             var pswManager = new PswManager();
             var filemenager = new FileMenager();
+            var createXlsFile = new CreateXlsFile();
             var menu = new Menu();
             var print = new PrintData();
             var exit = true;
@@ -62,6 +65,7 @@ namespace Meteo.UI
             var insertLat = "Inserisci latitudine";
             var successCreateFile = "File creato con successo";
             var nameFileDelete = "Inserisci nome file da eliminare, con tipo di estensione (nomefile.estensione)";
+            var choiceCreateXlsFile = "Vuoi creare un file XLS con i dati precedenti?(S/n)";
             var password = "";
             var insertUser = "Inserisci Username";
             var insertPsw = "Inserisci Password";
@@ -95,7 +99,12 @@ namespace Meteo.UI
                         var usernameAuthentication = Console.ReadLine();
                         Console.WriteLine(insertPsw);
                         var passwordAuthentication = Console.ReadLine();
+
+                        var decryptedPwd = login.DecryptPwd(context, usernameAuthentication, passwordAuthentication);
+
                         var autentication = login.LoginAttempts(context, usernameAuthentication, passwordAuthentication);
+
+
                         if (i >= 1 && i < 3)
                         {
                             Console.WriteLine("\nReinsersci Username e password");
@@ -104,6 +113,10 @@ namespace Meteo.UI
                         }
                         if (autentication.Any())
                         {
+                            foreach (var ciao in decryptedPwd)
+                            {
+                                Console.WriteLine(ciao);
+                            }
                             Console.WriteLine($"Benvenuto {usernameAuthentication}");
                             attempts = false;
                             i = 3;
@@ -113,7 +126,7 @@ namespace Meteo.UI
                 }
                 if (choseCreateNewAccuout == "2")
                 {
-                    while (i < 3)
+                    while (i < 100)
                     {
                         Console.WriteLine(insertName);
                         var nameNewAccuont = Console.ReadLine();
@@ -128,30 +141,20 @@ namespace Meteo.UI
 
                         if (pswNewAccount == pswNewAccountComparison)
                         {
-                            byte[] bytePwd = Encoding.Unicode.GetBytes(pswNewAccount);
-                            var hasher = System.Security.Cryptography.SHA256.Create();
-                            byte[] hashedBytes = hasher.ComputeHash(bytePwd);
-                            var hashedPwd = Convert.ToBase64String(hashedBytes);
+                            var encryptedPwd = registration.EncryptPwd(pswNewAccount);
 
                             context.Users.Add(
                                 new User
                                 {
-                                    Password = hashedPwd,
+                                    Password = encryptedPwd,
                                     Username = usernameNewAccount,
                                     Surname = surnameNewAccount,
                                     Name = nameNewAccuont
                                 }
                             );
-                            i = 3;
+                            i = 100;
                             attempts = false;
                         }
-                        else
-                        {
-                            Console.WriteLine("\nLe due password inserite non corrispondono! Reinsersci Username e password");
-                            Console.WriteLine($"Numero dei tenativi rimasti {c}\n");
-                            c--;
-                        }
-                        i++;
                     }
                 }
             }
@@ -203,10 +206,21 @@ namespace Meteo.UI
                                             var subjectValue = dataForEmail["subjectKey"];
                                             var userValue = dataForEmail["userKey"];
                                             emailManager.AttempsPasswordAndSendEmail(fileName, senderValue, receiverValue, bodyValue, subjectValue, userValue, password);
+
+                                            Console.WriteLine(choiceCreateXlsFile);
+                                            choiceSelected = Console.ReadLine();
+
+                                            if (choiceSelected == "S")
+                                            {
+                                                createXlsFile.CreateXlsFileForToday(fileName, jsonObj, place);
+                                            }
+                                            else {
+                                                Console.WriteLine(success);
+                                            }
                                         }
                                         else
                                         {
-                                            Console.WriteLine(success);
+                                            Console.WriteLine(success)
                                         }
                                     }
                                     else
@@ -308,6 +322,12 @@ namespace Meteo.UI
                                             var subjectValue = dataForEmail["subjectKey"];
                                             var userValue = dataForEmail["userKey"];
                                             emailManager.AttempsPasswordAndSendEmail(fileName, senderValue, receiverValue, bodyValue, subjectValue, userValue, password);
+                                        
+                                            Console.WriteLine(choiceCreateXlsFile);
+                                            choiceSelected = Console.ReadLine();
+                                            if(choiceSelected == "S") {
+                                                createXlsFile.CreateXlsFileForLast5Days(fileName, jsonObj, place);
+                                            }
                                         }
                                         else
                                         {
