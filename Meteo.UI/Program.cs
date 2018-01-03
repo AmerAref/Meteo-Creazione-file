@@ -74,7 +74,7 @@ namespace Meteo.UI
             var i = 0;
             var c = 2;
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("/home/gabriel/Scrivania/Progetti/Meteo-Creazione-file/Meteo.Services/Connection.To.Database/DatabaseConnection.json", optional: false, reloadOnChange: true);
+                .AddJsonFile("/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.Services/Connection.To.Database/DatabaseConnection.json", optional: false, reloadOnChange: true);
 
             var configuration = builder.Build();
 
@@ -100,10 +100,10 @@ namespace Meteo.UI
                         Console.WriteLine(insertPsw);
                         var passwordAuthentication = Console.ReadLine();
 
-                        var decryptedPwd = login.DecryptPwd(context, usernameAuthentication, passwordAuthentication);
+                        var encryptedPwd = context.Users.SingleOrDefault(x => x.Username.Equals(usernameAuthentication)).Password;
+                        var authPwd = login.EncryptInsertedPwd(passwordAuthentication);
 
-                        var autentication = login.LoginAttempts(context, usernameAuthentication, passwordAuthentication);
-
+                        var autentication = login.LoginAttempts(context, usernameAuthentication, authPwd);
 
                         if (i >= 1 && i < 3)
                         {
@@ -113,10 +113,6 @@ namespace Meteo.UI
                         }
                         if (autentication.Any())
                         {
-                            foreach (var ciao in decryptedPwd)
-                            {
-                                Console.WriteLine(ciao);
-                            }
                             Console.WriteLine($"Benvenuto {usernameAuthentication}");
                             attempts = false;
                             i = 3;
@@ -206,21 +202,18 @@ namespace Meteo.UI
                                             var subjectValue = dataForEmail["subjectKey"];
                                             var userValue = dataForEmail["userKey"];
                                             emailManager.AttempsPasswordAndSendEmail(fileName, senderValue, receiverValue, bodyValue, subjectValue, userValue, password);
-
-                                            Console.WriteLine(choiceCreateXlsFile);
-                                            choiceSelected = Console.ReadLine();
-
-                                            if (choiceSelected == "S")
-                                            {
-                                                createXlsFile.CreateXlsFileForToday(fileName, jsonObj, place);
-                                            }
-                                            else {
-                                                Console.WriteLine(success);
-                                            }
                                         }
+                                        Console.WriteLine(choiceCreateXlsFile);
+                                        choiceSelected = Console.ReadLine();
+
+                                        if (choiceSelected == "S")
+                                        {
+                                            createXlsFile.CreateXlsFileForToday(fileName, jsonObj, place);
+                                        }
+
                                         else
                                         {
-                                            Console.WriteLine(success)
+                                            Console.WriteLine(success);
                                         }
                                     }
                                     else
@@ -267,10 +260,15 @@ namespace Meteo.UI
                                             var userValue = dataForEmail["userKey"];
                                             emailManager.AttempsPasswordAndSendEmail(fileName, senderValue, receiverValue, bodyValue, subjectValue, userValue, password);
                                         }
-                                        else
+                                        Console.WriteLine(choiceCreateXlsFile);
+                                        choiceSelected = Console.ReadLine();
+
+                                        if (choiceSelected == "S")
                                         {
-                                            Console.WriteLine(success);
+                                            createXlsFile.CreateXlsFileForTodayByCoordinates(fileName, jsonObj, lat, lon);
                                         }
+                                        Console.WriteLine(success);
+
                                     }
                                     else
                                     {
@@ -322,16 +320,13 @@ namespace Meteo.UI
                                             var subjectValue = dataForEmail["subjectKey"];
                                             var userValue = dataForEmail["userKey"];
                                             emailManager.AttempsPasswordAndSendEmail(fileName, senderValue, receiverValue, bodyValue, subjectValue, userValue, password);
-                                        
-                                            Console.WriteLine(choiceCreateXlsFile);
-                                            choiceSelected = Console.ReadLine();
-                                            if(choiceSelected == "S") {
-                                                createXlsFile.CreateXlsFileForLast5Days(fileName, jsonObj, place);
-                                            }
                                         }
-                                        else
+                                        Console.WriteLine(choiceCreateXlsFile);
+                                        choiceSelected = Console.ReadLine();
+
+                                        if (choiceSelected == "S")
                                         {
-                                            Console.WriteLine(success);
+                                            createXlsFile.CreateXlsFileForLast5Days(fileName, jsonObj, place);
                                         }
                                     }
                                     else
@@ -378,9 +373,12 @@ namespace Meteo.UI
                                             var userValue = dataForEmail["userKey"];
                                             emailManager.AttempsPasswordAndSendEmail(fileName, senderValue, receiverValue, bodyValue, subjectValue, userValue, password);
                                         }
-                                        else
+
+                                        Console.WriteLine(choiceCreateXlsFile);
+                                        choiceSelected = Console.ReadLine();
+                                        if (choiceSelected == "S")
                                         {
-                                            Console.WriteLine(success);
+                                            createXlsFile.CreateXlsFileForLast5DaysByCoordinates(fileName, jsonObj, lat, lon);
                                         }
                                     }
                                     else
@@ -407,13 +405,11 @@ namespace Meteo.UI
                             case "1":
                                 Console.WriteLine(insertNamePlace);
                                 var place = Console.ReadLine();
-                                Console.WriteLine(insertMeasureUnit);
-                                var measureUnitFilteredHum = Console.ReadLine();
                                 Console.WriteLine("Inserisci valore umidità richiesta riguardante gli ultimi 5 giorni");
                                 var humidity = Console.ReadLine();
                                 try
                                 {
-                                    meteoApi.FiltredMeteoByHumidityLast5Day(humidity, place, measureUnitFilteredHum).Wait();
+                                    meteoApi.FiltredMeteoByHumidityLast5Day(humidity, place).Wait();
                                     Console.WriteLine(success);
                                 }
                                 catch
@@ -424,23 +420,19 @@ namespace Meteo.UI
                             case "2":
                                 Console.WriteLine(insertNamePlace);
                                 place = Console.ReadLine();
-                                Console.WriteLine(insertMeasureUnit);
-                                var measureUnitFilteredTime = Console.ReadLine();
                                 Console.WriteLine("Inserisci data con il seguente formato YYYY-mm-GG");
                                 var date = Console.ReadLine();
                                 Console.WriteLine("Inserisci orario con il seguente formato HH:MM:SS");
                                 var time = Console.ReadLine();
-                                meteoApi.FiltredMeteoByDateTimeLast5Day(date, time, place, measureUnitFilteredTime).Wait();
+                                meteoApi.FiltredMeteoByDateTimeLast5Day(date, time, place).Wait();
                                 Console.WriteLine(success);
                                 break;
                             case "3":
                                 Console.WriteLine(insertNamePlace);
                                 place = Console.ReadLine();
-                                Console.WriteLine(insertMeasureUnit);
-                                var measureUnitFilteredFiveDays = Console.ReadLine();
                                 Console.WriteLine("Iserisci tipologia di tempo richiesta");
                                 var typeWeather = Console.ReadLine();
-                                meteoApi.FiltredMeteoByWeatherLast5Day(typeWeather, place, measureUnitFilteredFiveDays).Wait();
+                                meteoApi.FiltredMeteoByWeatherLast5Day(typeWeather, place).Wait();
                                 Console.WriteLine(success);
                                 break;
                             case "4":

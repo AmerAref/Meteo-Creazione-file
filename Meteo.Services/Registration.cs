@@ -14,12 +14,5 @@ namespace Meteo.Services
 
             return encryptedPwd;
         }
-
-        public string DecryptPwd()
-        {
-            var decryptedPwd = "";
-
-            return decryptedPwd;
-        }
     }
 }
