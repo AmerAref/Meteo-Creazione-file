@@ -1,6 +1,142 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\Meteo.Services\Meteo.Services.csproj" />
+    <Compile Include="..\Meteo.Services\EmailManager.cs">
+      <Link>Meteo.Services\EmailManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\FileMenager.cs">
+      <Link>Meteo.Services\FileMenager.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\Login.cs">
+      <Link>Meteo.Services\Login.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\MeteoAPI.cs">
+      <Link>Meteo.Services\MeteoAPI.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\PswManager.cs">
+      <Link>Meteo.Services\PswManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\Connection.To.Database\DatabaseUser.cs">
+      <Link>Meteo.Services\Connection.To.Database\DatabaseUser.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\Connection.To.Database\User.cs">
+      <Link>Meteo.Services\Connection.To.Database\User.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\Connection.To.Database\UsersCotextFactory.cs">
+      <Link>Meteo.Services\Connection.To.Database\UsersCotextFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\Model.For.Datafiltred\ListDataFiltred.cs">
+      <Link>Meteo.Services\Model.For.Datafiltred\ListDataFiltred.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\Model.For.Datafiltred\ListOfWeatherAndDate.cs">
+      <Link>Meteo.Services\Model.For.Datafiltred\ListOfWeatherAndDate.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\Model.For.Datafiltred\ParamForWeather.cs">
+      <Link>Meteo.Services\Model.For.Datafiltred\ParamForWeather.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\Model.For.Last.5.Days\ListMeasureLast5Day.cs">
+      <Link>Meteo.Services\Model.For.Last.5.Days\ListMeasureLast5Day.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\Model.For.Last.5.Days\MainMeasure.cs">
+      <Link>Meteo.Services\Model.For.Last.5.Days\MainMeasure.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\Model.For.Last.5.Days\ParamForMain.cs">
+      <Link>Meteo.Services\Model.For.Last.5.Days\ParamForMain.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\Model.For.Today\DataMain.cs">
+      <Link>Meteo.Services\Model.For.Today\DataMain.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\Model.For.Today\ParamInMainForToday.cs">
+      <Link>Meteo.Services\Model.For.Today\ParamInMainForToday.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.AssemblyInfo.cs">
+      <Link>Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.ExcelManager\CreateXlsFile.cs">
+      <Link>Meteo.ExcelManager\CreateXlsFile.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.AssemblyInfo.cs">
+      <Link>Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="RomeNow.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Meteo.Services\Meteo.Services.csproj">
+      <Link>Meteo.Services\Meteo.Services.csproj</Link>
+    </None>
+    <None Include="..\Meteo.Services\Meteo.Services.sln">
+      <Link>Meteo.Services\Meteo.Services.sln</Link>
+    </None>
+    <None Include="..\Meteo.Services\Meteo.Services.userprefs">
+      <Link>Meteo.Services\Meteo.Services.userprefs</Link>
+    </None>
+    <None Include="..\Meteo.Services\Connection.To.Database\DatabaseConnection.json">
+      <Link>Meteo.Services\Connection.To.Database\DatabaseConnection.json</Link>
+    </None>
+    <None Include="..\Meteo.Services\obj\Meteo.Services.csproj.nuget.cache">
+      <Link>Meteo.Services\obj\Meteo.Services.csproj.nuget.cache</Link>
+    </None>
+    <None Include="..\Meteo.Services\obj\Meteo.Services.csproj.nuget.g.props">
+      <Link>Meteo.Services\obj\Meteo.Services.csproj.nuget.g.props</Link>
+    </None>
+    <None Include="..\Meteo.Services\obj\Meteo.Services.csproj.nuget.g.targets">
+      <Link>Meteo.Services\obj\Meteo.Services.csproj.nuget.g.targets</Link>
+    </None>
+    <None Include="..\Meteo.Services\obj\project.assets.json">
+      <Link>Meteo.Services\obj\project.assets.json</Link>
+    </None>
+    <None Include="..\Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.AssemblyInfoInputs.cache">
+      <Link>Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.AssemblyInfoInputs.cache</Link>
+    </None>
+    <None Include="..\Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.csproj.CoreCompileInputs.cache">
+      <Link>Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.csproj.CoreCompileInputs.cache</Link>
+    </None>
+    <None Include="..\Meteo.ExcelManager\Meteo.ExcelManager.csproj">
+      <Link>Meteo.ExcelManager\Meteo.ExcelManager.csproj</Link>
+    </None>
+    <None Include="..\Meteo.ExcelManager\Meteo.ExcelManager.sln">
+      <Link>Meteo.ExcelManager\Meteo.ExcelManager.sln</Link>
+    </None>
+    <None Include="..\Meteo.ExcelManager\Meteo.ExcelManager.userprefs">
+      <Link>Meteo.ExcelManager\Meteo.ExcelManager.userprefs</Link>
+    </None>
+    <None Include="..\Meteo.ExcelManager\obj\Meteo.ExcelManager.csproj.nuget.cache">
+      <Link>Meteo.ExcelManager\obj\Meteo.ExcelManager.csproj.nuget.cache</Link>
+    </None>
+    <None Include="..\Meteo.ExcelManager\obj\Meteo.ExcelManager.csproj.nuget.g.props">
+      <Link>Meteo.ExcelManager\obj\Meteo.ExcelManager.csproj.nuget.g.props</Link>
+    </None>
+    <None Include="..\Meteo.ExcelManager\obj\Meteo.ExcelManager.csproj.nuget.g.targets">
+      <Link>Meteo.ExcelManager\obj\Meteo.ExcelManager.csproj.nuget.g.targets</Link>
+    </None>
+    <None Include="..\Meteo.ExcelManager\obj\project.assets.json">
+      <Link>Meteo.ExcelManager\obj\project.assets.json</Link>
+    </None>
+    <None Include="..\Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.AssemblyInfoInputs.cache">
+      <Link>Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.AssemblyInfoInputs.cache</Link>
+    </None>
+    <None Include="..\Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.csproj.CoreCompileInputs.cache">
+      <Link>Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.csproj.CoreCompileInputs.cache</Link>
+    </None>
+    <None Include="..\Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.csproj.FileListAbsolute.txt">
+      <Link>Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.csproj.FileListAbsolute.txt</Link>
+    </None>
+    <None Include="..\Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.csprojResolveAssemblyReference.cache">
+      <Link>Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.csprojResolveAssemblyReference.cache</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="OfficeOpenXml.Core.ExcelPackage" Version="1.0.0" />
+    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0" />
+    <PackageReference Include="System.Linq" Version="4.3.0" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.10.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
   </ItemGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 using Meteo.Services;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -46,11 +43,11 @@ namespace Meteo.UI
         {
             var login = new Login();
             var emailManager = new EmailManager();
-            var pswManager = new PswManager();
             var filemenager = new FileMenager();
             var menu = new Menu();
             var print = new PrintData();
             var exit = true;
+            var choseConfigurationPc = new ChoseConfigurationPc(); 
             var insertNameFile = "Inserisci nome file da creare con tipo di estensione (nomefile.estensione)";
             var meteoApi = new MeteoAPI();
             var success = "Richiesta elaborata con successo";
@@ -67,10 +64,13 @@ namespace Meteo.UI
             var insertPsw = "Inserisci Password";
             var insertName = "Inserisci Nome";
             var insertSurname = "Insersci surname";
-            var i = 0;
-            var c = 2;
+            var controlWhilePsw = 0;
+            var countAttempts = 2;
+            var passwordLogin = "";
+            var passwordRegistration = "";
+
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("/home/gabriel/Scrivania/Progetti/Meteo-Creazione-file/Meteo.Services/Connection.To.Database/DatabaseConnection.json", optional: false, reloadOnChange: true);
+                .AddJsonFile(choseConfigurationPc.ConfigAmer(), optional: false, reloadOnChange: true);
 
             var configuration = builder.Build();
 
@@ -86,34 +86,37 @@ namespace Meteo.UI
                 menu.ShowMenuAuthentication();
 
                 var choseCreateNewAccuout = Console.ReadLine();
-
+                controlWhilePsw = 0;
+                countAttempts = 2;
                 if (choseCreateNewAccuout == "1")
                 {
-                    while (i < 3)
+                    while (controlWhilePsw < 3 )
                     {
                         Console.WriteLine(insertUser);
                         var usernameAuthentication = Console.ReadLine();
                         Console.WriteLine(insertPsw);
-                        var passwordAuthentication = Console.ReadLine();
+                        var passwordAuthentication = PswManager.MaskPasswordLogin(passwordLogin);
                         var autentication = login.LoginAttempts(context, usernameAuthentication, passwordAuthentication);
-                        if (i >= 1 && i < 3)
-                        {
-                            Console.WriteLine("\nReinsersci Username e password");
-                            Console.WriteLine($"Numero dei tenativi rimasti {c}");
-                            c--;
-                        }
+
+
                         if (autentication.Any())
                         {
                             Console.WriteLine($"Benvenuto {usernameAuthentication}");
                             attempts = false;
-                            i = 3;
+                            controlWhilePsw = 3;
                         }
-                        i++;
+                        else
+                        {
+                            Console.WriteLine("\nReinsersci Username e password");
+                            Console.WriteLine($"Numero dei tenativi rimasti {countAttempts}");
+                            countAttempts--;
+                        }
+                        controlWhilePsw++;
                     }
                 }
                 if (choseCreateNewAccuout == "2")
                 {
-                    while (i < 3)
+                    while (controlWhilePsw < 3)
                     {
                         Console.WriteLine(insertName);
                         var nameNewAccuont = Console.ReadLine();
@@ -122,9 +125,9 @@ namespace Meteo.UI
                         Console.WriteLine(insertUser);
                         var usernameNewAccount = Console.ReadLine();
                         Console.WriteLine(insertPsw);
-                        var pswNewAccount = Console.ReadLine();
-                        Console.WriteLine("Inserisci ancora una volta la password");
-                        var pswNewAccountComparison = Console.ReadLine();
+                        var pswNewAccount = PswManager.MaskPasswordLogin(passwordRegistration);
+                        Console.WriteLine("\nReinserisci password");
+                        var pswNewAccountComparison = PswManager.MaskPasswordLogin(passwordRegistration);
 
                         if (pswNewAccount == pswNewAccountComparison)
                         {
@@ -142,16 +145,16 @@ namespace Meteo.UI
                                     Name = nameNewAccuont
                                 }
                             );
-                            i = 3;
+                            controlWhilePsw = 3;
                             attempts = false;
                         }
                         else
                         {
                             Console.WriteLine("\nLe due password inserite non corrispondono! Reinsersci Username e password");
-                            Console.WriteLine($"Numero dei tenativi rimasti {c}\n");
-                            c--;
+                            Console.WriteLine($"Numero dei tenativi rimasti {countAttempts}\n");
+                            countAttempts--;
                         }
-                        i++;
+                        controlWhilePsw++;
                     }
                 }
             }
