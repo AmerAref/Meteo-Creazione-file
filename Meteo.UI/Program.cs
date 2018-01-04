@@ -41,8 +41,9 @@ namespace Meteo.UI
         }
         static void Main(string[] args)
         {
+
             var login = new Login();
-            var registration = new Register();
+            var registration = new Registration();
             var emailManager = new EmailManager();
             var filemenager = new FileMenager();
             var createXlsFile = new CreateXlsFile();
@@ -52,6 +53,7 @@ namespace Meteo.UI
             var choseConfigurationPc = new ChoseConfigurationPc();
             var insertNameFile = "Inserisci nome file da creare con tipo di estensione (nomefile.estensione)";
             var meteoApi = new MeteoAPI();
+            var validationUsername = true;
             var success = "Richiesta elaborata con successo";
             var choiceDoFile = "Vuoi creare il file con i dati precedentemente rischiesti? (S/n)";
             var choiceSendEmail = "Vuoi inviare tramite email il file appena creato?(S/n)";
@@ -133,14 +135,29 @@ namespace Meteo.UI
                     var nameNewAccuont = Console.ReadLine();
                     Console.WriteLine(insertSurname);
                     var surnameNewAccount = Console.ReadLine();
-                    Console.WriteLine(insertUser);
-                    var usernameNewAccount = Console.ReadLine();
-                    Console.WriteLine(insertPsw);
+                    var usernameNewAccount = "";
                     while (validationManagerPsw)
                     {
+                        while (validationUsername)
+                        {
+                            Console.WriteLine(insertUser);
+
+                            usernameNewAccount  = Console.ReadLine();
+
+                            var autentication = login.ControlUserIfExist(context, usernameNewAccount);
+                            if (autentication.Any())
+                            {
+                                Console.WriteLine("Username già esistente. Provare con un altro nome.");
+
+                            }
+                            else
+                            {
+                                validationUsername = false;
+                            }
+                        }
+                        Console.WriteLine(insertPsw);
                         pswNewAccount = PswManager.MaskPasswordLogin(passwordRegistration);
 
-                        var c = PswManager.CheckPassword(pswNewAccount);
                         if (PswManager.CheckPassword(pswNewAccount) == false)
                         {
                             Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
@@ -174,6 +191,7 @@ namespace Meteo.UI
                                 );
                                 attempts = false;
                                 validationManagerPsw = false;
+                                Console.WriteLine($"\nBenvenuto untente {usernameNewAccount}");
                             }
                             else
                             {
