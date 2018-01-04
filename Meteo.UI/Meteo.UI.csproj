@@ -18,9 +18,6 @@
     <Compile Include="..\Meteo.Services\Connection.To.Database\DatabaseUser.cs">
       <Link>Meteo.Services\Connection.To.Database\DatabaseUser.cs</Link>
     </Compile>
-    <Compile Include="..\Meteo.Services\Connection.To.Database\User.cs">
-      <Link>Meteo.Services\Connection.To.Database\User.cs</Link>
-    </Compile>
     <Compile Include="..\Meteo.Services\Connection.To.Database\UsersCotextFactory.cs">
       <Link>Meteo.Services\Connection.To.Database\UsersCotextFactory.cs</Link>
     </Compile>
