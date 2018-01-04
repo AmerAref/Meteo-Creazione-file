@@ -11,7 +11,7 @@ namespace Meteo.UI
         }
         public string ConfigGabriel()
         {
-            var path = "/home/gabriel/Scrivania/Progetti/Meteo-Creazione-file/Meteo.Services/Connection.To.Database/DatabaseConnection.json";
+            var path = "/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.Services/Connection.To.Database/DatabaseConnection.json";
             return path;
         }
     }

@@ -42,7 +42,7 @@ namespace Meteo.UI
         static void Main(string[] args)
         {
             var login = new Login();
-            var registration = new Registration();
+            var registration = new Register();
             var emailManager = new EmailManager();
             var filemenager = new FileMenager();
             var createXlsFile = new CreateXlsFile();
@@ -75,12 +75,10 @@ namespace Meteo.UI
             var pswNewAccount = "";
             var countAttemptsPswRegister = 0;
             var builder = new ConfigurationBuilder()
-                .AddJsonFile(choseConfigurationPc.ConfigAmer(), optional: false, reloadOnChange: true);
+                .AddJsonFile(choseConfigurationPc.ConfigGabriel(), optional: false, reloadOnChange: true);
 
             var configuration = builder.Build();
-
             string connectionString = configuration.GetConnectionString("SampleConnection");
-
             var context = UsersContextFactory.Create(connectionString);
 
             context.SaveChanges();
@@ -102,13 +100,9 @@ namespace Meteo.UI
                         Console.WriteLine(insertPsw);
                         var passwordAuthentication = PswManager.MaskPasswordLogin(passwordLogin);
 
-
-
                         var authPwd = login.EncryptInsertedPwd(passwordAuthentication);
 
-
                         var autentication = login.LoginAttempts(context, usernameAuthentication, authPwd);
-
 
                         if (autentication.Any())
                         {
@@ -127,8 +121,6 @@ namespace Meteo.UI
                 }
                 if (choseCreateNewAccuout == "2")
                 {
-
-
                     Console.WriteLine(insertName);
                     var nameNewAccuont = Console.ReadLine();
                     Console.WriteLine(insertSurname);
@@ -151,8 +143,6 @@ namespace Meteo.UI
                                 Console.WriteLine("Mi Dispiace ma hai esaurito i tentativi");
                                 return;
                             }
-
-
                         }
                         else
                         {
@@ -181,10 +171,6 @@ namespace Meteo.UI
                             }
                         }
                     }
-
-
-
-
                 }
             }
 
@@ -302,7 +288,6 @@ namespace Meteo.UI
                                             createXlsFile.CreateXlsFileForTodayByCoordinates(fileName, jsonObj, lat, lon);
                                         }
                                         Console.WriteLine(success);
-
                                     }
                                     else
                                     {

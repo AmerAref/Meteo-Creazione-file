@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Meteo.Services
 {
-    public class Registration
+    public class Register
     {
         public string EncryptPwd(string clearPwd)
         {
