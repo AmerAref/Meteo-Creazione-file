@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-<<<<<<< Updated upstream
     <Compile Include="..\Meteo.Services\EmailManager.cs">
       <Link>Meteo.Services\EmailManager.cs</Link>
     </Compile>
@@ -125,8 +124,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-=======
->>>>>>> Stashed changes
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="OfficeOpenXml.Core.ExcelPackage" Version="1.0.0" />
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
