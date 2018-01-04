@@ -1,5 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <Compile Include="..\Meteo.ExcelManager\CreateXlsFile.cs">
+      <Link>Meteo.ExcelManager\CreateXlsFile.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.AssemblyInfo.cs">
+      <Link>Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Meteo.Services\EmailManager.cs">
       <Link>Meteo.Services\EmailManager.cs</Link>
     </Compile>
@@ -14,6 +20,12 @@
     </Compile>
     <Compile Include="..\Meteo.Services\PswManager.cs">
       <Link>Meteo.Services\PswManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\Register.cs">
+      <Link>Meteo.Services\Register.cs</Link>
+    </Compile>
+    <Compile Include="..\Meteo.Services\User.cs">
+      <Link>Meteo.Services\User.cs</Link>
     </Compile>
     <Compile Include="..\Meteo.Services\Connection.To.Database\DatabaseUser.cs">
       <Link>Meteo.Services\Connection.To.Database\DatabaseUser.cs</Link>
@@ -48,47 +60,11 @@
     <Compile Include="..\Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.AssemblyInfo.cs">
       <Link>Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\Meteo.ExcelManager\CreateXlsFile.cs">
-      <Link>Meteo.ExcelManager\CreateXlsFile.cs</Link>
-    </Compile>
-    <Compile Include="..\Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.AssemblyInfo.cs">
-      <Link>Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.AssemblyInfo.cs</Link>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Remove="RomeNow.json" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Meteo.Services\Meteo.Services.csproj">
-      <Link>Meteo.Services\Meteo.Services.csproj</Link>
-    </None>
-    <None Include="..\Meteo.Services\Meteo.Services.sln">
-      <Link>Meteo.Services\Meteo.Services.sln</Link>
-    </None>
-    <None Include="..\Meteo.Services\Meteo.Services.userprefs">
-      <Link>Meteo.Services\Meteo.Services.userprefs</Link>
-    </None>
-    <None Include="..\Meteo.Services\Connection.To.Database\DatabaseConnection.json">
-      <Link>Meteo.Services\Connection.To.Database\DatabaseConnection.json</Link>
-    </None>
-    <None Include="..\Meteo.Services\obj\Meteo.Services.csproj.nuget.cache">
-      <Link>Meteo.Services\obj\Meteo.Services.csproj.nuget.cache</Link>
-    </None>
-    <None Include="..\Meteo.Services\obj\Meteo.Services.csproj.nuget.g.props">
-      <Link>Meteo.Services\obj\Meteo.Services.csproj.nuget.g.props</Link>
-    </None>
-    <None Include="..\Meteo.Services\obj\Meteo.Services.csproj.nuget.g.targets">
-      <Link>Meteo.Services\obj\Meteo.Services.csproj.nuget.g.targets</Link>
-    </None>
-    <None Include="..\Meteo.Services\obj\project.assets.json">
-      <Link>Meteo.Services\obj\project.assets.json</Link>
-    </None>
-    <None Include="..\Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.AssemblyInfoInputs.cache">
-      <Link>Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.AssemblyInfoInputs.cache</Link>
-    </None>
-    <None Include="..\Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.csproj.CoreCompileInputs.cache">
-      <Link>Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.csproj.CoreCompileInputs.cache</Link>
-    </None>
     <None Include="..\Meteo.ExcelManager\Meteo.ExcelManager.csproj">
       <Link>Meteo.ExcelManager\Meteo.ExcelManager.csproj</Link>
     </None>
@@ -121,6 +97,42 @@
     </None>
     <None Include="..\Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.csprojResolveAssemblyReference.cache">
       <Link>Meteo.ExcelManager\obj\Debug\netcoreapp2.0\Meteo.ExcelManager.csprojResolveAssemblyReference.cache</Link>
+    </None>
+    <None Include="..\Meteo.Services\.DS_Store">
+      <Link>Meteo.Services\.DS_Store</Link>
+    </None>
+    <None Include="..\Meteo.Services\Meteo.Services.csproj">
+      <Link>Meteo.Services\Meteo.Services.csproj</Link>
+    </None>
+    <None Include="..\Meteo.Services\Meteo.Services.sln">
+      <Link>Meteo.Services\Meteo.Services.sln</Link>
+    </None>
+    <None Include="..\Meteo.Services\Meteo.Services.userprefs">
+      <Link>Meteo.Services\Meteo.Services.userprefs</Link>
+    </None>
+    <None Include="..\Meteo.Services\Connection.To.Database\.DS_Store">
+      <Link>Meteo.Services\Connection.To.Database\.DS_Store</Link>
+    </None>
+    <None Include="..\Meteo.Services\Connection.To.Database\DatabaseConnection.json">
+      <Link>Meteo.Services\Connection.To.Database\DatabaseConnection.json</Link>
+    </None>
+    <None Include="..\Meteo.Services\obj\Meteo.Services.csproj.nuget.cache">
+      <Link>Meteo.Services\obj\Meteo.Services.csproj.nuget.cache</Link>
+    </None>
+    <None Include="..\Meteo.Services\obj\Meteo.Services.csproj.nuget.g.props">
+      <Link>Meteo.Services\obj\Meteo.Services.csproj.nuget.g.props</Link>
+    </None>
+    <None Include="..\Meteo.Services\obj\Meteo.Services.csproj.nuget.g.targets">
+      <Link>Meteo.Services\obj\Meteo.Services.csproj.nuget.g.targets</Link>
+    </None>
+    <None Include="..\Meteo.Services\obj\project.assets.json">
+      <Link>Meteo.Services\obj\project.assets.json</Link>
+    </None>
+    <None Include="..\Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.AssemblyInfoInputs.cache">
+      <Link>Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.AssemblyInfoInputs.cache</Link>
+    </None>
+    <None Include="..\Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.csproj.CoreCompileInputs.cache">
+      <Link>Meteo.Services\obj\Debug\netcoreapp2.0\Meteo.Services.csproj.CoreCompileInputs.cache</Link>
     </None>
   </ItemGroup>
   <ItemGroup>
