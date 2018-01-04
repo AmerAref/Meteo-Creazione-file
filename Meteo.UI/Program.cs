@@ -142,7 +142,7 @@ namespace Meteo.UI
 
                         var c = PswManager.CheckPassword(pswNewAccount);
                         if (PswManager.CheckPassword(pswNewAccount) == false)
-                            {
+                        {
                             Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
                             Console.WriteLine("\nReinserisci Password.");
                             countAttemptsPswRegister++;
@@ -173,6 +173,7 @@ namespace Meteo.UI
                                     }
                                 );
                                 attempts = false;
+                                validationManagerPsw = false;
                             }
                             else
                             {
