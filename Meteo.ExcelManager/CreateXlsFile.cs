@@ -100,7 +100,8 @@ namespace Meteo.ExcelManager
             }
         }
 
-        public void CreateXlsFileForLast5DaysByCoordinates(string fileNameExcel, ListMeasureLast5Day jsonObjForExcel, string lat, string lon) {
+        public void CreateXlsFileForLast5DaysByCoordinates(string fileNameExcel, ListMeasureLast5Day jsonObjForExcel, string lat, string lon)
+        {
             path = $"/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/{fileNameExcel}";
             Console.WriteLine("Inserisci il nome del file XLS:");
             xlsFile = Console.ReadLine();

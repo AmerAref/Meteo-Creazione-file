@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+<<<<<<< Updated upstream
     <Compile Include="..\Meteo.Services\EmailManager.cs">
       <Link>Meteo.Services\EmailManager.cs</Link>
     </Compile>
@@ -124,6 +125,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+=======
+>>>>>>> Stashed changes
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="OfficeOpenXml.Core.ExcelPackage" Version="1.0.0" />
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
@@ -134,7 +137,8 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.10.5" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
-    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.0" />
+    <ProjectReference Include="..\Meteo.Services\Meteo.Services.csproj" />
+    <ProjectReference Include="..\Meteo.ExcelManager\Meteo.ExcelManager.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>
