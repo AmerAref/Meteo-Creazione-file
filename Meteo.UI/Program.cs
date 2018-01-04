@@ -42,7 +42,7 @@ namespace Meteo.UI
         static void Main(string[] args)
         {
             var login = new Login();
-            var registration = new Registration();
+            var registration = new Register();
             var emailManager = new EmailManager();
             var filemenager = new FileMenager();
             var createXlsFile = new CreateXlsFile();
