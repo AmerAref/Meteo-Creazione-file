@@ -4,6 +4,8 @@ using System.Text;
 using OfficeOpenXml;
 using Newtonsoft.Json;
 using Meteo.Services;
+using OfficeOpenXml.Style;
+using System.Drawing;
 
 namespace Meteo.ExcelManager
 {
@@ -32,6 +34,8 @@ namespace Meteo.ExcelManager
                     var valueForColoumn = jsonObjForExcel.Main.GetType().GetProperty(valueForHeader).GetValue(jsonObjForExcel.Main, null);
                     worksheet.Cells[1, c].Value = valueForHeader;
                     worksheet.Cells[2, c].Value = valueForColoumn;
+                    worksheet.Cells[1, c].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[1, c].Style.Fill.BackgroundColor.SetColor(Color.LawnGreen);
                 }
                 pkg.Save();
             }
@@ -58,6 +62,8 @@ namespace Meteo.ExcelManager
                     var valueForColoumn = jsonObjForExcel.Main.GetType().GetProperty(valueForHeader).GetValue(jsonObjForExcel.Main, null);
                     worksheet.Cells[1, c].Value = valueForHeader;
                     worksheet.Cells[2, c].Value = valueForColoumn;
+                    worksheet.Cells[1, c].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[1, c].Style.Fill.BackgroundColor.SetColor(Color.LawnGreen);
                 }
                 pkg.Save();
             }
@@ -83,6 +89,8 @@ namespace Meteo.ExcelManager
                         if (c <= 5)
                         {
                             worksheet.Cells[1, c].Value = valueForHeader;
+                            worksheet.Cells[1, c].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            worksheet.Cells[1, c].Style.Fill.BackgroundColor.SetColor(Color.LawnGreen);
                         }
                     }
                 }
@@ -120,6 +128,8 @@ namespace Meteo.ExcelManager
                         if (c <= 5)
                         {
                             worksheet.Cells[1, c].Value = valueForHeader;
+                            worksheet.Cells[1, c].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            worksheet.Cells[1, c].Style.Fill.BackgroundColor.SetColor(Color.LawnGreen);
                         }
                     }
                 }
