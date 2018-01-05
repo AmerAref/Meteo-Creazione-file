@@ -5,6 +5,8 @@ using Meteo.Services;
 using Meteo.ExcelManager;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.IO;
+
 namespace Meteo.UI
 {
     public static class Program
@@ -48,6 +50,7 @@ namespace Meteo.UI
             var emailManager = new EmailManager();
             var filemenager = new FileMenager();
             var createXlsFile = new CreateXlsFile();
+            var createXlsFromFile = new CreateXlsFromFiles();
             var menu = new Menu();
             var print = new PrintData();
             var exit = true;
@@ -260,7 +263,6 @@ namespace Meteo.UI
                             {
                                 // non ti fa uscire da while (reinserisci Username)
                                 Console.WriteLine("Username già esistente. Provare con un altro nome.");
-
                             }
                             else
                             {
@@ -647,6 +649,37 @@ namespace Meteo.UI
                         emailManager.AttempsPasswordAndSendEmail(fileNameToSendAnyFile, senderValueAnyFile, receiverValueAnyFile, bodyValueAnyFile, subjectValueAnyFile, userValueAnyFile, password);
                         break;
                     case "6":
+                        menu.ShowMenuCreateXlsFile();
+                        var choiceXls = Console.ReadLine();
+                        switch (choiceXls)
+                        {
+                            case "1":
+                                Console.WriteLine("Inserisci il nome del file dal quale ricavare i dati");
+                                var todaySourceFile = Console.ReadLine();
+                                var todayFilePath = Path.Combine(filePath, todaySourceFile);
+                                Console.WriteLine("Inserisci il nome del file XLS");
+                                var todayXlsFile = Console.ReadLine();
+
+                                createXlsFromFile.CreateXlsFromFileForToday(todayFilePath, todayXlsFile);
+                                break;
+                            case "2":
+                                Console.WriteLine("Inserisci il nome del file dal quale ricavare i dati");
+                                var fiveDaysSourceFile = Console.ReadLine();
+                                var fiveDaysFilePath = Path.Combine(filePath, fiveDaysSourceFile);
+                                Console.WriteLine("Inserisci il nome del file XLS");
+                                var fiveDaysXlsFile = Console.ReadLine();
+                                createXlsFromFile.CreateXlsFromFileFor5Days(fiveDaysFilePath, fiveDaysXlsFile);
+                                break;
+                            case "3":
+                                menu.ShowFirst();
+                                break;
+                            case "4":
+                                exit = false;
+                                Console.WriteLine("Sessione terminata");
+                                break;
+                        }
+                        break;
+                    case "7":
                         exit = false;
                         Console.WriteLine("Sessione terminata");
                         break;
