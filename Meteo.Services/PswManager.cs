@@ -54,26 +54,14 @@ namespace Meteo.Services
 
             if (password != null)
             {
-                var x = Regex.IsMatch(password, MatchEmailPattern);
-                if (x)
-                {
-                    
-                }
-                else
-                {
-                    Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
-                    Console.WriteLine("\nReinserisci Password.");
-                    countAttemptsPswRegister++;
-
-                }
-
-
-
+                return Regex.IsMatch(password, MatchEmailPattern);
             }
-            else
-            {
-                return; 
-            }
+
+                return false; 
+               
+
+
+          
         }
 
     }
