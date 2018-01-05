@@ -14,23 +14,17 @@ namespace Meteo.Services
             return autentication;
         }
 
-
-        public string EncryptInsertedPwd(string authenticationPwd)
-        {
-            byte[] bytePwd = Encoding.Unicode.GetBytes(authenticationPwd);
-            var hasher = System.Security.Cryptography.SHA256.Create();
-            byte[] hashedBytes = hasher.ComputeHash(bytePwd);
-            var encryptedAuthPwd = Convert.ToBase64String(hashedBytes);
-
-            return encryptedAuthPwd;
-        }
-
         public List<User> ControlUserIfExist(UsersContext context, string usernameAuthentication )
         {
             var autentication = context.Users.Where(x => x.Username.Equals(usernameAuthentication)).ToList();
 
 
             return autentication; 
+        }
+        public List<User> ControlAnswer(string insertAnswerForAccess, UsersContext context, string usernameAuthentication  )
+        {
+            var autentication = context.Users.Where(x => x.Username.Equals(usernameAuthentication) && x.Answer.Equals(insertAnswerForAccess)).ToList();
+            return autentication;
         }
     }
 }

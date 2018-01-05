@@ -27,7 +27,7 @@ namespace Meteo.Services
             {
                 try
                 {
-                    password = PswManager.MaskPassword("");
+                    password = PswManager.MaskData("");
                     //autenticazione mail
                     SendFile(fileName, sender, receiver, body, subject, user, password);
                     i = 3;

@@ -5,25 +5,7 @@ namespace Meteo.Services
 {
     public static class PswManager
     {
-        public static string MaskPassword(string passwordVisibile)
-        {
-            ConsoleKeyInfo key;
-
-            do
-            {
-                key = Console.ReadKey(true);
-
-                if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
-                {
-                    passwordVisibile += key.KeyChar;
-                    Console.Write("*");
-                }
-            }
-            while (key.Key != ConsoleKey.Enter);
-
-            return passwordVisibile;
-        }
-        public static string MaskPasswordLogin(string passwordLogin)
+        public static string MaskData(string dataNotMaskered)
         {
             ConsoleKeyInfo key;
 
@@ -33,24 +15,28 @@ namespace Meteo.Services
 
                 if (key.Key != ConsoleKey.Enter)
                 {
+
                     if (key.Key == ConsoleKey.Backspace)
                     {
-                        passwordLogin = passwordLogin.Remove(passwordLogin.Length - 1, 1);
+                        dataNotMaskered = dataNotMaskered.Remove(dataNotMaskered.Length - 1, 1);
                         ClearCurrentConsoleLine();
-                        foreach (var i in passwordLogin)
+                        foreach (var i in dataNotMaskered)
                         {
                             Console.Write("*");
                         }
                     }
                     else
                     {
-                        passwordLogin += key.KeyChar;
+                        dataNotMaskered += key.KeyChar;
                         Console.Write("*");
                     }
+
+
+
                 }
             }
             while (key.Key != ConsoleKey.Enter);
-            return passwordLogin;
+            return dataNotMaskered;
         }
         private static void ClearCurrentConsoleLine()
         {
@@ -61,16 +47,34 @@ namespace Meteo.Services
         }
         public static bool CheckPassword(string password)
         {
+
+
             string MatchEmailPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*)(?=.*[#$^+=!*()@%&]).{8,}$";
+
 
             if (password != null)
             {
-                return Regex.IsMatch(password, MatchEmailPattern);
+                var x = Regex.IsMatch(password, MatchEmailPattern);
+                if (x)
+                {
+                    
+                }
+                else
+                {
+                    Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
+                    Console.WriteLine("\nReinserisci Password.");
+                    countAttemptsPswRegister++;
+
+                }
+
+
+
             }
             else
             {
-                return false;
+                return; 
             }
         }
+
     }
 }
