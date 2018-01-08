@@ -53,7 +53,8 @@ namespace Meteo.UI
             var createXlsFromFile = new CreateXlsFromFiles();
             var menu = new Menu();
             var print = new PrintData();
-            var exit = true;
+            var filePath = "../Users/air/Documents/Progetti/Meteo";
+            var  exit = true;
             var choseConfigurationPc = new ChoseConfigurationPc();
             var insertNameFile = "Inserisci nome file da creare con tipo di estensione (nomefile.estensione)";
             var meteoApi = new MeteoAPI();
@@ -90,6 +91,9 @@ namespace Meteo.UI
             var insertAnswer = "";
             var reinsertUserPsw = "Reinsersci Username e password";
             var usernameNewAccount = "";
+            var connection = new DBConnect();
+            connection.OpenConnection();
+
 
             var builder = new ConfigurationBuilder()
                 .AddJsonFile(choseConfigurationPc.ConfigAmer(), optional: false, reloadOnChange: true);
@@ -119,7 +123,7 @@ namespace Meteo.UI
                         var usernameAuthentication = Console.ReadLine();
                         Console.WriteLine(insertPsw);
                         // Inserimento psw mascherata 
-                        var passwordAuthentication = PswManager.MaskData(passwordLogin);
+                        var passwordAuthentication = DataMaskManager.MaskData(passwordLogin);
                         // Criptaggio Psw
                         var authPwd = registration.EncryptPwd(passwordAuthentication);
                         // confronto se esiste psw (Massimo 3 volte )
@@ -175,7 +179,7 @@ namespace Meteo.UI
                                 }
 
                                 // inserimento Risposta mascherata 
-                                var insertAnswerMaskered = PswManager.MaskData(answerToLogin);
+                                var insertAnswerMaskered = DataMaskManager.MaskData(answerToLogin);
                                 // criptaggio della Risposta inserita 
                                 var insertAnswerForAccessEcrypted = registration.EncryptPwd(insertAnswerMaskered);
                                 autentication = login.ControlAnswer(insertAnswerForAccessEcrypted, context, forAnswerInsertUsername).ToList();
@@ -194,9 +198,9 @@ namespace Meteo.UI
                                         {
                                             var newPswClear = "";
                                             // maschera nuova psw 
-                                            var newPswMask = PswManager.MaskData(newPswClear);
+                                            var newPswMask = DataMaskManager.MaskData(newPswClear);
                                             // controlo su vincoli di sicurezza psw
-                                            if (PswManager.CheckPassword(pswNewAccount) == false)
+                                            if (RegexForPsw.RegexExp(pswNewAccount) == false)
                                             {
                                                 Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
                                                 Console.WriteLine("\nReinserisci Password.");
@@ -273,9 +277,9 @@ namespace Meteo.UI
                         Console.WriteLine(insertPsw);
                         // Inserisci Psw mascherata
 
-                        pswNewAccount = PswManager.MaskData(passwordRegistration);
+                        pswNewAccount = DataMaskManager.MaskData(passwordRegistration);
                         // Controlla se Accetta i criteri di sicurezza psw
-                        if (PswManager.CheckPassword(pswNewAccount) == false)
+                        if (RegexForPsw.RegexExp(pswNewAccount) == false)
                         {
                             Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
                             Console.WriteLine("\nReinserisci Password.");
@@ -292,7 +296,7 @@ namespace Meteo.UI
                         {
                             Console.WriteLine("\nReinserisci password");
                             // maschera reinserimento psw
-                            var pswNewAccountComparison = PswManager.MaskData(passwordRegistration);
+                            var pswNewAccountComparison = DataMaskManager.MaskData(passwordRegistration);
                             // confronto fra le due psw scritte. Se corrispondo l'utente deve selezionare una domanda di sicurezza per recupero psw 
                             if (pswNewAccount == pswNewAccountComparison)
                             {
@@ -349,6 +353,7 @@ namespace Meteo.UI
 
             // salvataggio modifiche su DB 
             context.SaveChanges();
+            connection.CloseConnection();
 
             while (exit)
             {

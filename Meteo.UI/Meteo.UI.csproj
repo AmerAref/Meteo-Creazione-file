@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <None Remove="RomeNow.json" />
+    <None Remove=".DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
@@ -21,6 +22,11 @@
     <Reference Include="Meteo.Services">
       <HintPath>..\Meteo.Services\bin\Debug\netcoreapp2.0\Meteo.Services.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Program.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>

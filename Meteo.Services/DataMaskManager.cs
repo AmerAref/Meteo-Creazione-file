@@ -1,9 +1,8 @@
 using System;
-using System.Text.RegularExpressions;
 
 namespace Meteo.Services
 {
-    public static class PswManager
+    public static class DataMaskManager
     {
         public static string MaskData(string dataNotMaskered)
         {
@@ -45,24 +44,7 @@ namespace Meteo.Services
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, currentLineCursor);
         }
-        public static bool CheckPassword(string password)
-        {
-
-
-            string MatchEmailPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*)(?=.*[#$^+=!*()@%&]).{8,}$";
-
-
-            if (password != null)
-            {
-                return Regex.IsMatch(password, MatchEmailPattern);
-            }
-
-                return false; 
-               
-
-
-          
-        }
+     
 
     }
 }
