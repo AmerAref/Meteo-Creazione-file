@@ -40,7 +40,6 @@ namespace Meteo.Services
             }
             catch (MySqlException ex)
             {
-
                 switch (ex.Number)
                 {
                     case 0:
@@ -70,8 +69,3 @@ namespace Meteo.Services
         }
     }
 }
-
-              
-
-
-

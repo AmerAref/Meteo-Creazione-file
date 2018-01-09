@@ -44,7 +44,6 @@ namespace Meteo.UI
 
         static void Main(string[] args)
         {
-
             var login = new Login();
             var registration = new Register();
             var emailManager = new EmailManager();
@@ -53,6 +52,7 @@ namespace Meteo.UI
             var createXlsFromFile = new CreateXlsFromFiles();
             var menu = new Menu();
             var print = new PrintData();
+            var queryMng = new QueryManager();
             var filePath = "../Users/air/Documents/Progetti/Meteo";
             var  exit = true;
             var choseConfigurationPc = new ChoseConfigurationPc();
@@ -62,7 +62,7 @@ namespace Meteo.UI
             var controlWhileAnswer = true;
             var selectQuestion = "";
             var controlForUserIfExist = 0;
-            var printQuestionForAccessAterControl = "";
+            var printQuestionForAccessAfterControl = "";
             var forAnswerInsertUsername = "";
             var success = "Richiesta elaborata con successo";
             var choiceDoFile = "Vuoi creare il file con i dati precedentemente rischiesti? (S/n)";
@@ -94,9 +94,8 @@ namespace Meteo.UI
             var connection = new DBConnect();
             connection.OpenConnection();
 
-
             var builder = new ConfigurationBuilder()
-                .AddJsonFile(choseConfigurationPc.ConfigAmer(), optional: false, reloadOnChange: true);
+                .AddJsonFile(choseConfigurationPc.ConfigGabriel(), optional: false, reloadOnChange: true);
 
             var configuration = builder.Build();
             string connectionString = configuration.GetConnectionString("SampleConnection");
@@ -156,26 +155,24 @@ namespace Meteo.UI
                                     }
                                     Console.WriteLine("Inserisci Username per accedere con domanda di sicurezza");
                                     forAnswerInsertUsername = Console.ReadLine();
-                                    var userIfExist = context.Users.SingleOrDefault(x => x.Username.Equals(forAnswerInsertUsername));
+                                    var userIfExist = queryMng.UserExistance(context, forAnswerInsertUsername);
                                     var reciveIDQuestion = 0;
 
                                     // controllo se esiste user 
                                     if (userIfExist != null)
                                     {
-                                        reciveIDQuestion = Convert.ToInt32(userIfExist.Question);
-                                        var printQuestionForAccessIfExist = context.QuestionForUsers.SingleOrDefault(x => x.IdDomanda == (reciveIDQuestion));
+                                        var printQuestionForAccessIfExist = queryMng.QuestionExistance(context, reciveIDQuestion+, userIfExist);
 
                                         // controllo se esiste domanda per user 
                                         if (printQuestionForAccessIfExist != null)
                                         {
                                             // ricavo Domanda con stampa ed accesso a form per modifica psw 
-                                            printQuestionForAccessAterControl = context.QuestionForUsers.SingleOrDefault(x => x.IdDomanda == (reciveIDQuestion)).Domande;
-                                            Console.WriteLine(printQuestionForAccessAterControl);
+                                            printQuestionForAccessAfterControl = queryMng.QuestionControl(context, reciveIDQuestion);
+                                            Console.WriteLine(printQuestionForAccessAfterControl);
                                             controlForUserIfExist = 4;
                                         }
                                     }
                                     controlForUserIfExist++;
-
                                 }
 
                                 // inserimento Risposta mascherata 

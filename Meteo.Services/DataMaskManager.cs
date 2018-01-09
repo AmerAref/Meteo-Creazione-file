@@ -44,7 +44,5 @@ namespace Meteo.Services
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, currentLineCursor);
         }
-     
-
     }
 }
