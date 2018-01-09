@@ -23,7 +23,7 @@ namespace Meteo.Services
             server = "localhost";
             database = "MeteoDatabase";
             uid = "root";
-            password = "password";
+            password = "";
             string connectionString;
             connectionString = "SERVER=" + server + ";" + "DATABASE=" +
             database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
