@@ -77,14 +77,12 @@ namespace Meteo.UI
             var choiceCreateXlsFile = "Vuoi creare un file XLS con i dati precedenti?(S/n)";
             var password = "";
             var insertUser = "Inserisci Username";
-            var insertPsw = "Inserisci Password";
-            var insertName = "Inserisci Nome";
-            var insertSurname = "Insersci Cognome";
-            var controlWhilePsw = 0;
-            var countAttempts = 2;
-            var passwordLogin = "";
-            var answerToLogin = "";
-            var passwordRegistration = "";
+            const string insertPsw = "Inserisci Password";
+            const string insertName = "Inserisci Nome";
+            const string insertSurname = "Insersci Cognome";
+            const string passwordLogin = "";
+            const string answerToLogin = "";
+            const string passwordRegistration = "";
             var validationManagerPsw = true;
             var pswNewAccount = "";
             var countAttemptsPswRegister = 0;
@@ -97,10 +95,8 @@ namespace Meteo.UI
 
             var builder = new ConfigurationBuilder()
                 .AddJsonFile(choseConfigurationPc.ConfigAmer(), optional: false, reloadOnChange: true);
-
-            var configuration = builder.Build();
-            var connectionString = configuration.GetConnectionString("SampleConnection");
-            var context = UsersContextFactory.Create(connectionString);
+            var factory = new ApplicationDbContextFactory();
+            var context = factory.CreateDbContext(new string[]{});
 
             context.SaveChanges();
 
@@ -110,8 +106,8 @@ namespace Meteo.UI
                 menu.ShowMenuAuthentication();
 
                 var choseCreateNewAccuoutOrLogin = Console.ReadLine();
-                controlWhilePsw = 0;
-                countAttempts = 2;
+                var controlWhilePsw = 0;
+                var countAttempts = 2;
                 //Caso scelta Login con utente già registrato su DB
                 if (choseCreateNewAccuoutOrLogin == "1")
                 {
