@@ -11,13 +11,13 @@ namespace Meteo.Services.Infrastructure
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
+            // Context Configuration
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // DATA ENTITY
-            modelBuilder.HasDefaultSchema("OPM");
+            // ENTITY MAPPING
         }
     }
 }
