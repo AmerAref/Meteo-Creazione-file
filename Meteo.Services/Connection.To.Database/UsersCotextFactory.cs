@@ -4,12 +4,12 @@ namespace Meteo.Services
 {
     public static class UsersContextFactory
     {
-        public static UsersContext Create(string connectionString)
+        public static Context Create(string connectionString)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<UsersContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<Context>();
             optionsBuilder.UseMySQL(connectionString);
 
-            var context = new UsersContext(optionsBuilder.Options);
+            var context = new Context(optionsBuilder.Options);
             context.Database.EnsureCreated();
 
             return context;

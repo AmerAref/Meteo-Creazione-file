@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Meteo.Services
 {
-    public class UsersContext : DbContext
+    public class Context : DbContext
     {
-        public UsersContext(DbContextOptions<UsersContext> options) : base(options) { }
+        public Context(DbContextOptions<Context> options) : base(options) { }
         public DbSet<User> Users { get; set; }
         public DbSet<Question> QuestionForUsers { get; set; }
 
