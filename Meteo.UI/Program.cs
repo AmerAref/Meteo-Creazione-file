@@ -6,6 +6,7 @@ using Meteo.ExcelManager;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.IO;
+using Meteo.Services.Infrastructure;
 
 namespace Meteo.UI
 {
@@ -57,7 +58,7 @@ namespace Meteo.UI
             var  exit = true;
             var choseConfigurationPc = new ChoseConfigurationPc();
             var insertNameFile = "Inserisci nome file da creare con tipo di estensione (nomefile.estensione)";
-            var meteoApi = new MeteoAPI();
+            var meteoApi = new MeteoApi();
             var validationUsername = true;
             var controlWhileAnswer = true;
             var selectQuestion = "";
@@ -91,14 +92,14 @@ namespace Meteo.UI
             var insertAnswer = "";
             var reinsertUserPsw = "Reinsersci Username e password";
             var usernameNewAccount = "";
-            var connection = new DBConnect();
+            var connection = new DbFactoryManager();
             connection.OpenConnection();
 
             var builder = new ConfigurationBuilder()
                 .AddJsonFile(choseConfigurationPc.ConfigAmer(), optional: false, reloadOnChange: true);
 
             var configuration = builder.Build();
-            string connectionString = configuration.GetConnectionString("SampleConnection");
+            var connectionString = configuration.GetConnectionString("SampleConnection");
             var context = UsersContextFactory.Create(connectionString);
 
             context.SaveChanges();
@@ -156,18 +157,18 @@ namespace Meteo.UI
                                     Console.WriteLine("Inserisci Username per accedere con domanda di sicurezza");
                                     forAnswerInsertUsername = Console.ReadLine();
                                     var userIfExist = queryMng.UserExistance(context, forAnswerInsertUsername);
-                                    var reciveIDQuestion = 0;
+                                    var reciveIdQuestion = 0;
 
                                     // controllo se esiste user 
                                     if (userIfExist != null)
                                     {
-                                        var printQuestionForAccessIfExist = queryMng.QuestionExistance(context, reciveIDQuestion, userIfExist);
+                                        var printQuestionForAccessIfExist = queryMng.QuestionExistance(context, reciveIdQuestion, userIfExist);
 
                                         // controllo se esiste domanda per user 
                                         if (printQuestionForAccessIfExist != null)
                                         {
                                             // ricavo Domanda con stampa ed accesso a form per modifica psw 
-                                            printQuestionForAccessAfterControl = queryMng.QuestionControl(context, reciveIDQuestion);
+                                            printQuestionForAccessAfterControl = queryMng.QuestionControl(context, reciveIdQuestion);
                                             Console.WriteLine(printQuestionForAccessAfterControl);
                                             controlForUserIfExist = 4;
                                         }
@@ -197,7 +198,7 @@ namespace Meteo.UI
                                             // maschera nuova psw 
                                             var newPswMask = DataMaskManager.MaskData(newPswClear);
                                             // controlo su vincoli di sicurezza psw
-                                            if (RegexForPsw.RegexExp(pswNewAccount) == false)
+                                            if (Helper.RegexForPsw(pswNewAccount) == false)
                                             {
                                                 Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
                                                 Console.WriteLine("\nReinserisci Password.");
@@ -276,7 +277,7 @@ namespace Meteo.UI
 
                         pswNewAccount = DataMaskManager.MaskData(passwordRegistration);
                         // Controlla se Accetta i criteri di sicurezza psw
-                        if (RegexForPsw.RegexExp(pswNewAccount) == false)
+                        if (Helper.RegexForPsw(pswNewAccount) == false)
                         {
                             Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
                             Console.WriteLine("\nReinserisci Password.");
@@ -374,8 +375,8 @@ namespace Meteo.UI
                                     print.PrintForData(jsonObj);
                                     Console.WriteLine(success);
                                     var prop = "Pressure";
-                                    var Propr = jsonObj.Main.GetType().GetProperty(prop).GetValue(jsonObj.Main, null);
-                                    Console.WriteLine(Propr);
+                                    var propr = jsonObj.Parameters.GetType().GetProperty(prop).GetValue(jsonObj.Parameters, null);
+                                    Console.WriteLine(propr);
 
                                     Console.WriteLine(choiceDoFile);
                                     var choiceSelected = Console.ReadLine();
@@ -391,7 +392,7 @@ namespace Meteo.UI
 
                                         if (choiceSelected == "S")
                                         {
-                                            var dataForEmail = Program.InsertDataForEmail();
+                                            var dataForEmail = InsertDataForEmail();
                                             var senderValue = dataForEmail["senderKey"];
                                             var receiverValue = dataForEmail["receiverKey"];
                                             var bodyValue = dataForEmail["bodyKey"];
@@ -448,7 +449,7 @@ namespace Meteo.UI
 
                                         if (choiceSelected == "S")
                                         {
-                                            var dataForEmail = Program.InsertDataForEmail();
+                                            var dataForEmail = InsertDataForEmail();
                                             var senderValue = dataForEmail["senderKey"];
                                             var receiverValue = dataForEmail["receiverKey"];
                                             var bodyValue = dataForEmail["bodyKey"];
@@ -508,7 +509,7 @@ namespace Meteo.UI
 
                                         if (choiceSelected == "S")
                                         {
-                                            var dataForEmail = Program.InsertDataForEmail();
+                                            var dataForEmail = InsertDataForEmail();
                                             var senderValue = dataForEmail["senderKey"];
                                             var receiverValue = dataForEmail["receiverKey"];
                                             var bodyValue = dataForEmail["bodyKey"];
@@ -560,7 +561,7 @@ namespace Meteo.UI
 
                                         if (choiceSelected == "S")
                                         {
-                                            var dataForEmail = Program.InsertDataForEmail();
+                                            var dataForEmail = InsertDataForEmail();
                                             var senderValue = dataForEmail["senderKey"];
                                             var receiverValue = dataForEmail["receiverKey"];
                                             var bodyValue = dataForEmail["bodyKey"];
@@ -642,7 +643,7 @@ namespace Meteo.UI
                     case "5":
                         Console.WriteLine("Inserisci nome file da inviare tramite email");
                         var fileNameToSendAnyFile = Console.ReadLine();
-                        var dataForEmailAnyFile = Program.InsertDataForEmail();
+                        var dataForEmailAnyFile = InsertDataForEmail();
                         var senderValueAnyFile = dataForEmailAnyFile["senderKey"];
                         var receiverValueAnyFile = dataForEmailAnyFile["receiverKey"];
                         var bodyValueAnyFile = dataForEmailAnyFile["bodyKey"];

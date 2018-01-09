@@ -1,5 +1,5 @@
 using System;
-using Meteo.Services;
+using Meteo.Services.Infrastructure;
 
 namespace Meteo.UI
 {
@@ -46,12 +46,12 @@ namespace Meteo.UI
             Console.WriteLine("****2 - Crea nuovo utente                                 *");
             Console.WriteLine("***********************************************************");
         }
-        public void SelectQuestion(Context context)
+        public void SelectQuestion(ApplicationDbContext context)
         {
 
             Console.WriteLine("\n*************************************************************************************");
             Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza ***********");
-            foreach (var question in context.QuestionForUsers)
+            foreach (var question in context.Questions)
             {
                 Console.WriteLine($"{question.IdDomanda} - {question.Domande}");
             }

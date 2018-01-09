@@ -1,28 +1,35 @@
 using System.Collections.Generic;
 using System.Linq;
-
+using Meteo.Services.Infrastructure;
 
 namespace Meteo.Services
 {
     public class Login
     {
-        public List<User> LoginAttempts(Context context, string usernameAuthentication, string passwordAuthentication)
+        public List<User> LoginAttempts(ApplicationDbContext context, string usernameAuthentication,
+            string passwordAuthentication)
         {
-            var autentication = context.Users.Where(x => x.Username.Equals(usernameAuthentication) && x.Password.Equals(passwordAuthentication)).ToList();
+            var autentication = context.Users
+                .Where(x => x.Username.Equals(usernameAuthentication) && x.Password.Equals(passwordAuthentication))
+                .ToList();
 
             return autentication;
         }
 
-        public List<User> ControlUserIfExist(Context context, string usernameAuthentication )
+        public List<User> ControlUserIfExist(ApplicationDbContext context, string usernameAuthentication)
         {
             var autentication = context.Users.Where(x => x.Username.Equals(usernameAuthentication)).ToList();
 
 
-            return autentication; 
+            return autentication;
         }
-        public List<User> ControlAnswer(string insertAnswerForAccess, Context context, string usernameAuthentication  )
+
+        public List<User> ControlAnswer(string insertAnswerForAccess, ApplicationDbContext context,
+            string usernameAuthentication)
         {
-            var autentication = context.Users.Where(x => x.Username.Equals(usernameAuthentication) && x.Answer.Equals(insertAnswerForAccess)).ToList();
+            var autentication = context.Users
+                .Where(x => x.Username.Equals(usernameAuthentication) && x.Answer.Equals(insertAnswerForAccess))
+                .ToList();
             return autentication;
         }
     }

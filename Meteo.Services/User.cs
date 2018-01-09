@@ -4,10 +4,8 @@ namespace Meteo.Services
 {
     public class User
     {
-        public User() { }
-
         [Key]
-        public int idUtente { get; set; }
+        public int IdUtente { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Password { get; set; }

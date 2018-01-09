@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
 
-namespace Meteo.Services
+namespace Meteo.Services.OpenWeatherMap.Models
 {
-    public class ParamMeasures
+    public class ForecastParameter
     {
         [JsonProperty("pressure")]
         public float Pressure { get; set; }

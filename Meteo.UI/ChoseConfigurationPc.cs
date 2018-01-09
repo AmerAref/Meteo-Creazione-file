@@ -1,5 +1,4 @@
-﻿using System;
-namespace Meteo.UI
+﻿namespace Meteo.UI
 {
     public class ChoseConfigurationPc
     {

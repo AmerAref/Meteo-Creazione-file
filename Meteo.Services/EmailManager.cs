@@ -1,19 +1,20 @@
 using System;
 using System.Net.Mail;
+
 namespace Meteo.Services
 {
     public class EmailManager
     {
         public void SendFile(string fileName, string sender, string receiver, string body, string subject, string user, string password)
         {
-            Attachment data = new Attachment(fileName);
+            var data = new Attachment(fileName);
 
-            MailMessage message = new MailMessage(sender, receiver);
+            var message = new MailMessage(sender, receiver);
             message.Attachments.Add(data);
             message.Body = body;
             message.Subject = subject;
 
-            SmtpClient client = new SmtpClient("smtp.gmail.com");
+            var client = new SmtpClient("smtp.gmail.com");
             client.Port = 587;
             client.Credentials = new System.Net.NetworkCredential(user, password);
             client.EnableSsl = true;

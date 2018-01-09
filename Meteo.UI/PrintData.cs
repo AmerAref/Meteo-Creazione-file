@@ -1,40 +1,38 @@
 using System;
-using Meteo.Services;
+using Meteo.Services.OpenWeatherMap.Models;
 
 namespace Meteo.UI
 {
     public class PrintData
     {
-        public void PrintForData(MeasureToday jsonObj)
+        public void PrintForData(OneDayForecast jsonObj)
 
         {
-            Console.WriteLine(jsonObj.Main.Pressure);
+            Console.WriteLine(jsonObj.Parameters.Pressure);
             Console.WriteLine("Temperature");
-            Console.WriteLine(jsonObj.Main.Temp);
+            Console.WriteLine(jsonObj.Parameters.Temp);
             Console.WriteLine("Humidity");
-            Console.WriteLine(jsonObj.Main.Humidity);
+            Console.WriteLine(jsonObj.Parameters.Humidity);
             Console.WriteLine("Temperature min");
-            Console.WriteLine(jsonObj.Main.TempMin);
+            Console.WriteLine(jsonObj.Parameters.TempMin);
             Console.WriteLine("Temperature max");
-            Console.WriteLine(jsonObj.Main.TempMax);
-
+            Console.WriteLine(jsonObj.Parameters.TempMax);
         }
 
-        public void PrintDataLast5Day(ListMeasureLast5Day jsonObj)
+        public void PrintDataLast5Day(LastFiveDaysForecast jsonObj)
         {
             foreach (var measure in jsonObj.List)
             {
                 Console.WriteLine("Pressure");
-                Console.WriteLine(measure.Main.Pressure);
+                Console.WriteLine(measure.Parameters.Pressure);
                 Console.WriteLine("Temperature");
-                Console.WriteLine(measure.Main.Temp);
+                Console.WriteLine(measure.Parameters.Temp);
                 Console.WriteLine("Humidity");
-                Console.WriteLine(measure.Main.Humidity);
+                Console.WriteLine(measure.Parameters.Humidity);
                 Console.WriteLine("Temperature min");
-                Console.WriteLine(measure.Main.TempMin);
+                Console.WriteLine(measure.Parameters.TempMin);
                 Console.WriteLine("Temperature max");
-                Console.WriteLine(measure.Main.TempMax);
-
+                Console.WriteLine(measure.Parameters.TempMax);
             }
         }
     }
