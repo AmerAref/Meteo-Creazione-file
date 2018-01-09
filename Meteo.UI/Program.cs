@@ -95,7 +95,7 @@ namespace Meteo.UI
             connection.OpenConnection();
 
             var builder = new ConfigurationBuilder()
-                .AddJsonFile(choseConfigurationPc.ConfigGabriel(), optional: false, reloadOnChange: true);
+                .AddJsonFile(choseConfigurationPc.ConfigAmer(), optional: false, reloadOnChange: true);
 
             var configuration = builder.Build();
             string connectionString = configuration.GetConnectionString("SampleConnection");
@@ -132,7 +132,7 @@ namespace Meteo.UI
                             // Da il benvenuto e accede al menu Meteo
                             Console.WriteLine($"Benvenuto {usernameAuthentication}");
                             controlFirstChoiceLogin = false;
-                            controlWhilePsw = 3;
+                            controlWhilePsw = 5;
                         }
                         else
                         {
@@ -161,7 +161,7 @@ namespace Meteo.UI
                                     // controllo se esiste user 
                                     if (userIfExist != null)
                                     {
-                                        var printQuestionForAccessIfExist = queryMng.QuestionExistance(context, reciveIDQuestion+, userIfExist);
+                                        var printQuestionForAccessIfExist = queryMng.QuestionExistance(context, reciveIDQuestion, userIfExist);
 
                                         // controllo se esiste domanda per user 
                                         if (printQuestionForAccessIfExist != null)

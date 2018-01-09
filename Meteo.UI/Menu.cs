@@ -46,7 +46,7 @@ namespace Meteo.UI
             Console.WriteLine("****2 - Crea nuovo utente                                 *");
             Console.WriteLine("***********************************************************");
         }
-        public void SelectQuestion(UsersContext context)
+        public void SelectQuestion(Context context)
         {
 
             Console.WriteLine("\n*************************************************************************************");
