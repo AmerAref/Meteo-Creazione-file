@@ -5,6 +5,23 @@ namespace Meteo.UI
 {
     public class Menu
     {
+        public void ShowMenuAuthenticationIT()
+        {
+            Console.WriteLine("***********************************************************");
+            Console.WriteLine("*************    Digitare il valore del menu    ***********");
+            Console.WriteLine("****1 - Effettua Login                                    *");
+            Console.WriteLine("****2 - Crea nuovo utente                                 *");
+            Console.WriteLine("***********************************************************");
+        }
+
+        public void ShowMenuAuthenticationEN()
+        {
+            Console.WriteLine("***********************************************************");
+            Console.WriteLine("*************    Digitare il valore del menu    ***********");
+            Console.WriteLine("****1 - Login                                             *");
+            Console.WriteLine("****2 - Create a new user                                 *");
+            Console.WriteLine("***********************************************************");
+        }
         public void ShowFirst()
         {
             Console.WriteLine("***********************************************************");
@@ -48,7 +65,6 @@ namespace Meteo.UI
         }
         public void SelectQuestion(ApplicationDbContext context)
         {
-
             Console.WriteLine("\n*************************************************************************************");
             Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza ***********");
             foreach (var question in context.Questions)
@@ -57,8 +73,6 @@ namespace Meteo.UI
             }
             Console.WriteLine("*************************************************************************************");
         }
-
-
 
         public void ShowMenuCreateXlsFile()
         {

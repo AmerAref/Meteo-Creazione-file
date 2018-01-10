@@ -9,7 +9,6 @@ namespace Meteo.Services.Infrastructure
         private string _server;
         private string _database;
         private string _uid;
-
         private string _password;
         //Constructor
         public DbFactoryManager()
