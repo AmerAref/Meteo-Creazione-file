@@ -59,10 +59,10 @@ namespace Meteo.UI
             var choseConfigurationPc = new ChoseConfigurationPc();
             string insertNameFileIT = "Inserisci nome file da creare con tipo di estensione (nomefile.estensione)";
             string insertNameFileEN = "Insert the name of the file to be created and its extension (filename.extension)";
+            var selectQuestion = 0;
             var meteoApi = new MeteoApi();
             var validationUsername = true;
             var controlWhileAnswer = true;
-            var selectQuestion = "";
             var controlForUserIfExist = 0;
             var printQuestionForAccessAfterControl = "";
             var forAnswerInsertUsername = "";
@@ -310,7 +310,8 @@ namespace Meteo.UI
                                 {
                                     // menu per domande 
                                     menu.SelectQuestion(context);
-                                    selectQuestion = Console.ReadLine();
+                                    selectQuestion = Convert.ToInt32(Console.ReadLine());
+
                                     // stampa risposta inserita 
                                     Console.WriteLine(printInsertAnswerIT);
                                     // conferma rispost inserita 
@@ -338,7 +339,7 @@ namespace Meteo.UI
                                         Username = usernameNewAccount,
                                         Surname = surnameNewAccount,
                                         Name = nameNewAccuont,
-                                        Question = selectQuestion,
+                                        IdQuestion = selectQuestion,
                                         Answer = encryptedAnswer,
                                         Language = languageNewAccount
                                     }
