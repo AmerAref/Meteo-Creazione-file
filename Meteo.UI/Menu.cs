@@ -69,7 +69,7 @@ namespace Meteo.UI
             Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza ***********");
             foreach (var question in context.Questions)
             {
-                Console.WriteLine($"{question.IdDomanda} - {question.Domande}");
+                Console.WriteLine($"{question.IdQuestion} - {question.DefaultQuestions}");
             }
             Console.WriteLine("*************************************************************************************");
         }

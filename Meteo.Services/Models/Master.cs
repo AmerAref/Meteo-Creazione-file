@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
-namespace Meteo.Services
+namespace Meteo.Services.Models
 {
     public class Master
     {
@@ -11,11 +11,12 @@ namespace Meteo.Services
         public DateTime DateOfRequist { get; set; }
 
         [ForeignKey("Users")]
-        int IdUser { get; set; } 
-        public User User { get; set;  }
-        
+        int IdUser { get; set; }
+        public User User { get; set; }
+
         [ForeignKey("Cities")]
-        int IdCity { get; set;  }
-        public Cities City { get; set; }
+        int IdCity { get; set; }
+        public City Cities { get; set; }
+
     }
 }

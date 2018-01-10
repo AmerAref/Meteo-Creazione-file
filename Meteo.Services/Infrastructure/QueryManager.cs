@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
-using Microsoft.AspNetCore.Hosting.Internal;
-
+using Meteo.Services.Models;
 namespace Meteo.Services.Infrastructure
 {
     public class QueryManager
@@ -16,14 +15,14 @@ namespace Meteo.Services.Infrastructure
         public Question QuestionExistance(ApplicationDbContext context, int reciveIdQuestion, User userIfExist)
         {
             reciveIdQuestion = Convert.ToInt32(userIfExist.Question);
-            var printQuestionForAccessIfExist = context.Questions.SingleOrDefault(x => x.IdDomanda == reciveIdQuestion);
+            var printQuestionForAccessIfExist = context.Questions.SingleOrDefault(x => x.IdQuestion == reciveIdQuestion);
 
             return printQuestionForAccessIfExist;
         }
 
         public string QuestionControl(ApplicationDbContext context, int reciveIdQuestion)
         {
-            var controller = context.Questions.SingleOrDefault(x => x.IdDomanda == reciveIdQuestion).Domande;
+            var controller = context.Questions.SingleOrDefault(x => x.IdQuestion == reciveIdQuestion).DefaultQuestions;
 
             return controller;
         }

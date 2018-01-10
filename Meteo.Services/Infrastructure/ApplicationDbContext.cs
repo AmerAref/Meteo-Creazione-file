@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Meteo.Services.Models;
 
 namespace Meteo.Services.Infrastructure
 {
@@ -8,7 +9,11 @@ namespace Meteo.Services.Infrastructure
         public DbSet<User> Users { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<Cities> Cities { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Master> Masters { get; set; }
+        public DbSet<Forecast> Forecast { get; set; }
+        public DbSet<OneDayForecast> OneDayForecast { get; set; }
+        public DbSet<LastFiveDaysForecast> LastFiveDaysForecast { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

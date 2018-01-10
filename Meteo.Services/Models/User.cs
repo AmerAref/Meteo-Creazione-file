@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Meteo.Services
+namespace Meteo.Services.Models
 {
     public class User
     {
@@ -17,8 +17,8 @@ namespace Meteo.Services
         public string UnitOfMeasure { get; set; }
 
         [ForeignKey("Question")]
-        public string IdQuestion { get; set; }
-        public string Question { get; set; }
+        public int IdQuestion { get; set; }
+        public Question Question { get; set; }
 
         [ForeignKey("Roles")]
         public int IdRole { get; set; }

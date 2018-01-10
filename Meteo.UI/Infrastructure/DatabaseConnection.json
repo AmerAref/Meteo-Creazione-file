@@ -1,0 +1,5 @@
+{
+    "ConnectionStrings": {
+        "SampleConnection": "server=localhost;port=3306;userid=root;database=MeteoDatabase;sslmode=none;"
+    }
+}

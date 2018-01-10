@@ -7,7 +7,7 @@ using Meteo.Services.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.IO;
-
+using Meteo.Services.Models;
 namespace Meteo.UI
 {
     public static class Program
@@ -105,8 +105,8 @@ namespace Meteo.UI
 
             var builder = new ConfigurationBuilder()
                 .AddJsonFile(choseConfigurationPc.ConfigGabriel(), optional: false, reloadOnChange: true);
-            var factory = new ApplicationDbContextFactory(); 
-            var context = factory.CreateDbContext(new string[]{});
+            var factory = new ApplicationDbContextFactory();
+            var context = factory.CreateDbContext(new string[] { });
 
             context.SaveChanges();
 
@@ -331,7 +331,6 @@ namespace Meteo.UI
                                 var encryptedAnswer = registration.EncryptPwd(insertAnswer);
                                 Console.WriteLine("Inserisci la lingua");
                                 var languageNewAccount = Console.ReadLine();
-
                                 context.Users.Add(
                                     new User
                                     {

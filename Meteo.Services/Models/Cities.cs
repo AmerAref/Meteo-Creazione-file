@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Meteo.Services
+namespace Meteo.Services.Models
 {
-    public class Cities
+    public class City
     {
         [Key]
         public int Id { get; set; }
