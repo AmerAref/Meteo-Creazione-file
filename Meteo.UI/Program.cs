@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Meteo.Services;
 using Meteo.ExcelManager;
+using Meteo.Services.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.IO;
@@ -54,7 +55,7 @@ namespace Meteo.UI
             var createXlsFromFile = new CreateXlsFromFiles();
             var menu = new Menu();
             var print = new PrintData();
-            var xx = new queryMng();
+            var queryMng = new QueryManager();
             var filePath = "/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file";
             var exit = true;
             var choseConfigurationPc = new ChoseConfigurationPc();
@@ -100,6 +101,7 @@ namespace Meteo.UI
             var usernameNewAccount = "";
             var connection = new DbFactoryManager();
             var usernameAuthentication = "";
+            var user = new User();
             connection.OpenConnection();
 
             var builder = new ConfigurationBuilder()
@@ -194,17 +196,18 @@ namespace Meteo.UI
                                     forAnswerInsertUsername = Console.ReadLine();
                                     var userIfExist = queryMng.GetUser(forAnswerInsertUsername);
                                     var reciveIDQuestion = 0;
+                                    var question = queryMng.GetQuestion(reciveIDQuestion, userIfExist);
 
                                     // controllo se esiste user 
                                     if (userIfExist != null)
                                     {
-                                        var printQuestionForAccessIfExist = "";
+                                        var printQuestionForAccessIfExist = question.DefaultQuestions;
 
                                         // controllo se esiste domanda per user 
                                         if (printQuestionForAccessIfExist != null)
                                         {
                                             // ricavo Domanda con stampa ed accesso a form per modifica psw 
-                                            // printQuestionForAccessAfterControl = question.Defau
+                                            printQuestionForAccessAfterControl = question.DefaultQuestions;
                                             Console.WriteLine(printQuestionForAccessAfterControl);
                                             controlForUserIfExist = 4;
                                         }

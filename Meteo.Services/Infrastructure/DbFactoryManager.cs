@@ -8,6 +8,7 @@ namespace Meteo.Services.Infrastructure
     {
         protected MySqlConnection _connection;
         private string _server;
+        private string _database;
         private string _uid;
         private string _password;
         //Constructor
@@ -21,9 +22,10 @@ namespace Meteo.Services.Infrastructure
         {
             _server = "localhost";
             _uid = "root";
+            _database = "MeteoDatabase";
             _password = "";
             // TODO: da recuperare dai settings
-            var connectionString = $"SERVER={_server}; UID={_uid}; PASSWORD= {_password};";
+            var connectionString = $"SERVER={_server}; DATABASE={_database}; UID={_uid}; PASSWORD= {_password};";
             _connection = new MySqlConnection(connectionString);
         }
 

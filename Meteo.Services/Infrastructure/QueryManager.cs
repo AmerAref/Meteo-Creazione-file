@@ -7,22 +7,6 @@ namespace Meteo.Services.Infrastructure
 {
     public class QueryManager : DbFactoryManager
     {
-
-        public Question QuestionExistance(ApplicationDbContext context, int reciveIdQuestion, User userIfExist)
-        {
-            reciveIdQuestion = userIfExist.IdQuestion;
-            var printQuestionForAccessIfExist = context.Questions.SingleOrDefault(x => x.IdQuestion == reciveIdQuestion);
-
-//            return printQuestionForAccessIfExist;
-//        }
-
-//        public string QuestionControl(ApplicationDbContext context, int reciveIdQuestion)
-//        {
-//            var controller = context.Questions.SingleOrDefault(x => x.IdQuestion == reciveIdQuestion).DefaultQuestions;
-
-            return controller;
-        }
-
         public Question GetQuestion(int reciveIdQuestion, User userIfExist)
         {
             OpenConnection();
