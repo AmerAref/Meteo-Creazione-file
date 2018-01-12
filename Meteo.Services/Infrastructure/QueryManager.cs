@@ -27,5 +27,15 @@ namespace Meteo.Services.Infrastructure
             CloseConnection();
             return user[0];
         }
+
+        public User InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit)
+        {
+            OpenConnection();
+            string query = $"INSERT INTO Users (`Answer`, `IdQuestion`, `Language`, `Name`, `Password`, `Surname`, `UnitOfMeasure`, `Username`) VALUES ('{encryptedAnswer}', '{selectQuestion}', '{languageNewAccount}', '{nameNewAccount}', '{encryptedPwd}', '{surnameNewAccount}', '{measureUnit}', '{usernameNewAccount}')";
+            var cmd = new MySqlCommand(query, _connection);
+            var insert = cmd.ExecuteReader().DataReaderMapToList<User>();
+            CloseConnection();
+            return insert[0];
+        }
     }
 }

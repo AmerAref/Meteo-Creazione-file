@@ -61,8 +61,8 @@ namespace Meteo.UI
             var choseConfigurationPc = new ChoseConfigurationPc();
             string insertNameFileIT = "Inserisci nome file da creare con tipo di estensione (nomefile.estensione)";
             string insertNameFileEN = "Enter the name of the file to be created and its extension (filename.extension)";
-            var selectQuestion = 0;
             var meteoApi = new MeteoApi();
+            var selectQuestion = 0;
             var validationUsername = true;
             var controlWhileAnswer = true;
             var controlForUserIfExist = 0;
@@ -381,13 +381,12 @@ namespace Meteo.UI
                                 {
                                     // menu per domande 
                                     menu.SelectQuestion(context);
-                                    selectQuestion = Convert.ToInt32(Console.ReadLine());
                                     // stampa risposta inserita
+                                    selectQuestion = Convert.ToInt32(Console.ReadLine());
                                     if (lang == "it")
                                     { Console.WriteLine("Inserisci risposta di sicurezza"); }
                                     else
                                     { Console.WriteLine("Insert security answer"); }
-                                    selectQuestion = Convert.ToInt32(Console.ReadLine());
 
                                     // stampa risposta inserita 
                                     Console.WriteLine(selectQuestion);
@@ -410,12 +409,20 @@ namespace Meteo.UI
                                 // criptaggio di Psw e Risposta 
                                 var encryptedPwd = registration.EncryptPwd(pswNewAccount);
                                 var encryptedAnswer = registration.EncryptPwd(insertAnswer);
+                                string measureUnit = "";
                                 if (lang == "it")
-                                { Console.WriteLine("Inserisci la lingua"); }
+                                {
+                                    Console.WriteLine("Inserisci la lingua");
+                                    measureUnit = "metric";
+                                }
                                 else
-                                { Console.WriteLine("Enter the language"); }
+                                {
+                                    Console.WriteLine("Enter the language");
+                                    measureUnit = "imperial";
+                                }
                                 var languageNewAccount = Console.ReadLine();
-                                context.Users.Add(
+                                queryMng.InsertNewUser(encryptedAnswer, usernameNewAccount, surnameNewAccount, nameNewAccuont, selectQuestion, encryptedAnswer, languageNewAccount, measureUnit);
+                                /* context.Users.Add(
                                     new User
                                     {
                                         Password = encryptedPwd,
@@ -426,7 +433,7 @@ namespace Meteo.UI
                                         Answer = encryptedAnswer,
                                         Language = languageNewAccount
                                     }
-                                );
+                                ); */
                                 controlFirstChoiceLogin = false;
                                 validationManagerPsw = false;
                                 if (lang == "it")
@@ -439,7 +446,7 @@ namespace Meteo.UI
                                 if (lang == "it")
                                 { Console.WriteLine($"\nLe due password inserite non corrispondono! {reinsertUserPswIT}"); }
                                 else
-                                { Console.WriteLine($"\nThe two entered passwords don't match! {reinsertUserPswIT}"); }
+                                { Console.WriteLine($"\nThe two entered passwords don't match! {reinsertUserPswEN}"); }
                             }
                         }
                     }
@@ -457,14 +464,14 @@ namespace Meteo.UI
                 connection.OpenConnection();
                 if (choseCreateNewAccuoutOrLogin == "1")
                 {
-                    user = queryMng.GetUser(usernameAuthentication); 
-                    menuLang = user.Language; 
-                    measureUnit = user.UnitOfMeasure; 
+                    user = queryMng.GetUser(usernameAuthentication);
+                    menuLang = user.Language;
+                    measureUnit = user.UnitOfMeasure;
                 }
                 else
                 {
-                    user = queryMng.GetUser(usernameNewAccount); 
-                    menuLang = user.Language; 
+                    user = queryMng.GetUser(usernameNewAccount);
+                    menuLang = user.Language;
                     measureUnit = user.UnitOfMeasure;
                 }
 
