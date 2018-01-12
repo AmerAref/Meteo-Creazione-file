@@ -57,7 +57,7 @@ namespace Meteo.UI
             var createXlsFromFile = new CreateXlsFromFiles();
             var menu = new Menu();
             var print = new PrintData();
-            var databaseManager = new DatabaseManager();
+            var createDatabase = new CreateDatabase();
             //var queryMng = new QueryManager();
             var choseConfigurationPc = new ChoseConfigurationPc();
             var dbfm = new DbFactoryManager();
@@ -91,8 +91,7 @@ namespace Meteo.UI
             {
                 try
                 {
-                    databaseManager.CreateDatabaseIfNotExist();
-                    Console.WriteLine("Database creato con successo");
+                    createDatabase.CreateDatabaseIfNotExist();
 
                 }
                 catch 
@@ -105,9 +104,7 @@ namespace Meteo.UI
             {
                 try 
                 {
-                    databaseManager.DeleteDatabase();
-                    Console.WriteLine("Database creato con successo");
-
+                    createDatabase.DeleteDatabase();
                 }
                 catch 
                 {
@@ -115,7 +112,12 @@ namespace Meteo.UI
                 }
             }
            
-           
+            //var builder = new ConfigurationBuilder()
+            //    .AddJsonFile(choseConfigurationPc.ConfigGabriel(), optional: false, reloadOnChange: true);
+            //var factory = new ApplicationDbContextFactory();
+            //var context = factory.CreateDbContext(new string[] { });
+
+            //context.SaveChanges();
 
             //Console.WriteLine("Scegli la lingua/ Choose the language (it/en)");
             //lang = Console.ReadLine();
