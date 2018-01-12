@@ -63,16 +63,16 @@ namespace Meteo.UI
             Console.WriteLine("****2 - Crea nuovo utente                                 *");
             Console.WriteLine("***********************************************************");
         }
-        public void SelectQuestion(ApplicationDbContext context)
-        {
-            Console.WriteLine("\n*************************************************************************************");
-            Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza ***********");
-            foreach (var question in context.Questions)
-            {
-                Console.WriteLine($"{question.IdQuestion} - {question.DefaultQuestions}");
-            }
-            Console.WriteLine("*************************************************************************************");
-        }
+        //public void SelectQuestion(ApplicationDbContext context)
+        //{
+        //    Console.WriteLine("\n*************************************************************************************");
+        //    Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza ***********");
+        //    foreach (var question in context.Questions)
+        //    {
+        //        Console.WriteLine($"{question.IdQuestion} - {question.DefaultQuestions}");
+        //    }
+        //    Console.WriteLine("*************************************************************************************");
+        //}
 
         public void ShowMenuCreateXlsFile()
         {
@@ -82,6 +82,14 @@ namespace Meteo.UI
             Console.WriteLine("****2 - Crea XLS per dati relativi a 5 giorni             *");
             Console.WriteLine("****3 - Torna al menu principale                          *");
             Console.WriteLine("****4 - Termina sessione                                  *");
+            Console.WriteLine("***********************************************************");
+        }
+        public void MenuDatabaseManager ()
+        {
+            Console.WriteLine("***********************************************************");
+            Console.WriteLine("*************    Digitare il valore del menu    ***********");
+            Console.WriteLine("****1 - Crea Database 'MeteoDatabase'                     *");
+            Console.WriteLine("****2 - Elimina Database 'MeteoDatabase'                  *");
             Console.WriteLine("***********************************************************");
         }
     }
