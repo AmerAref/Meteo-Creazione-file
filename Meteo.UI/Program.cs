@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Meteo.Services;
 using Meteo.ExcelManager;
-using Meteo.Services.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.IO;
@@ -12,7 +11,7 @@ namespace Meteo.UI
 {
     public static class Program
     {
-        //static string choseCreateNewAccuoutOrLogin = "";
+        static string choseCreateNewAccuoutOrLogin = "";
 
         private static Dictionary<string, string> InsertDataForEmail()
         {
@@ -47,9 +46,7 @@ namespace Meteo.UI
 
         static void Main(string[] args)
         {
-            var connection = new DbFactoryManager();
-            var meteoApi = new MeteoApi();
-            //var login = new Login();
+            var login = new Login();
             var registration = new Register();
             var emailManager = new EmailManager();
             var filemenager = new FileMenager();
@@ -57,10 +54,7 @@ namespace Meteo.UI
             var createXlsFromFile = new CreateXlsFromFiles();
             var menu = new Menu();
             var print = new PrintData();
-            var createDatabase = new CreateDatabase();
-            //var queryMng = new QueryManager();
-            var choseConfigurationPc = new ChoseConfigurationPc();
-            var dbfm = new DbFactoryManager();
+            var xx = new queryMng();
             var filePath = "/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file";
             var exit = true;
             var choseConfigurationPc = new ChoseConfigurationPc();
@@ -107,101 +101,86 @@ namespace Meteo.UI
             var connection = new DbFactoryManager();
             var usernameAuthentication = "";
             connection.OpenConnection();
-            var choiceCreateDatabase = Console.ReadLine();
-            if (choiceCreateDatabase == "1")
-            {
-                try
-                {
-                    createDatabase.CreateDatabaseIfNotExist();
 
             var builder = new ConfigurationBuilder()
                 .AddJsonFile(choseConfigurationPc.ConfigGabriel(), optional: false, reloadOnChange: true);
             var factory = new ApplicationDbContextFactory();
             var context = factory.CreateDbContext(new string[] { });
 
-            }
-            if (choiceCreateDatabase == "2")
+            context.SaveChanges();
+
+            Console.WriteLine("Scegli la lingua/ Choose the language (it/en)");
+            lang = Console.ReadLine();
+            var controlFirstChoiceLogin = true;
+            while (controlFirstChoiceLogin)
             {
-                try 
+                if (lang == "it")
+                { menu.ShowMenuAuthenticationIT(); }
+                else
+                { menu.ShowMenuAuthenticationEN(); }
+
+                choseCreateNewAccuoutOrLogin = Console.ReadLine();
+                controlWhilePsw = 0;
+                countAttempts = 2;
+                //Caso scelta Login con utente già registrato su DB
+                if (choseCreateNewAccuoutOrLogin == "1")
                 {
-                    createDatabase.DeleteDatabase();
-                }
-                catch 
-                {
-                    Console.WriteLine("Eliminazione Database non riuscita");    
-                }
-            }
-           
-            //var builder = new ConfigurationBuilder()
-            //    .AddJsonFile(choseConfigurationPc.ConfigGabriel(), optional: false, reloadOnChange: true);
-            //var factory = new ApplicationDbContextFactory();
-            //var context = factory.CreateDbContext(new string[] { });
+                    //Controllo Uscita dal ciclo While
+                    while (controlWhilePsw < 5)
+                    {
+                        // Inserimento User
+                        if (lang == "it")
+                        {
+                            Console.WriteLine(insertUserIT);
+                            usernameAuthentication = Console.ReadLine();
+                            Console.WriteLine(insertPswIT);
+                        }
+                        else
+                        {
+                            Console.WriteLine(insertUserEN);
+                            usernameAuthentication = Console.ReadLine();
+                            Console.WriteLine(insertPswEN);
+                        }
 
-            //context.SaveChanges();
+                        // Inserimento psw mascherata 
+                        var passwordAuthentication = DataMaskManager.MaskData(passwordLogin);
+                        // Criptaggio Psw
+                        var authPwd = registration.EncryptPwd(passwordAuthentication);
+                        // confronto se esiste psw (Massimo 3 volte )
+                        var autentication = login.LoginAttempts(context, usernameAuthentication, authPwd);
+                        if (autentication.Any())
+                        {
+                            // Da il benvenuto e accede al menu Meteo
+                            Console.WriteLine("\n");
+                            if (lang == "it")
+                            { Console.WriteLine("Benvenuto" + " " + $"{usernameAuthentication}"); }
+                            else
+                            { Console.WriteLine("Welcome" + " " + $"{usernameAuthentication}"); }
+                            controlFirstChoiceLogin = false;
+                            controlWhilePsw = 5;
+                        }
+                        else
+                        {
+                            // Reinserimento Psw (massimo altri 2 tentativi)
+                            if (lang == "it")
+                            {
+                                Console.WriteLine($"\n{reinsertUserPswIT}");
+                                Console.WriteLine($"{remainingAttemptsIT} {countAttempts}");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"\n{reinsertUserPswEN}");
+                                Console.WriteLine($"{remainingAttemptsEN} {countAttempts}");
+                            }
 
-            //Console.WriteLine("Scegli la lingua/ Choose the language (it/en)");
-            //lang = Console.ReadLine();
-            //var controlFirstChoiceLogin = true;
-            //while (controlFirstChoiceLogin)
-            //{
-            //    if (lang == "it")
-            //    { menu.ShowMenuAuthenticationIT(); }
-            //    else
-            //    { menu.ShowMenuAuthenticationEN(); }
+                            countAttempts--;
 
-            //    choseCreateNewAccuoutOrLogin = Console.ReadLine();
-            //    controlWhilePsw = 0;
-            //    countAttempts = 2;
-            //    //Caso scelta Login con utente già registrato su DB
-            //    if (choseCreateNewAccuoutOrLogin == "1")
-            //    {
-            //        //Controllo Uscita dal ciclo While
-            //        while (controlWhilePsw < 5)
-            //        {
-            //            // Inserimento User
-            //            if (lang == "it")
-            //            {
-            //                Console.WriteLine(DataInterface.insertUserIT);
-            //                usernameAuthentication = Console.ReadLine();
-            //                Console.WriteLine(DataInterface.insertPswIT);
-            //            }
-            //            else
-            //            {
-            //                Console.WriteLine(DataInterface.insertUserEN);
-            //                usernameAuthentication = Console.ReadLine();
-            //                Console.WriteLine(DataInterface.insertPswEN);
-            //            }
-
-            //            // Inserimento psw mascherata 
-            //            var passwordAuthentication = DataMaskManager.MaskData(passwordLogin);
-            //            // Criptaggio Psw
-            //            var authPwd = registration.EncryptPwd(passwordAuthentication);
-            //            // confronto se esiste psw (Massimo 3 volte )
-            //            var autentication = login.LoginAttempts(context, usernameAuthentication, authPwd);
-            //            if (autentication.Any())
-            //            {
-            //                // Da il benvenuto e accede al menu Meteo
-            //                Console.WriteLine("\n");
-            //                if (lang == "it")
-            //                { Console.WriteLine("Benvenuto" + " " + $"{usernameAuthentication}"); }
-            //                else
-            //                { Console.WriteLine("Welcome" + " " + $"{usernameAuthentication}"); }
-            //                controlFirstChoiceLogin = false;
-            //                controlWhilePsw = 5;
-            //            }
-            //            else
-            //            {
-            //                // Reinserimento Psw (massimo altri 2 tentativi)
-            //                if (lang == "it")
-            //                {
-            //                    Console.WriteLine($"\n{DataInterface.reinsertUserPswIT}");
-            //                    Console.WriteLine($"{DataInterface.remainingAttemptsIT} {countAttempts}");
-            //                }
-            //                else
-            //                {
-            //                    Console.WriteLine($"\n{DataInterface.reinsertUserPswEN}");
-            //                    Console.WriteLine($"{DataInterface.remainingAttemptsEN} {countAttempts}");
-            //                }
+                            // al terzo tentativo da la possibilà di recuperare e modificare psw tramite domanda sicurezza precedentemente impostata
+                            if (controlWhilePsw == 2)
+                            {
+                                // controllo while (esce qundo sbaglia 3 volte username e/o risposta sicurezza )
+                                while (controlForUserIfExist < 4)
+                                {
 
                                     if (controlForUserIfExist == 3)
                                     {
@@ -215,18 +194,17 @@ namespace Meteo.UI
                                     forAnswerInsertUsername = Console.ReadLine();
                                     var userIfExist = queryMng.GetUser(forAnswerInsertUsername);
                                     var reciveIDQuestion = 0;
-                                    var question = queryMng.
 
                                     // controllo se esiste user 
                                     if (userIfExist != null)
                                     {
-                                        var printQuestionForAccessIfExist = questions.
+                                        var printQuestionForAccessIfExist = "";
 
                                         // controllo se esiste domanda per user 
                                         if (printQuestionForAccessIfExist != null)
                                         {
                                             // ricavo Domanda con stampa ed accesso a form per modifica psw 
-                                            printQuestionForAccessAfterControl = question.Defau
+                                            // printQuestionForAccessAfterControl = question.Defau
                                             Console.WriteLine(printQuestionForAccessAfterControl);
                                             controlForUserIfExist = 4;
                                         }
@@ -234,123 +212,106 @@ namespace Meteo.UI
                                     controlForUserIfExist++;
                                 }
 
-            //                        // controllo se esiste user 
-            //                        if (userIfExist != null)
-            //                        {
-            //                            var printQuestionForAccessIfExist = queryMng.QuestionExistance(context, reciveIDQuestion, userIfExist);
+                                // inserimento Risposta mascherata 
+                                var insertAnswerMaskered = DataMaskManager.MaskData(answerToLogin);
+                                // criptaggio della Risposta inserita 
+                                var insertAnswerForAccessEcrypted = registration.EncryptPwd(insertAnswerMaskered);
+                                autentication = login.ControlAnswer(insertAnswerForAccessEcrypted, context, forAnswerInsertUsername).ToList();
+                                // Verifica se Risposta è corretta. Il risultato è dentro autentication 
+                                if (autentication.Any())
+                                {
+                                    //forech effettuato su l'unico elemeto all'interno della lista 
+                                    foreach (var tableUser in autentication)
+                                    {
+                                        var controlRequirementsNewPsw = true;
+                                        if (lang == "it")
+                                        { Console.WriteLine($"\n{newPswIT}"); }
+                                        else
+                                        { Console.WriteLine($"\n{newPswEN}"); }
+                                        // Dopo 3 volte che non vengono rispettati i criteri di sicurezza della psw termina la sessione
+                                        while (controlRequirementsNewPsw)
+                                        {
+                                            var newPswClear = "";
+                                            // maschera nuova psw 
+                                            var newPswMask = DataMaskManager.MaskData(newPswClear);
+                                            // controlo su vincoli di sicurezza psw
+                                            if (Helper.RegexForPsw(pswNewAccount) == false)
+                                            {
+                                                if (lang == "it")
+                                                {
+                                                    Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire almeno 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
+                                                    Console.WriteLine("\nReinserisci Password!");
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("\nThe security criteria are not met (Enter at least 1 capital letter, 1 number, 1 special character. The length must be greater than or equal to 8)");
+                                                    Console.WriteLine("\nReenter Password!");
+                                                }
 
-            //                            // controllo se esiste domanda per user 
-            //                            if (printQuestionForAccessIfExist != null)
-            //                            {
-            //                                // ricavo Domanda con stampa ed accesso a form per modifica psw 
-            //                                printQuestionForAccessAfterControl = queryMng.QuestionControl(context, reciveIDQuestion);
-            //                                Console.WriteLine(printQuestionForAccessAfterControl);
-            //                                controlForUserIfExist = 4;
-            //                            }
-            //                        }
-            //                        controlForUserIfExist++;
-            //                    }
+                                                countAttemptsPswRegister++;
 
-            //                    // inserimento Risposta mascherata 
-            //                    var insertAnswerMaskered = DataMaskManager.MaskData(answerToLogin);
-            //                    // criptaggio della Risposta inserita 
-            //                    var insertAnswerForAccessEcrypted = registration.EncryptPwd(insertAnswerMaskered);
-            //                    autentication = login.ControlAnswer(insertAnswerForAccessEcrypted, context, forAnswerInsertUsername).ToList();
-            //                    // Verifica se Risposta è corretta. Il risultato è dentro autentication 
-            //                    if (autentication.Any())
-            //                    {
-            //                        //forech effettuato su l'unico elemeto all'interno della lista 
-            //                        foreach (var tableUser in autentication)
-            //                        {
-            //                            var controlRequirementsNewPsw = true;
-            //                            if (lang == "it")
-            //                            { Console.WriteLine($"\n{DataInterface.newPswIT}"); }
-            //                            else
-            //                            { Console.WriteLine($"\n{DataInterface.newPswEN}"); }
-            //                            // Dopo 3 volte che non vengono rispettati i criteri di sicurezza della psw termina la sessione
-            //                            while (controlRequirementsNewPsw)
-            //                            {
-            //                                var newPswClear = "";
-            //                                // maschera nuova psw 
-            //                                var newPswMask = DataMaskManager.MaskData(newPswClear);
-            //                                // controlo su vincoli di sicurezza psw
-            //                                if (Helper.RegexForPsw(pswNewAccount) == false)
-            //                                {
-            //                                    if (lang == "it")
-            //                                    {
-            //                                        Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire almeno 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
-            //                                        Console.WriteLine("\nReinserisci Password!");
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        Console.WriteLine("\nThe security criteria are not met (Enter at least 1 capital letter, 1 number, 1 special character. The length must be greater than or equal to 8)");
-            //                                        Console.WriteLine("\nReenter Password!");
-            //                                    }
+                                                // uscita in caso di 3 errori
+                                                if (countAttemptsPswRegister == 3)
+                                                {
+                                                    if (lang == "en")
+                                                    { Console.WriteLine("Mi dispiace, ma hai esaurito i tentativi!"); }
+                                                    else
+                                                    { Console.WriteLine("I'm sorry, but you've exhausted the attempts!"); }
+                                                    return;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                // criptaggio nuova psw 
+                                                var newPswEncrypted = registration.EncryptPwd(newPswMask);
 
-            //                                    countAttemptsPswRegister++;
+                                                // Aggiornamento psw in DB
+                                                tableUser.Password = newPswEncrypted;
+                                                // salvataggio aggiornamento nel DB 
+                                                context.SaveChanges();
+                                                controlWhilePsw = 5;
+                                                // Uscita dal while 
+                                                controlFirstChoiceLogin = false;
+                                                controlRequirementsNewPsw = false;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        // uscita Whie Primario
+                        controlWhilePsw++;
+                    }
+                }
 
-            //                                    // uscita in caso di 3 errori
-            //                                    if (countAttemptsPswRegister == 3)
-            //                                    {
-            //                                        if (lang == "en")
-            //                                        { Console.WriteLine("Mi dispiace, ma hai esaurito i tentativi!"); }
-            //                                        else
-            //                                        { Console.WriteLine("I'm sorry, but you've exhausted the attempts!"); }
-            //                                        return;
-            //                                    }
-            //                                }
-            //                                else
-            //                                {
-            //                                    // criptaggio nuova psw 
-            //                                    var newPswEncrypted = registration.EncryptPwd(newPswMask);
+                // Creazione nuovo utente 
+                if (choseCreateNewAccuoutOrLogin == "2")
+                {
+                    // Inserimento nome Registrazione
+                    if (lang == "it")
+                    { Console.WriteLine("Inserisci Nome"); }
+                    else
+                    { Console.WriteLine("Enter Name"); }
+                    var nameNewAccuont = Console.ReadLine();
 
-            //                                    // Aggiornamento psw in DB
-            //                                    tableUser.Password = newPswEncrypted;
-            //                                    // salvataggio aggiornamento nel DB 
-            //                                    context.SaveChanges();
-            //                                    controlWhilePsw = 5;
-            //                                    // Uscita dal while 
-            //                                    controlFirstChoiceLogin = false;
-            //                                    controlRequirementsNewPsw = false;
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //            // uscita Whie Primario
-            //            controlWhilePsw++;
-            //        }
-            //    }
+                    // Inserimento Cognome Registrazione
+                    if (lang == "it")
+                    { Console.WriteLine("Inserisci il Cognome"); }
+                    else
+                    { Console.WriteLine("Enter Surname"); }
+                    var surnameNewAccount = Console.ReadLine();
+                    // While Per validazione psw
+                    while (validationManagerPsw)
+                    {
+                        // While per controllo username (deve essere univoco sul DB)
+                        while (validationUsername)
+                        {
+                            if (lang == "it")
+                            { Console.WriteLine(insertUserIT); }
+                            else
+                            { Console.WriteLine(insertUserEN); }
 
-            //    // Creazione nuovo utente 
-            //    if (choseCreateNewAccuoutOrLogin == "2")
-            //    {
-            //        // Inserimento nome Registrazione
-            //        if (lang == "it")
-            //        { Console.WriteLine("Inserisci Nome"); }
-            //        else
-            //        { Console.WriteLine("Enter Name"); }
-            //        var nameNewAccuont = Console.ReadLine();
-
-            //        // Inserimento Cognome Registrazione
-            //        if (lang == "it")
-            //        { Console.WriteLine("Inserisci il Cognome"); }
-            //        else
-            //        { Console.WriteLine("Enter Surname"); }
-            //        var surnameNewAccount = Console.ReadLine();
-            //        // While Per validazione psw
-            //        while (validationManagerPsw)
-            //        {
-            //            // While per controllo username (deve essere univoco sul DB)
-            //            while (validationUsername)
-            //            {
-            //                if (lang == "it")
-            //                { Console.WriteLine(DataInterface.insertUserIT); }
-            //                else
-            //                { Console.WriteLine(DataInterface.insertUserEN); }
-
-            //                usernameNewAccount = Console.ReadLine();
+                            usernameNewAccount = Console.ReadLine();
 
                             var autentication = login.ControlUserIfExist(context, usernameNewAccount);
                             // autentication è vuota nel caso in cui non esiste un user con stesso username
@@ -425,20 +386,17 @@ namespace Meteo.UI
                                     { Console.WriteLine("Insert security answer"); }
                                     selectQuestion = Convert.ToInt32(Console.ReadLine());
 
-            //            pswNewAccount = DataMaskManager.MaskData(passwordRegistration);
-            //            // Controlla se Accetta i criteri di sicurezza psw
-            //            if (Helper.RegexForPsw(pswNewAccount) == false)
-            //            {
-            //                if (lang == "it")
-            //                {
-            //                    Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire almeno 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
-            //                    Console.WriteLine("\nReinserisci Password.");
-            //                }
-            //                else
-            //                {
-            //                    Console.WriteLine("\nThe security criteria are not met (Enter at least 1 capital letter, 1 number, 1 special character. The length must be greater than or equal to 8)");
-            //                    Console.WriteLine("\nReenter Password.");
-            //                }
+                                    // stampa risposta inserita 
+                                    Console.WriteLine(selectQuestion);
+                                    // conferma rispost inserita 
+                                    insertAnswer = Console.ReadLine();
+                                    if (lang == "it")
+                                    { Console.WriteLine("La risposta richiesta è la seguente? "); }
+                                    else
+                                    { Console.WriteLine("Is the following the required answer?"); }
+                                    Console.WriteLine(insertAnswer);
+                                    Console.WriteLine("S/n");
+                                    var controlAnswer = Console.ReadLine();
 
                                     // digita "S" Esce da While altrimenti ti fa reinserire
                                     if (controlAnswer == "S")
@@ -485,89 +443,11 @@ namespace Meteo.UI
                 }
             }
 
-            //                        // digita "S" Esce da While altrimenti ti fa reinserire
-            //                        if (controlAnswer == "S")
-            //                        {
-            //                            controlWhileAnswer = false;
-            //                        }
-            //                    }
-            //                    // criptaggio di Psw e Risposta 
-            //                    var encryptedPwd = registration.EncryptPwd(pswNewAccount);
-            //                    var encryptedAnswer = registration.EncryptPwd(insertAnswer);
-            //                    if (lang == "it")
-            //                    {
-            //                        Console.WriteLine("Inserisci la lingua");
-            //                    }
-            //                    else
-            //                    {
-            //                        Console.WriteLine("Enter the language");
-            //                    }
-            //                    var languageNewAccount = Console.ReadLine();
+            // salvataggio modifiche su DB 
+            context.SaveChanges();
+            connection.CloseConnection();
 
-            //                    context.Users.Add(
-            //                        new User
-            //                        {
-            //                            Password = encryptedPwd,
-            //                            Username = usernameNewAccount,
-            //                            Surname = surnameNewAccount,
-            //                            Name = nameNewAccuont,
-            //                            IdQuestion = IdQuestionForTableUser,
-            //                            Answer = encryptedAnswer,
-            //                            Language = languageNewAccount,
-            //                            IdRole = roleSelected
-            //                        }
-            //                    );
-            //                    controlFirstChoiceLogin = false;
-            //                    validationManagerPsw = false;
-            //                    if (lang == "it")
-            //                    { 
-            //                        Console.WriteLine($"\nBenvenuto utente: {usernameNewAccount}"); 
-            //                    }
-            //                    else
-            //                    { 
-            //                        Console.WriteLine($"\nWelcome user: {usernameNewAccount}"); 
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    if (lang == "it")
-            //                    { 
-            //                        Console.WriteLine($"\nLe due password inserite non corrispondono! {DataInterface.reinsertUserPswIT}");
-            //                    }
-            //                    else
-            //                    { 
-            //                        Console.WriteLine($"\nThe two entered passwords don't match! {DataInterface.reinsertUserPswIT}"); 
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// salvataggio modifiche su DB 
-            //context.SaveChanges();
-            //connection.CloseConnection();
-
-            //while (exit)
-            //{
-            //var menuLang = "";
-            //connection.OpenConnection();
-            //if (choseCreateNewAccuoutOrLogin == "1")
-            //{
-            //    menuLang = context.Users.SingleOrDefault(x => x.Username.Equals(usernameAuthentication)).Language;
-            //    Console.WriteLine(menuLang);
-            //}
-            //else
-            //{
-            //    menuLang = context.Users.SingleOrDefault(x => x.Username.Equals(usernameNewAccount)).Language;
-            //    Console.WriteLine(menuLang);
-            //}
-
-            //connection.CloseConnection();
-            var menuLang = "it";
-            menu.ShowFirst();
-            var sceltaPrimaria = Console.ReadLine();
-            switch (sceltaPrimaria)
+            while (exit)
             {
                 var menuLang = "";
                 var measureUnit = "";
