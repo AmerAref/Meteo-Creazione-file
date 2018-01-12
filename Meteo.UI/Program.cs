@@ -57,7 +57,7 @@ namespace Meteo.UI
             var createXlsFromFile = new CreateXlsFromFiles();
             var menu = new Menu();
             var print = new PrintData();
-            var createDatabase = new CreateDatabase();
+            var databaseManager = new DatabaseManager();
             //var queryMng = new QueryManager();
             var choseConfigurationPc = new ChoseConfigurationPc();
             var filePath = "/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file";
@@ -90,7 +90,8 @@ namespace Meteo.UI
             {
                 try
                 {
-                    createDatabase.CreateDatabaseIfNotExist();
+                    databaseManager.CreateDatabaseIfNotExist();
+                    Console.WriteLine("Database creato con successo");
 
                 }
                 catch 
@@ -103,7 +104,9 @@ namespace Meteo.UI
             {
                 try 
                 {
-                    createDatabase.DeleteDatabase();
+                    databaseManager.DeleteDatabase();
+                    Console.WriteLine("Database creato con successo");
+
                 }
                 catch 
                 {
@@ -111,12 +114,7 @@ namespace Meteo.UI
                 }
             }
            
-            //var builder = new ConfigurationBuilder()
-            //    .AddJsonFile(choseConfigurationPc.ConfigGabriel(), optional: false, reloadOnChange: true);
-            //var factory = new ApplicationDbContextFactory();
-            //var context = factory.CreateDbContext(new string[] { });
-
-            //context.SaveChanges();
+           
 
             //Console.WriteLine("Scegli la lingua/ Choose the language (it/en)");
             //lang = Console.ReadLine();
