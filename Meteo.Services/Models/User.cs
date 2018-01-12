@@ -7,7 +7,6 @@ namespace Meteo.Services.Models
     {
         [Key]
         public int IdUser { get; set; }
-
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Password { get; set; }
@@ -16,12 +15,10 @@ namespace Meteo.Services.Models
         public string Language { get; set; }
         public string UnitOfMeasure { get; set; }
 
-        [ForeignKey("Question")]
         public int IdQuestion { get; set; }
-        public Question Question { get; set; }
 
-        [ForeignKey("Roles")]
+        /* [ForeignKey("Roles")]
         public int IdRole { get; set; }
-        public Role Role { get; set; }
+        public Role Role { get; set; } */
     }
 }

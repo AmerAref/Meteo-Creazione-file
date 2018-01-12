@@ -1,5 +1,6 @@
 using System;
 using MySql.Data.MySqlClient;
+using Meteo.Services.Models;
 
 namespace Meteo.Services.Infrastructure
 {
