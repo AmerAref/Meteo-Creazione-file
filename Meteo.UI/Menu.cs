@@ -1,4 +1,5 @@
 using System;
+using Meteo.Services;
 using Meteo.Services.Infrastructure;
 
 namespace Meteo.UI
@@ -63,16 +64,20 @@ namespace Meteo.UI
             Console.WriteLine("****2 - Crea nuovo utente                                 *");
             Console.WriteLine("***********************************************************");
         }
-        //public void SelectQuestion(ApplicationDbContext context)
-        //{
-        //    Console.WriteLine("\n*************************************************************************************");
-        //    Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza ***********");
-        //    foreach (var question in context.Questions)
-        //    {
-        //        Console.WriteLine($"{question.IdQuestion} - {question.DefaultQuestions}");
-        //    }
-        //    Console.WriteLine("*************************************************************************************");
-        //}
+        public void SelectQuestion()
+        {
+            var queryManager = new QueryManager();
+            var allQuestionObj = queryManager.AllQuestion();
+            var countQuestion = 0;
+            Console.WriteLine("\n*************************************************************************************");
+            Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza ***********");
+            foreach (var question in allQuestionObj)
+            {
+                Console.WriteLine($"{countQuestion} - {question.ToString()}");
+                countQuestion++;
+            }
+            Console.WriteLine("*************************************************************************************");
+        }
 
         public void ShowMenuCreateXlsFile()
         {

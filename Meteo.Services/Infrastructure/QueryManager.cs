@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 
 using Meteo.Services.Models;
 namespace Meteo.Services.Infrastructure
@@ -18,14 +19,14 @@ namespace Meteo.Services.Infrastructure
             return question[0];
         }
 
-        public User GetUser(string username)
+        public List<User> GetUser(string username)
         {
             OpenConnection();
             string query = $"SELECT * FROM Users WHERE Username = '{username}'";
             var cmd = new MySqlCommand(query, _connection);
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
-            return user[0];
+            return user;
         }
 
         public User InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit)
@@ -36,6 +37,44 @@ namespace Meteo.Services.Infrastructure
             var insert = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
             return insert[0];
+        }
+        public List<User> GetUSerIfExist(string username, string psw)
+        {
+            OpenConnection();
+            string query = $"SELECT Username FROM Users WHERE Username = '{username}' AND Psw ={psw}";
+            var cmd = new MySqlCommand(query, _connection);
+            var user = cmd.ExecuteReader().DataReaderMapToList<User>();
+            CloseConnection();
+            return user;
+        }
+
+
+        public List<User> AutentiationWithAnswer(string answer, string username)
+        {
+            OpenConnection();
+            string query = $" SELECT Username FROM Users WHERE Username = '{username} AND Answer = {answer}";
+            var cmd = new MySqlCommand(query, _connection);
+            var user = cmd.ExecuteReader().DataReaderMapToList<User>();
+            CloseConnection();
+            return user;
+        }
+        public void QueryForUpdatePsw(string psw, string username)
+        {
+            OpenConnection();
+            string query = $" UPDATE Users SET Psw = {psw} WHERE Username = {username}";
+            var cmd = new MySqlCommand(query, _connection);
+            var user = cmd.ExecuteReader().DataReaderMapToList<User>();
+            CloseConnection();
+            return;
+        }
+        public List<User> AllQuestion ()
+        {
+            OpenConnection();
+            string query = $"SELECT DefaultQuestions, IdQuestion FROM Question ";
+            var cmd = new MySqlCommand(query, _connection);
+            var user = cmd.ExecuteReader().DataReaderMapToList<User>();
+            CloseConnection();
+            return user;
         }
     }
 }

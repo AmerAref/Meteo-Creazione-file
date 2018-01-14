@@ -1,6 +1,5 @@
 using System;
 using MySql.Data.MySqlClient;
-using Meteo.Services.Models;
 
 namespace Meteo.Services.Infrastructure
 {
@@ -63,6 +62,6 @@ namespace Meteo.Services.Infrastructure
                 return false;
             }
         }
-
+      
     }
 }
