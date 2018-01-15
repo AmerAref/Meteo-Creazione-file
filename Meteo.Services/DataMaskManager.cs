@@ -29,9 +29,6 @@ namespace Meteo.Services
                         dataNotMaskered += key.KeyChar;
                         Console.Write("*");
                     }
-
-
-
                 }
             }
             while (key.Key != ConsoleKey.Enter);

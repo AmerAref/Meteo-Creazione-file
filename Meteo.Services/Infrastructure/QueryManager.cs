@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
+using Meteo.Services.OpenWeatherMap.Models;
 
 using Meteo.Services.Models;
 namespace Meteo.Services.Infrastructure
@@ -12,30 +13,30 @@ namespace Meteo.Services.Infrastructure
         {
             OpenConnection();
             reciveIdQuestion = userIfExist.IdQuestion;
-            string query = $"SELECT * FROM Questions WHERE IdQuestion = '{reciveIdQuestion}'";
+            string query = $"SELECT * FROM Question WHERE IdQuestion = '{reciveIdQuestion}'";
             var cmd = new MySqlCommand(query, _connection);
             var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
             CloseConnection();
             return question[0];
         }
-        public List<User> GetUser(string username)
+        public User GetUser(string username)
         {
             OpenConnection();
             string query = $"SELECT * FROM User WHERE Username = '{username}'";
             var cmd = new MySqlCommand(query, _connection);
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
-            return user;
+            return user[0];
         }
         public void InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit, int role)
         {
             OpenConnection();
-            string query = $"INSERT INTO User (`Name`,`Surname`,  `Username`,  `Password`, `IdQuestion`, `Answer`, `Language`, `UnitOfMeasure`, `IdRole`) VALUES ('{nameNewAccount}', '{surnameNewAccount}','{usernameNewAccount}', '{encryptedPwd}', {selectQuestion}, '{encryptedAnswer}', '{languageNewAccount}', '{measureUnit}',  {role})";
+            string query = $"INSERT INTO User (`Name`, `Surname`, `Username`, `Password`, `IdQuestion`, `Answer`, `Language`, `UnitOfMeasure`, `IdRole`) VALUES ('{nameNewAccount}', '{surnameNewAccount}','{usernameNewAccount}', '{encryptedPwd}', {selectQuestion}, '{encryptedAnswer}', '{languageNewAccount}', '{measureUnit}',  {role})";
             var cmd = new MySqlCommand(query, _connection);
-            var insert = cmd.ExecuteReader().DataReaderMapToList<User>();
+            cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
         }
-        public List<User> GetUSerIfExist(string username, string psw)
+        public List<User> GetUserIfExist(string username, string psw)
         {
             OpenConnection();
             string query = $"SELECT * FROM User WHERE Username = '{username}' AND Password = '{psw}'";
