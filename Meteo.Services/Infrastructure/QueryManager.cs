@@ -18,21 +18,19 @@ namespace Meteo.Services.Infrastructure
             CloseConnection();
             return question[0];
         }
-
         public List<User> GetUser(string username)
         {
             OpenConnection();
-            string query = $"SELECT * FROM Users WHERE Username = '{username}'";
+            string query = $"SELECT * FROM User WHERE Username = '{username}'";
             var cmd = new MySqlCommand(query, _connection);
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
             return user;
         }
-
-        public User InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit)
+        public User InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit, int role)
         {
             OpenConnection();
-            string query = $"INSERT INTO Users (`Answer`, `IdQuestion`, `Language`, `Name`, `Password`, `Surname`, `UnitOfMeasure`, `Username`) VALUES ('{encryptedAnswer}', '{selectQuestion}', '{languageNewAccount}', '{nameNewAccount}', '{encryptedPwd}', '{surnameNewAccount}', '{measureUnit}', '{usernameNewAccount}')";
+            string query = $"INSERT INTO User (`Name`, `Username`, `Surname`, `Password`, `Answer`, `Language`, `UnitOfMeasure`, `IdQuestion`, `IdRole`) VALUES ('{nameNewAccount}', '{surnameNewAccount}', '{encryptedPwd}', '{usernameNewAccount}', '{encryptedAnswer}', '{languageNewAccount}', '{measureUnit}', {selectQuestion}, {role})";
             var cmd = new MySqlCommand(query, _connection);
             var insert = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
@@ -41,18 +39,16 @@ namespace Meteo.Services.Infrastructure
         public List<User> GetUSerIfExist(string username, string psw)
         {
             OpenConnection();
-            string query = $"SELECT Username FROM Users WHERE Username = '{username}' AND Psw ={psw}";
+            string query = $"SELECT Username FROM User WHERE Username = '{username}' AND Psw ={psw}";
             var cmd = new MySqlCommand(query, _connection);
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
             return user;
         }
-
-
         public List<User> AutentiationWithAnswer(string answer, string username)
         {
             OpenConnection();
-            string query = $" SELECT Username FROM Users WHERE Username = '{username} AND Answer = {answer}";
+            string query = $" SELECT Username FROM User WHERE Username = '{username} AND Answer = {answer}";
             var cmd = new MySqlCommand(query, _connection);
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
@@ -61,20 +57,29 @@ namespace Meteo.Services.Infrastructure
         public void QueryForUpdatePsw(string psw, string username)
         {
             OpenConnection();
-            string query = $" UPDATE Users SET Psw = {psw} WHERE Username = {username}";
+            string query = $" UPDATE User SET Psw = {psw} WHERE Username = {username}";
             var cmd = new MySqlCommand(query, _connection);
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
             return;
         }
-        public List<User> AllQuestion ()
+        public List<Question> AllQuestion()
         {
             OpenConnection();
-            string query = $"SELECT DefaultQuestions, IdQuestion FROM Question ";
+            string query = $"SELECT IdQuestion, DefaultQuestion FROM Question ";
             var cmd = new MySqlCommand(query, _connection);
-            var user = cmd.ExecuteReader().DataReaderMapToList<User>();
+            var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
             CloseConnection();
-            return user;
+            return question;
+        }
+        public List<Role> AllRoles()
+        {
+            OpenConnection();
+            string query = $"SELECT * FROM Role ";
+            var cmd = new MySqlCommand(query, _connection);
+            var role = cmd.ExecuteReader().DataReaderMapToList<Role>();
+            CloseConnection();
+            return role;
         }
     }
 }

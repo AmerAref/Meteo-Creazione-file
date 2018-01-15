@@ -17,8 +17,6 @@ namespace Meteo.Services.Models
 
         public int IdQuestion { get; set; }
 
-        [ForeignKey("Roles")]
         public int IdRole { get; set; }
-        public Role Role { get; set; } 
     }
 }

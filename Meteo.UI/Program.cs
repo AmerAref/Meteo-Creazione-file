@@ -104,7 +104,7 @@ namespace Meteo.UI
             var usernameAuthentication = "";
             var user = new User();
 
-          
+
 
 
             Console.WriteLine("Scegli la lingua/ Choose the language (it/en)");
@@ -210,13 +210,13 @@ namespace Meteo.UI
                                     // controllo se esiste user 
                                     if (userIfExist != null)
                                     {
-                                        var printQuestionForAccessIfExist = question.DefaultQuestions;
+                                        var printQuestionForAccessIfExist = question.DefaultQuestion;
 
                                         // controllo se esiste domanda per user 
                                         if (printQuestionForAccessIfExist != null)
                                         {
                                             // ricavo Domanda con stampa ed accesso a form per modifica psw 
-                                            printQuestionForAccessAfterControl = question.DefaultQuestions;
+                                            printQuestionForAccessAfterControl = question.DefaultQuestion;
                                             Console.WriteLine(printQuestionForAccessAfterControl);
                                             controlForUserIfExist = 4;
                                         }
@@ -300,23 +300,23 @@ namespace Meteo.UI
                 {
                     // Inserimento nome Registrazione
                     if (lang == "it")
-                    { 
+                    {
                         Console.WriteLine("Inserisci Nome");
                     }
                     else
-                    { 
-                        Console.WriteLine("Enter Name"); 
+                    {
+                        Console.WriteLine("Enter Name");
                     }
                     var nameNewAccuont = Console.ReadLine();
 
                     // Inserimento Cognome Registrazione
                     if (lang == "it")
-                    { 
+                    {
                         Console.WriteLine("Inserisci il Cognome");
                     }
                     else
-                    { 
-                        Console.WriteLine("Enter Surname"); 
+                    {
+                        Console.WriteLine("Enter Surname");
                     }
                     var surnameNewAccount = Console.ReadLine();
                     // While Per validazione psw
@@ -342,12 +342,12 @@ namespace Meteo.UI
                             {
                                 // non ti fa uscire da while (reinserisci Username)
                                 if (lang == "it")
-                                { 
+                                {
                                     Console.WriteLine("Username già esistente. Provare con uno diverso!");
                                 }
                                 else
-                                { 
-                                    Console.WriteLine("Username already exists. Try with a different one!"); 
+                                {
+                                    Console.WriteLine("Username already exists. Try with a different one!");
                                 }
                             }
                             else
@@ -357,12 +357,12 @@ namespace Meteo.UI
                             }
                         }
                         if (lang == "it")
-                        { 
-                            Console.WriteLine(insertPswIT); 
+                        {
+                            Console.WriteLine(insertPswIT);
                         }
                         else
-                        { 
-                            Console.WriteLine(insertPswEN); 
+                        {
+                            Console.WriteLine(insertPswEN);
                         }
                         // Inserisci Psw mascherata
 
@@ -387,10 +387,10 @@ namespace Meteo.UI
                             {
                                 if (lang == "it")
                                 {
-                                    Console.WriteLine("Mi dispiace, ma hai esaurito i tentativi!"); 
+                                    Console.WriteLine("Mi dispiace, ma hai esaurito i tentativi!");
                                 }
                                 else
-                                { 
+                                {
                                     Console.WriteLine("I'm sorry, but you've exhausted the attempts!");
                                 }
                                 return;
@@ -400,12 +400,12 @@ namespace Meteo.UI
                         else
                         {
                             if (lang == "it")
-                            { 
-                                Console.WriteLine("\nReinserisci Password."); 
+                            {
+                                Console.WriteLine("\nReinserisci Password.");
                             }
                             else
-                            { 
-                                Console.WriteLine("\nReenter Password."); 
+                            {
+                                Console.WriteLine("\nReenter Password.");
                             }
                             // maschera reinserimento psw
                             var pswNewAccountComparison = DataMaskManager.MaskData(passwordRegistration);
@@ -445,19 +445,29 @@ namespace Meteo.UI
                                 // criptaggio di Psw e Risposta 
                                 var encryptedPwd = registration.EncryptPwd(pswNewAccount);
                                 var encryptedAnswer = registration.EncryptPwd(insertAnswer);
-                                 measureUnit = "";
+                                var languageNewAccount = "";
+                                int roleNewAccount;
+                                measureUnit = "";
                                 if (lang == "it")
                                 {
                                     Console.WriteLine("Inserisci la lingua");
+                                    languageNewAccount = Console.ReadLine();
+                                    menu.SelectRole();
+                                    Console.WriteLine("Inserisci il ruolo");
+                                    roleNewAccount = Convert.ToInt32(Console.ReadLine());
                                     measureUnit = "metric";
                                 }
                                 else
                                 {
                                     Console.WriteLine("Enter the language");
+                                    languageNewAccount = Console.ReadLine();
+                                    menu.SelectRole();
+                                    Console.WriteLine("Insert the role");
+                                    roleNewAccount = Convert.ToInt32(Console.ReadLine());
                                     measureUnit = "imperial";
                                 }
-                                var languageNewAccount = Console.ReadLine();
-                                queryMng.InsertNewUser(encryptedAnswer, usernameNewAccount, surnameNewAccount, nameNewAccuont, selectQuestion, encryptedAnswer, languageNewAccount, measureUnit);
+
+                                queryMng.InsertNewUser(encryptedAnswer, usernameNewAccount, surnameNewAccount, nameNewAccuont, selectQuestion, encryptedAnswer, languageNewAccount, measureUnit, roleNewAccount);
                                 /* context.Users.Add(
                                     new User
                                     {

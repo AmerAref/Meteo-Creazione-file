@@ -6,7 +6,6 @@ namespace Meteo.Services.Models
     {
         [Key]
         public int IdQuestion { get; set; }
-        public string DefaultQuestions { get; set; }
+        public string DefaultQuestion { get; set; }
     }
-
 }

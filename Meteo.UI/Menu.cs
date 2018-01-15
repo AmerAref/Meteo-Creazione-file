@@ -6,6 +6,8 @@ namespace Meteo.UI
 {
     public class Menu
     {
+        QueryManager queryManager = new QueryManager();
+
         public void ShowMenuAuthenticationIT()
         {
             Console.WriteLine("***********************************************************");
@@ -66,15 +68,24 @@ namespace Meteo.UI
         }
         public void SelectQuestion()
         {
-            var queryManager = new QueryManager();
             var allQuestionObj = queryManager.AllQuestion();
-            var countQuestion = 0;
             Console.WriteLine("\n*************************************************************************************");
             Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza ***********");
             foreach (var question in allQuestionObj)
             {
-                Console.WriteLine($"{countQuestion} - {question.ToString()}");
-                countQuestion++;
+                Console.WriteLine($"{question.IdQuestion} - {question.DefaultQuestion}");
+            }
+            Console.WriteLine("*************************************************************************************");
+        }
+
+        public void SelectRole()
+        {
+            var allRoles = queryManager.AllRoles();
+            Console.WriteLine("\n*************************************************************************************");
+            Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza ***********");
+            foreach (var role in allRoles)
+            {
+                Console.WriteLine($"{role.IdRole} - {role.RoleType}");
             }
             Console.WriteLine("*************************************************************************************");
         }
@@ -89,7 +100,7 @@ namespace Meteo.UI
             Console.WriteLine("****4 - Termina sessione                                  *");
             Console.WriteLine("***********************************************************");
         }
-        public void MenuDatabaseManager ()
+        public void MenuDatabaseManager()
         {
             Console.WriteLine("***********************************************************");
             Console.WriteLine("*************    Digitare il valore del menu    ***********");
