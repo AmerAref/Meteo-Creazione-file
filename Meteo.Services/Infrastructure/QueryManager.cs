@@ -22,7 +22,7 @@ namespace Meteo.Services.Infrastructure
         public User GetUser(string username)
         {
             OpenConnection();
-            string query = $"SELECT * FROM User WHERE Username = '{username}'";
+            string query = $"SELECT * FROM User";
             var cmd = new MySqlCommand(query, _connection);
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
@@ -81,5 +81,7 @@ namespace Meteo.Services.Infrastructure
             CloseConnection();
             return role;
         }
+
+       
     }
 }

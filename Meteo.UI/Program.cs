@@ -325,7 +325,7 @@ namespace Meteo.UI
 
                             var autentication = queryMng.GetUser(usernameNewAccount).Username;
                             // autentication è vuota nel caso in cui non esiste un user con stesso username
-                            if (autentication.Any())
+                            if (autentication == usernameNewAccount)
                             {
                                 // non ti fa uscire da while (reinserisci Username)
                                 if (lang == "1")
@@ -544,7 +544,6 @@ namespace Meteo.UI
                                     { Console.WriteLine(DataInterface.successEN); }
                                     var prop = "Pressure";
                                     var Propr = jsonObj.Parameters.GetType().GetProperty(prop).GetValue(jsonObj.Parameters, null);
-                                    // queryMng.InsertData(jsonObj, place, );
                                     Console.WriteLine(Propr);
 
                                     if (menuLang == "it")
