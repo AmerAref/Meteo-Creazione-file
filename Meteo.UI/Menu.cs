@@ -69,34 +69,34 @@ namespace Meteo.UI
         public void SelectQuestion()
         {
             var allQuestionObj = queryManager.AllQuestion();
-            Console.WriteLine("\n*************************************************************************************");
-            Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza *************");
+            Console.WriteLine("\n**********************************************************");
+            Console.WriteLine(" Digitare il valore del menu per scelta domanda di sicurezza");
             foreach (var question in allQuestionObj)
             {
                 Console.WriteLine($"{question.IdQuestion} - {question.DefaultQuestion}");
             }
-            Console.WriteLine("*************************************************************************************");
+            Console.WriteLine("************************************************************");
         }
 
         public void SelectRole()
         {
             var allRoles = queryManager.AllRoles();
-            Console.WriteLine("\n*************************************************************************************");
-            Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza ************");
+            Console.WriteLine("\n**********************************************************");
+            Console.WriteLine("Digitare il valore del menu per scelta domanda di sicurezza ");
             foreach (var role in allRoles)
             {
                 Console.WriteLine($"{role.IdRole} - {role.RoleType}");
             }
-            Console.WriteLine("*************************************************************************************");
+            Console.WriteLine("************************************************************");
         }
 
         public void SelectLanguage()
         {
-            Console.WriteLine("\n*************************************************************************************");
-            Console.WriteLine("************* Digitare il valore del menu per scelta della lingua ********************");
-            Console.WriteLine("****1 - Italiano *********************************************************************");
-            Console.WriteLine("****2 - Inglese **********************************************************************");
-            Console.WriteLine("**************************************************************************************");
+            Console.WriteLine("\n***********************************************************");
+            Console.WriteLine("********* Digitare il valore del menu per scelta della lingua");
+            Console.WriteLine("****1 - Italiano                                             *");
+            Console.WriteLine("****2 - Inglese                                              *");
+            Console.WriteLine("**************************************************************");
         }
 
         public void ShowMenuCreateXlsFile()
@@ -116,6 +116,14 @@ namespace Meteo.UI
             Console.WriteLine("****1 - Crea Database 'MeteoDatabase'                     *");
             Console.WriteLine("****2 - Elimina Database 'MeteoDatabase'                  *");
             Console.WriteLine("***********************************************************");
+        }
+        public void Confirmation()
+        {
+            Console.WriteLine("\n**********************************************************");
+            Console.WriteLine("******** Digitare il valore del menu per scelta della lingua");
+            Console.WriteLine("****1 - Conferma                                           *");
+            Console.WriteLine("****2 - Reinserisci                                        *");
+            Console.WriteLine("*********************************************************** ");
         }
     }
 }

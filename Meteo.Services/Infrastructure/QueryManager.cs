@@ -30,7 +30,7 @@ namespace Meteo.Services.Infrastructure
         public void InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit, int role)
         {
             OpenConnection();
-            string query = $"INSERT INTO User (`Name`, `Username`, `Surname`, `Password`, `Answer`, `Language`, `UnitOfMeasure`, `IdQuestion`, `IdRole`) VALUES ('{nameNewAccount}', '{surnameNewAccount}', '{encryptedPwd}', '{usernameNewAccount}', '{encryptedAnswer}', '{languageNewAccount}', '{measureUnit}', {selectQuestion}, {role})";
+            string query = $"INSERT INTO User (`Name`,`Surname`,  `Username`,  `Password`, `IdQuestion`, `Answer`, `Language`, `UnitOfMeasure`, `IdRole`) VALUES ('{nameNewAccount}', '{surnameNewAccount}','{usernameNewAccount}', '{encryptedPwd}', {selectQuestion}, '{encryptedAnswer}', '{languageNewAccount}', '{measureUnit}',  {role})";
             var cmd = new MySqlCommand(query, _connection);
             var insert = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
@@ -38,7 +38,7 @@ namespace Meteo.Services.Infrastructure
         public List<User> GetUSerIfExist(string username, string psw)
         {
             OpenConnection();
-            string query = $"SELECT Username FROM User WHERE Username = '{username}' AND Psw ={psw}";
+            string query = $"SELECT * FROM User WHERE Username = '{username}' AND Password = '{psw}'";
             var cmd = new MySqlCommand(query, _connection);
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
@@ -47,7 +47,7 @@ namespace Meteo.Services.Infrastructure
         public List<User> AutentiationWithAnswer(string answer, string username)
         {
             OpenConnection();
-            string query = $" SELECT Username FROM User WHERE Username = '{username} AND Answer = {answer}";
+            string query = $" SELECT Username FROM User WHERE Username = '{username}' AND Answer = '{answer}'";
             var cmd = new MySqlCommand(query, _connection);
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
@@ -56,7 +56,7 @@ namespace Meteo.Services.Infrastructure
         public void QueryForUpdatePsw(string psw, string username)
         {
             OpenConnection();
-            string query = $" UPDATE User SET Psw = {psw} WHERE Username = {username}";
+            string query = $" UPDATE User SET Psw = '{psw}' WHERE Username = '{username}'";
             var cmd = new MySqlCommand(query, _connection);
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
