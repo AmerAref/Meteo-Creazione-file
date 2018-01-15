@@ -27,14 +27,13 @@ namespace Meteo.Services.Infrastructure
             CloseConnection();
             return user;
         }
-        public User InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit, int role)
+        public void InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit, int role)
         {
             OpenConnection();
             string query = $"INSERT INTO User (`Name`, `Username`, `Surname`, `Password`, `Answer`, `Language`, `UnitOfMeasure`, `IdQuestion`, `IdRole`) VALUES ('{nameNewAccount}', '{surnameNewAccount}', '{encryptedPwd}', '{usernameNewAccount}', '{encryptedAnswer}', '{languageNewAccount}', '{measureUnit}', {selectQuestion}, {role})";
             var cmd = new MySqlCommand(query, _connection);
             var insert = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
-            return insert[0];
         }
         public List<User> GetUSerIfExist(string username, string psw)
         {
@@ -66,7 +65,7 @@ namespace Meteo.Services.Infrastructure
         public List<Question> AllQuestion()
         {
             OpenConnection();
-            string query = $"SELECT IdQuestion, DefaultQuestion FROM Question ";
+            string query = $"SELECT * FROM Question ";
             var cmd = new MySqlCommand(query, _connection);
             var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
             CloseConnection();

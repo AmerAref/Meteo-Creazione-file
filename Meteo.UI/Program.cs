@@ -445,13 +445,24 @@ namespace Meteo.UI
                                 // criptaggio di Psw e Risposta 
                                 var encryptedPwd = registration.EncryptPwd(pswNewAccount);
                                 var encryptedAnswer = registration.EncryptPwd(insertAnswer);
+                                var selectLanguage = "";
                                 var languageNewAccount = "";
                                 int roleNewAccount;
                                 measureUnit = "";
                                 if (lang == "it")
                                 {
-                                    Console.WriteLine("Inserisci la lingua");
-                                    languageNewAccount = Console.ReadLine();
+                                    Console.WriteLine("Inserisci la lingua (it/en)");
+                                    menu.SelectLanguage();
+                                    selectLanguage = Console.ReadLine();
+                                    switch (selectLanguage)
+                                    {
+                                        case "1":
+                                            languageNewAccount = "it";
+                                            break;
+                                        case "2":
+                                            languageNewAccount = "en";
+                                            break;
+                                    }
                                     menu.SelectRole();
                                     Console.WriteLine("Inserisci il ruolo");
                                     roleNewAccount = Convert.ToInt32(Console.ReadLine());
@@ -459,8 +470,18 @@ namespace Meteo.UI
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Enter the language");
-                                    languageNewAccount = Console.ReadLine();
+                                    Console.WriteLine("Enter the language (it/en)");
+                                    menu.SelectLanguage();
+                                    selectLanguage = Console.ReadLine();
+                                    switch (selectLanguage)
+                                    {
+                                        case "1":
+                                            languageNewAccount = "it";
+                                            break;
+                                        case "2":
+                                            languageNewAccount = "en";
+                                            break;
+                                    }
                                     menu.SelectRole();
                                     Console.WriteLine("Insert the role");
                                     roleNewAccount = Convert.ToInt32(Console.ReadLine());
@@ -468,18 +489,6 @@ namespace Meteo.UI
                                 }
 
                                 queryMng.InsertNewUser(encryptedAnswer, usernameNewAccount, surnameNewAccount, nameNewAccuont, selectQuestion, encryptedAnswer, languageNewAccount, measureUnit, roleNewAccount);
-                                /* context.Users.Add(
-                                    new User
-                                    {
-                                        Password = encryptedPwd,
-                                        Username = usernameNewAccount,
-                                        Surname = surnameNewAccount,
-                                        Name = nameNewAccuont,
-                                        IdQuestion = selectQuestion,
-                                        Answer = encryptedAnswer,
-                                        Language = languageNewAccount
-                                    }
-                                ); */
                                 controlFirstChoiceLogin = false;
                                 validationManagerPsw = false;
                                 if (lang == "it")

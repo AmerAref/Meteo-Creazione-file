@@ -70,7 +70,7 @@ namespace Meteo.UI
         {
             var allQuestionObj = queryManager.AllQuestion();
             Console.WriteLine("\n*************************************************************************************");
-            Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza ***********");
+            Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza *************");
             foreach (var question in allQuestionObj)
             {
                 Console.WriteLine($"{question.IdQuestion} - {question.DefaultQuestion}");
@@ -82,12 +82,21 @@ namespace Meteo.UI
         {
             var allRoles = queryManager.AllRoles();
             Console.WriteLine("\n*************************************************************************************");
-            Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza ***********");
+            Console.WriteLine("************* Digitare il valore del menu per scelta domanda di sicurezza ************");
             foreach (var role in allRoles)
             {
                 Console.WriteLine($"{role.IdRole} - {role.RoleType}");
             }
             Console.WriteLine("*************************************************************************************");
+        }
+
+        public void SelectLanguage()
+        {
+            Console.WriteLine("\n*************************************************************************************");
+            Console.WriteLine("************* Digitare il valore del menu per scelta della lingua ********************");
+            Console.WriteLine("****1 - Italiano *********************************************************************");
+            Console.WriteLine("****2 - Inglese **********************************************************************");
+            Console.WriteLine("**************************************************************************************");
         }
 
         public void ShowMenuCreateXlsFile()
