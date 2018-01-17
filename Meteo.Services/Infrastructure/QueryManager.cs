@@ -3,8 +3,10 @@ using System.Linq;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using Meteo.Services.OpenWeatherMap.Models;
-
 using Meteo.Services.Models;
+using System.IO;
+using Newtonsoft.Json;
+
 namespace Meteo.Services.Infrastructure
 {
     public class QueryManager : DbFactoryManager
@@ -22,7 +24,7 @@ namespace Meteo.Services.Infrastructure
         public User GetUser(string username)
         {
             OpenConnection();
-            string query = $"SELECT * FROM User";
+            string query = $"SELECT * FROM User WHERE Username = '{username}'";
             var cmd = new MySqlCommand(query, _connection);
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
@@ -82,6 +84,14 @@ namespace Meteo.Services.Infrastructure
             return role;
         }
 
-       
+        public void InsertOneDayForecast(OpenWeatherMap.Models.OneDayForecast jsonObj)
+        {
+            OpenConnection();
+            var parameters = jsonObj.Parameters;
+            string query = $"INSERT INTO `OneDayForecast`(`Pressure`, `Temp`, `Humidity`, `TempMin`, `TempMax`) VALUES ('{parameters.Pressure}', '{parameters.Temp}', '{parameters.Humidity}', '{parameters.TempMin}', '{parameters.TempMax}');";
+            var cmd = new MySqlCommand(query, _connection);
+            var oenDayForecastData = cmd.ExecuteReader().DataReaderMapToList<Models.OneDayForecast>();
+            CloseConnection();
+        }
     }
 }

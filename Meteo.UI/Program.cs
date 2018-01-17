@@ -81,6 +81,7 @@ namespace Meteo.UI
             var usernameNewAccount = "";
             var connection = new DbFactoryManager();
             var usernameAuthentication = "";
+            // var meteoChoiceForDB = "";
             var user = new User();
 
             menu.SelectLanguage();
@@ -96,11 +97,11 @@ namespace Meteo.UI
 
                     break;
             }
-           
+
             var controlFirstChoiceLogin = true;
             while (controlFirstChoiceLogin)
             {
-              
+
 
                 choseCreateNewAccuoutOrLogin = Console.ReadLine();
                 controlWhilePsw = 0;
@@ -136,12 +137,12 @@ namespace Meteo.UI
                             // Da il benvenuto e accede al menu Meteo
                             Console.WriteLine("\n");
                             if (lang == "1")
-                            { 
+                            {
                                 Console.WriteLine("Benvenuto" + " " + $"{usernameAuthentication}");
                             }
                             else
-                            { 
-                                Console.WriteLine("Welcome" + " " + $"{usernameAuthentication}"); 
+                            {
+                                Console.WriteLine("Welcome" + " " + $"{usernameAuthentication}");
                             }
                             controlFirstChoiceLogin = false;
                             controlWhilePsw = 5;
@@ -250,13 +251,13 @@ namespace Meteo.UI
                                             // uscita in caso di 3 errori
                                             if (countAttemptsPswRegister == 3)
                                             {
-                                                if (lang == "2")
-                                                { 
-                                                    Console.WriteLine("Mi dispiace, ma hai esaurito i tentativi!"); 
+                                                if (lang == "1")
+                                                {
+                                                    Console.WriteLine("Mi dispiace, ma hai esaurito i tentativi!");
                                                 }
                                                 else
-                                                { 
-                                                    Console.WriteLine("I'm sorry, but you've exhausted the attempts!"); 
+                                                {
+                                                    Console.WriteLine("I'm sorry, but you've exhausted the attempts!");
                                                 }
                                                 return;
                                             }
@@ -325,7 +326,7 @@ namespace Meteo.UI
 
                             var autentication = queryMng.GetUser(usernameNewAccount).Username;
                             // autentication è vuota nel caso in cui non esiste un user con stesso username
-                            if (autentication == usernameNewAccount)
+                            if (usernameNewAccount == autentication)
                             {
                                 // non ti fa uscire da while (reinserisci Username)
                                 if (lang == "1")
@@ -407,11 +408,11 @@ namespace Meteo.UI
                                     // stampa risposta inserita
                                     selectQuestion = Convert.ToInt32(Console.ReadLine());
                                     if (lang == "1")
-                                    { 
-                                        Console.WriteLine("Inserisci risposta di sicurezza"); 
+                                    {
+                                        Console.WriteLine("Inserisci risposta di sicurezza");
                                     }
                                     else
-                                    { 
+                                    {
                                         Console.WriteLine("Insert security answer");
                                     }
 
@@ -420,15 +421,15 @@ namespace Meteo.UI
                                     // conferma rispost inserita 
                                     insertAnswer = Console.ReadLine();
                                     if (lang == "1")
-                                    { 
+                                    {
                                         Console.WriteLine("La risposta richiesta è la seguente? ");
                                     }
                                     else
-                                    { 
+                                    {
                                         Console.WriteLine("Is the following the required answer?");
                                     }
                                     Console.WriteLine(insertAnswer);
-                                    menu.Confirmation(); 
+                                    menu.Confirmation();
                                     var controlAnswer = Console.ReadLine();
 
                                     // digita "1" Esce da While altrimenti ti fa reinserire
@@ -443,7 +444,6 @@ namespace Meteo.UI
                                 var selectLanguage = "";
                                 var languageNewAccount = "";
                                 int roleNewAccount;
-                                measureUnit = "";
                                 if (lang == "1")
                                 {
                                     menu.SelectLanguage();
@@ -452,15 +452,17 @@ namespace Meteo.UI
                                     {
                                         case "1":
                                             languageNewAccount = "it";
+                                            measureUnit = "metric";
                                             break;
                                         case "2":
                                             languageNewAccount = "en";
+                                            measureUnit = "imperial";
                                             break;
                                     }
                                     menu.SelectRole();
                                     Console.WriteLine("Inserisci il ruolo");
                                     roleNewAccount = Convert.ToInt32(Console.ReadLine());
-                                    measureUnit = "metric";
+
                                 }
                                 else
                                 {
@@ -470,28 +472,29 @@ namespace Meteo.UI
                                     {
                                         case "1":
                                             languageNewAccount = "it";
+                                            measureUnit = "metric";
                                             break;
                                         case "2":
                                             languageNewAccount = "en";
+                                            measureUnit = "imperial";
                                             break;
                                     }
                                     menu.SelectRole();
                                     Console.WriteLine("Insert the role");
                                     roleNewAccount = Convert.ToInt32(Console.ReadLine());
-                                    measureUnit = "imperial";
                                 }
 
                                 queryMng.InsertNewUser(encryptedPwd, usernameNewAccount, surnameNewAccount, nameNewAccuont, selectQuestion, encryptedAnswer, languageNewAccount, measureUnit, roleNewAccount);
                                 controlFirstChoiceLogin = false;
                                 validationManagerPsw = false;
-                                if (lang == "it")
+                                if (lang == "1")
                                 { Console.WriteLine($"\nBenvenuto utente: {usernameNewAccount}"); }
                                 else
                                 { Console.WriteLine($"\nWelcome user: {usernameNewAccount}"); }
                             }
                             else
                             {
-                                if (lang == "it")
+                                if (lang == "1")
                                 { Console.WriteLine($"\nLe due password inserite non corrispondono! {DataInterface.reinsertUserPswIT}"); }
                                 else
                                 { Console.WriteLine($"\nThe two entered passwords don't match! {DataInterface.reinsertUserPswEN}"); }
@@ -505,20 +508,21 @@ namespace Meteo.UI
 
             while (exit)
             {
-                user = queryMng.GetUser(usernameAuthentication);
                 connection.OpenConnection();
                 if (choseCreateNewAccuoutOrLogin == "1")
                 {
-                    menuLang = user.Language; 
+                    user = queryMng.GetUser(usernameAuthentication);
+                    // menuLang = user.Language;
                     measureUnit = user.UnitOfMeasure;
                 }
                 else
                 {
-                    menuLang = user.Language; 
+                    user = queryMng.GetUser(usernameNewAccount);
+                    // menuLang = user.Language; 
                     measureUnit = user.UnitOfMeasure;
                 }
- 
                 connection.CloseConnection();
+
                 menu.ShowFirst();
                 var sceltaPrimaria = Console.ReadLine();
                 switch (sceltaPrimaria)
@@ -538,6 +542,7 @@ namespace Meteo.UI
                                 {
                                     var jsonObj = meteoApi.ProcessMeteoByPlaceToday(place, measureUnit).Result;
                                     print.PrintForData(jsonObj);
+                                    queryMng.InsertOneDayForecast(jsonObj);
                                     if (menuLang == "it")
                                     { Console.WriteLine(DataInterface.successIT); }
                                     else
@@ -720,6 +725,7 @@ namespace Meteo.UI
                         break;
                     case "2":
                         menu.ShowMenu();
+                        // meteoChoiceForDB = "5 days";
                         var choseLast5Day = Console.ReadLine();
                         switch (choseLast5Day)
                         {
