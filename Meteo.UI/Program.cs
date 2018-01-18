@@ -143,7 +143,7 @@ namespace Meteo.UI
                         var authPwd = registration.EncryptPwd(passwordAuthentication);
                         // confronto se esiste psw (Massimo 3 volte )
                         var autentication = queryMng.GetUserIfExist(usernameAuthentication, authPwd);
-                        if (autentication.Any())
+                        if (autentication!=null)
                         {
                             // Da il benvenuto e accede al menu Meteo
                             Console.WriteLine("\n");
@@ -201,7 +201,7 @@ namespace Meteo.UI
                                     if (userIfExist == true)
                                     {
                                         var IdQuestionInTableUser = queryMng.GetUser(forAnswerInsertUsername).IdQuestion;
-                                        var question = queryMng.GetQuestionIfUserNotRemeberPsw(IdQuestionInTableUser).DefaultQuestion;
+                                        var question = queryMng.GetQuestion(IdQuestionInTableUser).DefaultQuestion;
 
                                         Console.WriteLine(question);
                                         controlForUserIfExist = 4;
@@ -220,7 +220,7 @@ namespace Meteo.UI
                                 var insertAnswerForAccessEcrypted = registration.EncryptPwd(insertAnswerMaskered);
                                 // Verifica se Risposta è corretta. Il risultato è dentro autentication 
                                 autentication = queryMng.AutentiationWithAnswer(insertAnswerForAccessEcrypted, forAnswerInsertUsername);
-                                if (autentication.Any())
+                                if (autentication!=null)
                                 {
 
                                     var controlRequirementsNewPsw = true;
@@ -412,7 +412,7 @@ namespace Meteo.UI
                                     }
                                     else
                                     {
-                                        menu.SelectLanguageEN();
+                                        menu.SelectQuestionEN();
                                     }
                                     // menu per domande 
 

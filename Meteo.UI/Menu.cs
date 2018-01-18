@@ -51,7 +51,7 @@ namespace Meteo.UI
         }
         public void SelectQuestionIT()
         {
-            var allQuestionObj = queryManager.AllQuestionIT();
+            var allQuestionObj = queryManager.AllQuestionsIT();
             Console.WriteLine("\n**********************************************************");
             Console.WriteLine(" Digitare il valore del menu per scelta domanda di sicurezza");
 
@@ -176,7 +176,7 @@ namespace Meteo.UI
         }
         public void SelectQuestionEN()
         {
-            var allQuestionObj = queryManager.AllQuestionEN();
+            var allQuestionObj = queryManager.AllQuestionsEN();
             Console.WriteLine("\n**********************************************************");
             Console.WriteLine(" Digit value  ");
             foreach (var question in allQuestionObj)

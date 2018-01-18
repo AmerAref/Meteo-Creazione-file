@@ -11,24 +11,16 @@ namespace Meteo.Services.Infrastructure
 {
     public class QueryManager : DbFactoryManager
     {
-        public Question GetQuestion(int ciao)
+        public Question GetQuestion(int IdQuestion)
         {
             OpenConnection();
-            string query = $"SELECT * FROM Question WHERE IdQuestion = '{ciao}'";
+            string query = $"SELECT * FROM Question WHERE IdQuestion = '{IdQuestion}'";
             var cmd = new MySqlCommand(query, _connection);
             var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
             CloseConnection();
             return question[0];
         }
-        public User GetUsername()
-        {
-            OpenConnection();
-            string query = $"SELECT * FROM User";
-            var cmd = new MySqlCommand(query, _connection);
-            var user = cmd.ExecuteReader().DataReaderMapToList<User>();
-            CloseConnection();
-            return user[0];
-        }
+       
         public User GetUser(string username)
         {
             OpenConnection();
@@ -69,32 +61,35 @@ namespace Meteo.Services.Infrastructure
             }
         }
 
-        public Question GetQuestionIfUserNotRemeberPsw(int reciveIdQuestion)
-        {
-            OpenConnection();
-            string query = $"SELECT * FROM Question WHERE IdQuestion = '{reciveIdQuestion}'";
-            var cmd = new MySqlCommand(query, _connection);
-            var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
-            CloseConnection();
-            return question[0];
-        }
-        public List<User> GetUserIfExist(string username, string psw)
+
+        public User GetUserIfExist(string username, string psw)
         {
             OpenConnection();
             string query = $"SELECT * FROM User WHERE Username = '{username}' AND Password = '{psw}'";
             var cmd = new MySqlCommand(query, _connection);
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
-            return user;
+            if (user.Any())
+            {
+                return user[0];
+            }
+            else
+                return null;
+
         }
-        public List<User> AutentiationWithAnswer(string answer, string username)
+        public User AutentiationWithAnswer(string answer, string username)
         {
             OpenConnection();
             string query = $" SELECT * FROM User WHERE Username = '{username}' AND Answer = '{answer}'";
             var cmd = new MySqlCommand(query, _connection);
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
-            return user;
+            if (user.Any())
+            {
+                return user[0];
+            }
+            else
+                return null;
         }
         public void QueryForUpdatePsw(string psw, string username)
         {
@@ -105,15 +100,7 @@ namespace Meteo.Services.Infrastructure
             CloseConnection();
             return;
         }
-        public List<Question> AllQuestion()
-        {
-            OpenConnection();
-            string query = $"SELECT * FROM Question ";
-            var cmd = new MySqlCommand(query, _connection);
-            var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
-            CloseConnection();
-            return question;
-        }
+      
         public List<Role> AllRoles()
         {
             OpenConnection();
@@ -135,51 +122,8 @@ namespace Meteo.Services.Infrastructure
         }
 
 
-            public void InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit, int role)
-            {
-                OpenConnection();
-                string query = $"INSERT INTO User (`Name`, `Surname`, `Username`, `Password`, `IdQuestion`, `Answer`, `Language`, `UnitOfMeasure`, `IdRole`) VALUES ('{nameNewAccount}', '{surnameNewAccount}','{usernameNewAccount}', '{encryptedPwd}', {selectQuestion}, '{encryptedAnswer}', '{languageNewAccount}', '{measureUnit}',  {role})";
-                var cmd = new MySqlCommand(query, _connection);
-                cmd.ExecuteReader().DataReaderMapToList<User>();
-                CloseConnection();
-            }
-            public List<User> GetUserIfExist(string username, string psw)
-            {
-                OpenConnection();
-                string query = $"SELECT * FROM User WHERE Username = '{username}' AND Password = '{psw}'";
-                var cmd = new MySqlCommand(query, _connection);
-                var user = cmd.ExecuteReader().DataReaderMapToList<User>();
-                CloseConnection();
-                return user;
-            }
-            public List<User> AutentiationWithAnswer(string answer, string username)
-            {
-                OpenConnection();
-                string query = $" SELECT * FROM User WHERE Username = '{username}' AND Answer = '{answer}'";
-                var cmd = new MySqlCommand(query, _connection);
-                var user = cmd.ExecuteReader().DataReaderMapToList<User>();
-                CloseConnection();
-                return user;
-            }
-            public void QueryForUpdatePsw(string psw, string username)
-            {
-                OpenConnection();
-                string query = $" UPDATE User SET Password = '{psw}' WHERE Username = '{username}'";
-                var cmd = new MySqlCommand(query, _connection);
-                var user = cmd.ExecuteReader().DataReaderMapToList<User>();
-                CloseConnection();
-                return;
-            }
-            public List<Question> AllQuestionIT()
-            {
-                OpenConnection();
-                string query = $"SELECT * FROM Question WHERE Language = 'it' ";
-                var cmd = new MySqlCommand(query, _connection);
-                var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
-                CloseConnection();
-                return question;
-            }
-        public List<Question> AllQuestionEN()
+      
+        public List<Question> AllQuestionsEN()
         {
             OpenConnection();
             string query = $"SELECT * FROM Question WHERE Language = 'en'  ";
@@ -188,25 +132,19 @@ namespace Meteo.Services.Infrastructure
             CloseConnection();
             return question;
         }
-            public List<Role> AllRoles()
-            {
-                OpenConnection();
-                string query = $"SELECT * FROM Role ";
-                var cmd = new MySqlCommand(query, _connection);
-                var role = cmd.ExecuteReader().DataReaderMapToList<Role>();
-                CloseConnection();
-                return role;
-            }
+        public List<Question> AllQuestionsIT()
+        {
+            OpenConnection();
+            string query = $"SELECT * FROM Question WHERE Language = 'it'  ";
+            var cmd = new MySqlCommand(query, _connection);
+            var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
+            CloseConnection();
+            return question;
+        }
+           
+           
 
-            public void InsertOneDayForecast(OpenWeatherMap.Models.OneDayForecast jsonObj)
-            {
-                OpenConnection();
-                var parameters = jsonObj.Parameters;
-                string query = $"INSERT INTO `OneDayForecast`(`Pressure`, `Temp`, `Humidity`, `TempMin`, `TempMax`) VALUES ('{parameters.Pressure}', '{parameters.Temp}', '{parameters.Humidity}', '{parameters.TempMin}', '{parameters.TempMax}');";
-                var cmd = new MySqlCommand(query, _connection);
-                var oenDayForecastData = cmd.ExecuteReader().DataReaderMapToList<Models.OneDayForecast>();
-                CloseConnection();
-            }
+           
         public void InsertDataMaster(string meteoChoiceDb, int idUserMaster)
         {
             OpenConnection();
