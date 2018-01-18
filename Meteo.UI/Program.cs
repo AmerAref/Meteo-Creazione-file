@@ -395,8 +395,16 @@ namespace Meteo.UI
                                 // contro su correttezza risposta (esce Quando è seleziona "1" per salvare la risposta alla domanda)
                                 while (controlWhileAnswer)
                                 {
+                                    if (lang == "1")
+                                    {
+                                        menu.SelectQuestionIT();
+                                    }
+                                    else
+                                    {
+                                        menu.SelectLanguageEN();
+                                    }
                                     // menu per domande 
-                                    menu.SelectQuestion();
+
                                     // stampa risposta inserita
                                     IdSelectedForQuestion = Convert.ToInt32(Console.ReadLine());
                                     if (lang == "1")
@@ -422,7 +430,16 @@ namespace Meteo.UI
                                         Console.WriteLine("Is the following the required answer?");
                                     }
                                     Console.WriteLine(insertAnswer);
-                                    menu.Confirmation();
+                                   
+                                    if (lang == "1")
+                                    {
+                                        menu.ConfirmationIT();
+                                    }
+                                    else
+                                    {
+                                        menu.ConfirmationEN();
+                                    }
+
                                     var controlAnswer = Console.ReadLine();
 
                                     // digita "1" Esce da While altrimenti ti fa reinserire
@@ -452,7 +469,9 @@ namespace Meteo.UI
                                             measureUnit = "imperial";
                                             break;
                                     }
-                                    menu.SelectRole();
+
+
+                                    menu.SelectRoleIT();
                                     roleNewAccount = Convert.ToInt32(Console.ReadLine());
 
                                 }
@@ -471,7 +490,7 @@ namespace Meteo.UI
                                             measureUnit = "imperial";
                                             break;
                                     }
-                                    menu.SelectRole();
+                                    menu.SelectRoleEN();
                                     roleNewAccount = Convert.ToInt32(Console.ReadLine());
                                 }
 
@@ -513,15 +532,29 @@ namespace Meteo.UI
                     measureUnit = user.UnitOfMeasure;
                 }
                 connection.CloseConnection();
+                if (menuLang == "it")
+                {
+                    menu.ShowFirstIT();
+                }
+                else
+                {
+                    menu.ShowFirstEN();
+                }
 
-                menu.ShowFirst();
                 var sceltaPrimaria = Console.ReadLine();
                 switch (sceltaPrimaria)
                 {
 
                     //case 1 del primo switch è relativo alle previsioni ad un giorno  
                     case "1":
-                        menu.ShowMenu();
+                        if (menuLang == "it")
+                        {
+                            menu.ShowSecondMenuIT();
+                        }
+                        else
+                        {
+                            menu.ShowSecondMenuEN();
+                        }
                         var choseThisDay = Console.ReadLine();
                         switch (choseThisDay)
                         {
@@ -541,9 +574,13 @@ namespace Meteo.UI
                                     print.PrintForData(jsonObj, menuLang);
                                     queryMng.InsertOneDayForecast(jsonObj);
                                     if (menuLang == "it")
-                                    { Console.WriteLine(DataInterface.successIT); }
+                                    {
+                                        Console.WriteLine(DataInterface.successIT);
+                                    }
                                     else
-                                    { Console.WriteLine(DataInterface.successEN); }
+                                    {
+                                        Console.WriteLine(DataInterface.successEN);
+                                    }
 
 
                                     if (menuLang == "it")
@@ -653,7 +690,7 @@ namespace Meteo.UI
                                     Console.WriteLine(e.Message);
                                 }
                                 break;
-                            
+
                             //relativo ad un giorno per lat e lon
                             case "2":
                                 string lon, lat;
@@ -778,7 +815,14 @@ namespace Meteo.UI
                         }
                         break;
                     case "2":
-                        menu.ShowMenu();
+                        if (menuLang == "it")
+                        {
+                            menu.ShowSecondMenuIT();
+                        }
+                        else
+                        {
+                            menu.ShowSecondMenuEN();
+                        }
                         // meteoChoiceForDB = "5 days";
                         var choseLast5Day = Console.ReadLine();
                         switch (choseLast5Day)
@@ -799,7 +843,7 @@ namespace Meteo.UI
                                 {
                                     var jsonObj = meteoApi.ProcessMeteoByPlaceLast5Day(place, measureUnit).Result;
                                     print.PrintDataLast5Day(jsonObj, menuLang);
-                                    if (menuLang == "it")   
+                                    if (menuLang == "it")
                                     {
                                         Console.WriteLine(DataInterface.successIT);
                                         Console.WriteLine(DataInterface.choiceDoFileIT);
@@ -1005,7 +1049,14 @@ namespace Meteo.UI
                         }
                         break;
                     case "3":
-                        menu.ShowFiltredMenu();
+                        if (menuLang == "it")
+                        {
+                            menu.ShowFiltredMenuIT();
+                        }
+                        else
+                        {
+                            menu.ShowFiltredMenuEN();
+                        }
                         var choseFilter = Console.ReadLine();
                         switch (choseFilter)
                         {
@@ -1119,7 +1170,14 @@ namespace Meteo.UI
                         emailManager.AttempsPasswordAndSendEmail(fileNameToSendAnyFile, senderValueAnyFile, receiverValueAnyFile, bodyValueAnyFile, subjectValueAnyFile, userValueAnyFile, password);
                         break;
                     case "6":
-                        menu.ShowMenuCreateXlsFile();
+                        if (menuLang == "it")
+                        {
+                            menu.ShowMenuCreateXlsFileIT();
+                        }
+                        else
+                        {
+                            menu.ShowMenuCreateXlsFileEN();
+                        }
                         var choiceXls = Console.ReadLine();
                         switch (choiceXls)
                         {
@@ -1153,23 +1211,38 @@ namespace Meteo.UI
                                 createXlsFromFile.CreateXlsFromFileFor5Days(fiveDaysFilePath, fiveDaysXlsFile);
                                 break;
                             case "3":
-                                menu.ShowFirst();
+                                if (menuLang == "it")
+                                {
+                                    menu.ShowSecondMenuIT();
+                                }
+                                else
+                                {
+                                    menu.ShowSecondMenuEN();
+                                }
                                 break;
                             case "4":
                                 exit = false;
                                 if (menuLang == "it")
-                                { Console.WriteLine("Sessione terminata"); }
+                                { 
+                                    Console.WriteLine("Sessione terminata");
+                                }
                                 else
-                                { Console.WriteLine("Session ended"); }
+                                { 
+                                    Console.WriteLine("Session ended");
+                                }
                                 break;
                         }
                         break;
                     case "7":
                         exit = false;
                         if (menuLang == "it")
-                        { Console.WriteLine("Sessione terminata"); }
+                        {
+                            Console.WriteLine("Sessione terminata"); 
+                        }
                         else
-                        { Console.WriteLine("Session ended"); }
+                        { 
+                            Console.WriteLine("Session ended"); 
+                        }
                         break;
                 }
             }

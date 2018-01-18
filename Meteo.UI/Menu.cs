@@ -16,7 +16,7 @@ namespace Meteo.UI
             Console.WriteLine("****2 - Crea nuovo utente                                 *");
             Console.WriteLine("***********************************************************");
         }
-        public void ShowFirst()
+        public void ShowFirstIT()
         {
             Console.WriteLine("***********************************************************");
             Console.WriteLine("*************    Digitare il valore del menu    ***********");
@@ -29,17 +29,17 @@ namespace Meteo.UI
             Console.WriteLine("****7 - Termina sessione                                  *");
             Console.WriteLine("***********************************************************");
         }
-        public void ShowMenu()
+        public void ShowSecondMenuIT()
         {
             Console.WriteLine("***********************************************************");
             Console.WriteLine("*************    Digitare il valore del menu    ***********");
             Console.WriteLine("****1 - Cerca dati relativi a Città                       *");
             Console.WriteLine("****2 - Cerca dati relativi a Coordinate                  *");
-            Console.WriteLine("****3 - Torna al menu principale                          *");
+            Console.WriteLine("****3 - Torna al menu pricipale                          *");
             Console.WriteLine("****4 - Termina sessione                                  *");
             Console.WriteLine("***********************************************************");
         }
-        public void ShowFiltredMenu()
+        public void ShowFiltredMenuIT()
         {
             Console.WriteLine("***********************************************************");
             Console.WriteLine("*************    Digitare il valore del menu    ***********");
@@ -49,11 +49,12 @@ namespace Meteo.UI
             Console.WriteLine("****4 - Torna al menu principale                          *");
             Console.WriteLine("***********************************************************");
         }
-        public void SelectQuestion()
+        public void SelectQuestionIT()
         {
-            var allQuestionObj = queryManager.AllQuestion();
+            var allQuestionObj = queryManager.AllQuestionIT();
             Console.WriteLine("\n**********************************************************");
             Console.WriteLine(" Digitare il valore del menu per scelta domanda di sicurezza");
+
             foreach (var question in allQuestionObj)
             {
                 Console.WriteLine($"{question.IdQuestion} - {question.DefaultQuestion}");
@@ -61,7 +62,7 @@ namespace Meteo.UI
             Console.WriteLine("************************************************************");
         }
 
-        public void SelectRole()
+        public void SelectRoleIT()
         {
             var allRoles = queryManager.AllRoles();
             Console.WriteLine("\n**********************************************************");
@@ -72,6 +73,8 @@ namespace Meteo.UI
             }
             Console.WriteLine("************************************************************");
         }
+       
+
 
         public void SelectLanguage()
         {
@@ -82,7 +85,7 @@ namespace Meteo.UI
             Console.WriteLine("**************************************************************");
         }
 
-        public void ShowMenuCreateXlsFile()
+        public void ShowMenuCreateXlsFileIT()
         {
             Console.WriteLine("***********************************************************");
             Console.WriteLine("*************    Digitare il valore del menu    ***********");
@@ -100,7 +103,7 @@ namespace Meteo.UI
             Console.WriteLine("****2 - Elimina Database 'MeteoDatabase'                  *");
             Console.WriteLine("***********************************************************");
         }
-        public void Confirmation()
+        public void ConfirmationIT()
         {
             Console.WriteLine("\n**********************************************************");
             Console.WriteLine("******** Digitare il valore del menu per conferma risposta *");
@@ -143,7 +146,7 @@ namespace Meteo.UI
             Console.WriteLine("****7 - End session                                       *");
             Console.WriteLine("***********************************************************");
         }
-        public void ShowMenuEN()
+        public void ShowSecondMenuEN()
         {
             Console.WriteLine("***********************************************************");
             Console.WriteLine("*************    Digit value    ***********");
@@ -173,7 +176,7 @@ namespace Meteo.UI
         }
         public void SelectQuestionEN()
         {
-            var allQuestionObj = queryManager.AllQuestion();
+            var allQuestionObj = queryManager.AllQuestionEN();
             Console.WriteLine("\n**********************************************************");
             Console.WriteLine(" Digit value  ");
             foreach (var question in allQuestionObj)
@@ -217,6 +220,17 @@ namespace Meteo.UI
             Console.WriteLine("****1 - Confirm                                            *");
             Console.WriteLine("****2 - Reenter                                            *");
             Console.WriteLine("*********************************************************** ");
+        }
+        public void SelectRoleEN()
+        {
+            var allRoles = queryManager.AllRoles();
+            Console.WriteLine("\n**********************************************************");
+            Console.WriteLine("          Digit the role's value                           *");
+            foreach (var role in allRoles)
+            {
+                Console.WriteLine($"{role.IdRole} - {role.RoleType} *");
+            }
+            Console.WriteLine("************************************************************");
         }
     }
 }

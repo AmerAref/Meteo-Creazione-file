@@ -102,15 +102,24 @@ namespace Meteo.Services.Infrastructure
                 CloseConnection();
                 return;
             }
-            public List<Question> AllQuestion()
+            public List<Question> AllQuestionIT()
             {
                 OpenConnection();
-                string query = $"SELECT * FROM Question ";
+                string query = $"SELECT * FROM Question WHERE Language = 'it' ";
                 var cmd = new MySqlCommand(query, _connection);
                 var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
                 CloseConnection();
                 return question;
             }
+        public List<Question> AllQuestionEN()
+        {
+            OpenConnection();
+            string query = $"SELECT * FROM Question WHERE Language = 'en'  ";
+            var cmd = new MySqlCommand(query, _connection);
+            var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
+            CloseConnection();
+            return question;
+        }
             public List<Role> AllRoles()
             {
                 OpenConnection();
