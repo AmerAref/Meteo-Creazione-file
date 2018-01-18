@@ -16,15 +16,6 @@ namespace Meteo.UI
             Console.WriteLine("****2 - Crea nuovo utente                                 *");
             Console.WriteLine("***********************************************************");
         }
-
-        public void ShowMenuAuthenticationEN()
-        {
-            Console.WriteLine("***********************************************************");
-            Console.WriteLine("*************    Digitare il valore del menu    ***********");
-            Console.WriteLine("****1 - Login                                             *");
-            Console.WriteLine("****2 - Create a new user                                 *");
-            Console.WriteLine("***********************************************************");
-        }
         public void ShowFirst()
         {
             Console.WriteLine("***********************************************************");
@@ -55,15 +46,7 @@ namespace Meteo.UI
             Console.WriteLine("****1 - Filtra dati relativi a umidità                    *");
             Console.WriteLine("****2 - Filtra dati per data e/o ora                      *");
             Console.WriteLine("****3 - Filtra per Qualità cielo                          *");
-            Console.WriteLine("****4 - Torna al menu                                     *");
-            Console.WriteLine("***********************************************************");
-        }
-        public void ShowMenuAuthentication()
-        {
-            Console.WriteLine("***********************************************************");
-            Console.WriteLine("*************    Digitare il valore del menu    ***********");
-            Console.WriteLine("****1 - Effettua Login                                    *");
-            Console.WriteLine("****2 - Crea nuovo utente                                 *");
+            Console.WriteLine("****4 - Torna al menu principale                          *");
             Console.WriteLine("***********************************************************");
         }
         public void SelectQuestion()
@@ -133,6 +116,96 @@ namespace Meteo.UI
             Console.WriteLine("****2 - No                                                 *");
             Console.WriteLine("*********************************************************** ");
             
+
+
+
+        public void ShowFirstEN()
+        {
+            Console.WriteLine("***********************************************************");
+            Console.WriteLine("*************    Digit value    ***********");
+            Console.WriteLine("****1 - Search for data related to today                  *");
+            Console.WriteLine("****2 - Search for data related to the last 5 days        *");
+            Console.WriteLine("****3 - Access the data filtering menu by city            *");
+            Console.WriteLine("****4 - Do you want to delete files in the folder?        *");
+            Console.WriteLine("****5 - Send files via email                              *");
+            Console.WriteLine("****6 - Create an XLS file                                *");
+            Console.WriteLine("****7 - End session                                       *");
+            Console.WriteLine("***********************************************************");
+        }
+        public void ShowMenuEN()
+        {
+            Console.WriteLine("***********************************************************");
+            Console.WriteLine("*************    Digit value    ***********");
+            Console.WriteLine("****1 - Search for data about city                        *");
+            Console.WriteLine("****2 - Search for data about coordinates                 *");
+            Console.WriteLine("****3 - Go back to the main menu                          *");
+            Console.WriteLine("****4 - End session                                       *");
+            Console.WriteLine("***********************************************************");
+        }
+        public void ShowFiltredMenuEN()
+        {
+            Console.WriteLine("***********************************************************");
+            Console.WriteLine("*************    Digit value    ***********");
+            Console.WriteLine("****1 - Filter humidity data                              *");
+            Console.WriteLine("****2 - Filter data by date and / or time                 *");
+            Console.WriteLine("****3 - Filter by sky quality                             *");
+            Console.WriteLine("****4 - Go back to the main menu                          *");
+            Console.WriteLine("***********************************************************");
+        }
+        public void ShowMenuAuthenticationEN()
+        {
+            Console.WriteLine("***********************************************************");
+            Console.WriteLine("*************    Digit the value    ***********");
+            Console.WriteLine("****1 - Login                                             *");
+            Console.WriteLine("****2 - Create new account                                *");
+            Console.WriteLine("***********************************************************");
+        }
+        public void SelectQuestionEN()
+        {
+            var allQuestionObj = queryManager.AllQuestion();
+            Console.WriteLine("\n**********************************************************");
+            Console.WriteLine(" Digit value  ");
+            foreach (var question in allQuestionObj)
+            {
+                Console.WriteLine($"{question.IdQuestion} - {question.DefaultQuestion}");
+            }
+            Console.WriteLine("************************************************************");
+        }
+
+        public void SelectLanguageEN()
+        {
+            Console.WriteLine("\n*********************************************************");
+            Console.WriteLine("******* Digit the value ");
+            Console.WriteLine("****1 - Italian                                           *");
+            Console.WriteLine("****2 - English                                           *");
+            Console.WriteLine("***********************************************************");
+        }
+
+        public void ShowMenuCreateXlsFileEN()
+        {
+            Console.WriteLine("***********************************************************");
+            Console.WriteLine("*************    Digit the value     ***********");
+            Console.WriteLine("****1 - Create XLS for today's data                       *");
+            Console.WriteLine("****2 - Create XLS for data for 5 days                    *");
+            Console.WriteLine("****3 - Return to the main menu                           *");
+            Console.WriteLine("****4 - End session                                       *");
+            Console.WriteLine("***********************************************************");
+        }
+        public void MenuDatabaseManagerEN()
+        {
+            Console.WriteLine("***********************************************************");
+            Console.WriteLine("*************    Digit the value     ***********");
+            Console.WriteLine("****1 - Create Database 'MeteoDatabase'                   *");
+            Console.WriteLine("****2 - Delete Database 'MeteoDatabase'                   *");
+            Console.WriteLine("***********************************************************");
+        }
+        public void ConfirmationEN()
+        {
+            Console.WriteLine("\n**********************************************************");
+            Console.WriteLine("******** Digit the value             ***********************");
+            Console.WriteLine("****1 - Confirm                                            *");
+            Console.WriteLine("****2 - Reenter                                            *");
+            Console.WriteLine("*********************************************************** ");
         }
     }
 }
