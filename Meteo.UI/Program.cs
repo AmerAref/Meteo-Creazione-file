@@ -14,13 +14,24 @@ namespace Meteo.UI
     {
         static string choseCreateNewAccuoutOrLogin = "";
 
-        private static Dictionary<string, string> InsertDataForEmail()
+        private static Dictionary<string, string> InsertDataForEmail(string lang)
         {
+            string insertSender = "", insertReciver = "", insertBody = "", insertSubject = "";
             var dictionaryForEmail = new Dictionary<string, string>();
-            var insertSender = "Inserisci email mittente";
-            var insertReciver = "Inserisci email destinatario";
-            var insertBody = "Iserisci testo all'interno dell'email";
-            var insertSubject = "Inserisci oggetto";
+            if (lang == "it")
+            {
+                insertSender = "Inserisci email del mittente";
+                insertReciver = "Inserisci email del destinatario";
+                insertBody = "Iserisci il testo all'interno dell'email";
+                insertSubject = "Inserisci l'oggetto";
+            }
+            else
+            {
+                insertSender = "Insert sender's email";
+                insertReciver = "Insert recipient'semail";
+                insertBody = "Isert the body text of the email";
+                insertSubject = "Insert the object";
+            }
             Console.WriteLine(insertSender);
             var sender = Console.ReadLine();
             dictionaryForEmail.Add("senderKey", sender);
@@ -40,7 +51,10 @@ namespace Meteo.UI
             dictionaryForEmail.Add("bodyKey", body);
             dictionaryForEmail.Add("subjectKey", subject);
             dictionaryForEmail.Add("userKey", user);
-            Console.WriteLine("Inserisci password");
+            if (lang == "it")
+            { Console.WriteLine("Inserisci password"); }
+            else
+            { Console.WriteLine("Insert password"); }
 
             return dictionaryForEmail;
         }
@@ -59,7 +73,6 @@ namespace Meteo.UI
             var print = new PrintData();
             var queryMng = new QueryManager();
             var exit = true;
-            var choseConfigurationPc = new ChoseConfigurationPc();
             var meteoApi = new MeteoApi();
             var IdSelectedForQuestion = 0;
             var validationUsername = true;
@@ -427,7 +440,7 @@ namespace Meteo.UI
                                         Console.WriteLine("Is the following the required answer?");
                                     }
                                     Console.WriteLine(insertAnswer);
-                                   
+
                                     if (lang == "1")
                                     {
                                         menu.ConfirmationIT();
@@ -541,12 +554,9 @@ namespace Meteo.UI
                 }
 
                 var idUserMaster = queryMng.GetUser(usernameForQuery).IdUser;
-
-                menu.ShowFirst();
                 var sceltaPrimaria = Console.ReadLine();
                 switch (sceltaPrimaria)
                 {
-
                     //case 1 del primo switch è relativo alle previsioni ad un giorno  
                     case "1":
                         if (menuLang == "it")
@@ -628,7 +638,7 @@ namespace Meteo.UI
 
                                         if (choiceSelected == "1")
                                         {
-                                            var dataForEmail = Program.InsertDataForEmail();
+                                            var dataForEmail = Program.InsertDataForEmail(menuLang);
                                             var senderValue = dataForEmail["senderKey"];
                                             var receiverValue = dataForEmail["receiverKey"];
                                             var bodyValue = dataForEmail["bodyKey"];
@@ -761,7 +771,7 @@ namespace Meteo.UI
 
                                         if (choiceSelected == "1")
                                         {
-                                            var dataForEmail = Program.InsertDataForEmail();
+                                            var dataForEmail = Program.InsertDataForEmail(menuLang);
                                             var senderValue = dataForEmail["senderKey"];
                                             var receiverValue = dataForEmail["receiverKey"];
                                             var bodyValue = dataForEmail["bodyKey"];
@@ -892,7 +902,7 @@ namespace Meteo.UI
 
                                         if (choiceSelected == "1")
                                         {
-                                            var dataForEmail = Program.InsertDataForEmail();
+                                            var dataForEmail = Program.InsertDataForEmail(menuLang);
                                             var senderValue = dataForEmail["senderKey"];
                                             var receiverValue = dataForEmail["receiverKey"];
                                             var bodyValue = dataForEmail["bodyKey"];
@@ -1002,7 +1012,7 @@ namespace Meteo.UI
 
                                         if (choiceSelected == "1")
                                         {
-                                            var dataForEmail = Program.InsertDataForEmail();
+                                            var dataForEmail = Program.InsertDataForEmail(menuLang);
                                             var senderValue = dataForEmail["senderKey"];
                                             var receiverValue = dataForEmail["receiverKey"];
                                             var bodyValue = dataForEmail["bodyKey"];
@@ -1169,7 +1179,7 @@ namespace Meteo.UI
                         else
                         { Console.WriteLine("Enter the file name to be sent via email"); }
                         var fileNameToSendAnyFile = Console.ReadLine();
-                        var dataForEmailAnyFile = Program.InsertDataForEmail();
+                        var dataForEmailAnyFile = Program.InsertDataForEmail(menuLang);
                         var senderValueAnyFile = dataForEmailAnyFile["senderKey"];
                         var receiverValueAnyFile = dataForEmailAnyFile["receiverKey"];
                         var bodyValueAnyFile = dataForEmailAnyFile["bodyKey"];
@@ -1231,11 +1241,11 @@ namespace Meteo.UI
                             case "4":
                                 exit = false;
                                 if (menuLang == "it")
-                                { 
+                                {
                                     Console.WriteLine("Sessione terminata");
                                 }
                                 else
-                                { 
+                                {
                                     Console.WriteLine("Session ended");
                                 }
                                 break;
@@ -1245,11 +1255,11 @@ namespace Meteo.UI
                         exit = false;
                         if (menuLang == "it")
                         {
-                            Console.WriteLine("Sessione terminata"); 
+                            Console.WriteLine("Sessione terminata");
                         }
                         else
-                        { 
-                            Console.WriteLine("Session ended"); 
+                        {
+                            Console.WriteLine("Session ended");
                         }
                         break;
                 }
