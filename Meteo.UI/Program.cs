@@ -80,6 +80,8 @@ namespace Meteo.UI
             var usernameNewAccount = "";
             var connection = new DbFactoryManager();
             var usernameAuthentication = "";
+            var meteoChoiceForDB = "";
+            var usernameForQuery = "";
             var user = new User();
 
             menu.SelectLanguage();
@@ -99,8 +101,6 @@ namespace Meteo.UI
             var controlFirstChoiceLogin = true;
             while (controlFirstChoiceLogin)
             {
-
-
                 choseCreateNewAccuoutOrLogin = Console.ReadLine();
                 controlWhilePsw = 0;
                 countAttempts = 2;
@@ -237,7 +237,6 @@ namespace Meteo.UI
                                                 Console.WriteLine("\nThe security criteria are not met (Enter at least 1 capital letter, 1 number, 1 special character. The length must be greater than or equal to 8)");
                                                 Console.WriteLine("\nReenter Password!");
                                             }
-
                                             countAttemptsPswRegister++;
 
                                             // uscita in caso di 3 errori
@@ -266,7 +265,6 @@ namespace Meteo.UI
                                             controlRequirementsNewPsw = false;
                                         }
                                     }
-
                                 }
                             }
                         }
@@ -415,7 +413,6 @@ namespace Meteo.UI
                                     {
                                         Console.WriteLine("Insert security answer");
                                     }
-
                                     // stampa risposta inserita 
                                     var questionSelected = queryMng.GetQuestion(IdSelectedForQuestion);
                                     Console.WriteLine(questionSelected.DefaultQuestion);
@@ -524,12 +521,14 @@ namespace Meteo.UI
                     user = queryMng.GetUser(usernameAuthentication);
                     menuLang = user.Language;
                     measureUnit = user.UnitOfMeasure;
+                    usernameForQuery = usernameAuthentication;
                 }
                 else
                 {
                     user = queryMng.GetUser(usernameNewAccount);
                     menuLang = user.Language;
                     measureUnit = user.UnitOfMeasure;
+                    usernameForQuery = usernameNewAccount;
                 }
                 connection.CloseConnection();
                 if (menuLang == "it")
@@ -541,6 +540,9 @@ namespace Meteo.UI
                     menu.ShowFirstEN();
                 }
 
+                var idUserMaster = queryMng.GetUser(usernameForQuery).IdUser;
+
+                menu.ShowFirst();
                 var sceltaPrimaria = Console.ReadLine();
                 switch (sceltaPrimaria)
                 {
@@ -562,10 +564,12 @@ namespace Meteo.UI
                                 if (menuLang == "it")
                                 {
                                     Console.WriteLine(DataInterface.insertNamePlaceIT);
+                                    meteoChoiceForDB = "Previsioni per un giorno (città)";
                                 }
                                 else
                                 {
                                     Console.WriteLine(DataInterface.insertNamePlaceEN);
+                                    meteoChoiceForDB = "Forecast for one day (city)";
                                 }
                                 var place = Console.ReadLine();
                                 try
@@ -573,6 +577,7 @@ namespace Meteo.UI
                                     var jsonObj = meteoApi.ProcessMeteoByPlaceToday(place, measureUnit).Result;
                                     print.PrintForData(jsonObj, menuLang);
                                     queryMng.InsertOneDayForecast(jsonObj);
+                                    queryMng.InsertDataMaster(meteoChoiceForDB, idUserMaster);
                                     if (menuLang == "it")
                                     {
                                         Console.WriteLine(DataInterface.successIT);
@@ -581,7 +586,6 @@ namespace Meteo.UI
                                     {
                                         Console.WriteLine(DataInterface.successEN);
                                     }
-
 
                                     if (menuLang == "it")
                                     {
@@ -700,6 +704,7 @@ namespace Meteo.UI
                                     lat = Console.ReadLine();
                                     Console.WriteLine(DataInterface.insertLonIT);
                                     lon = Console.ReadLine();
+                                    meteoChoiceForDB = "Previsioni per un giorno (coordinate)";
                                 }
                                 else
                                 {
@@ -707,11 +712,14 @@ namespace Meteo.UI
                                     lat = Console.ReadLine();
                                     Console.WriteLine(DataInterface.insertLonEN);
                                     lon = Console.ReadLine();
+                                    meteoChoiceForDB = "Forecast for one day (coordinates)";
                                 }
                                 try
                                 {
                                     var jsonObj = meteoApi.ProcessMeteoByCoordinatesToday(lon, lat, measureUnit).Result;
                                     print.PrintForData(jsonObj, menuLang);
+                                    queryMng.InsertOneDayForecast(jsonObj);
+                                    queryMng.InsertDataMaster(meteoChoiceForDB, idUserMaster);
                                     if (menuLang == "it")
                                     {
                                         Console.WriteLine(DataInterface.successIT);
@@ -1137,7 +1145,7 @@ namespace Meteo.UI
                                     Console.WriteLine("Enter the type of requested weather");
                                 }
                                 var typeWeather = Console.ReadLine();
-                                meteoApi.FiltredMeteoByWeatherLast5Day(typeWeather, place).Wait();
+                                var jsonObj = meteoApi.FiltredMeteoByWeatherLast5Day(typeWeather, place);
                                 if (menuLang == "it")
                                 { Console.WriteLine(DataInterface.successIT); }
                                 else
