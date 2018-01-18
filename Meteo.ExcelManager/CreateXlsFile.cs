@@ -9,14 +9,12 @@ namespace Meteo.ExcelManager
 {
     public class CreateXlsFile
     {
-        string _path, _xlsFile;
+        string _pathAmer = "/Users/air/Documents/Progetti/Meteo/Meteo.UI/";
+        string _pathGabriel = "/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/ ";
         int _i, _j = 2, _c = 1;
-        public void CreateXlsFileForToday(string fileNameExcel, OneDayForecast jsonObjForExcel, string place)
+        public void CreateXlsFileForToday(OneDayForecast jsonObjForExcel, string place, string xlsFile)
         {
-            _path = $"/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/{fileNameExcel}";
-            Console.WriteLine("Insert name of the XLS file");
-            _xlsFile = Console.ReadLine();
-            var newFile = new FileInfo("/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/" + $@"{_xlsFile}" + ".xls");
+            var newFile = new FileInfo(_pathAmer + $@"{xlsFile}" + ".xls");
 
             var firstValueHeader = jsonObjForExcel.Parameters.GetType().GetProperties();
 
@@ -39,12 +37,9 @@ namespace Meteo.ExcelManager
             }
         }
 
-        public void CreateXlsFileForTodayByCoordinates(string fileNameExcel, OneDayForecast jsonObjForExcel, string lat, string lon)
+        public void CreateXlsFileForTodayByCoordinates( OneDayForecast jsonObjForExcel, string lat, string lon, string xlsFile)
         {
-            _path = $"/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/{fileNameExcel}";
-            Console.WriteLine("Insert name of the XLS file");
-            _xlsFile = Console.ReadLine();
-            var newFile = new FileInfo("/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/" + $@"{_xlsFile}" + ".xls");
+            var newFile = new FileInfo(_pathAmer + $@"{xlsFile}" + ".xls");
 
             var firstValueHeader = jsonObjForExcel.Parameters.GetType().GetProperties();
 
@@ -67,12 +62,10 @@ namespace Meteo.ExcelManager
             }
         }
 
-        public void CreateXlsFileForLast5Days(string fileNameExcel, LastFiveDaysForecast jsonObjForExcel, string place)
+        public void CreateXlsFileForLast5Days( LastFiveDaysForecast jsonObjForExcel, string place, string xlsFile)
         {
-            _path = $"/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/{fileNameExcel}";
-            Console.WriteLine("Inserisci il nome del file XLS:");
-            _xlsFile = Console.ReadLine();
-            var newFile = new FileInfo("/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/" + $@"{_xlsFile}" + ".xls");
+           
+            var newFile = new FileInfo(_pathAmer+ $@"{xlsFile}" + ".xls");
 
             using (var pkg = new ExcelPackage(newFile))
             {
@@ -108,12 +101,10 @@ namespace Meteo.ExcelManager
             }
         }
 
-        public void CreateXlsFileForLast5DaysByCoordinates(string fileNameExcel, LastFiveDaysForecast jsonObjForExcel, string lat, string lon)
+        public void CreateXlsFileForLast5DaysByCoordinates( LastFiveDaysForecast jsonObjForExcel, string lat, string lon, string xlsFile)
         {
-            _path = $"/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/{fileNameExcel}";
-            Console.WriteLine("Inserisci il nome del file XLS:");
-            _xlsFile = Console.ReadLine();
-            var newFile = new FileInfo("/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/" + $@"{_xlsFile}" + ".xls");
+      
+            var newFile = new FileInfo(_pathAmer + $@"{xlsFile}" + ".xls");
 
             using (var pkg = new ExcelPackage(newFile))
             {

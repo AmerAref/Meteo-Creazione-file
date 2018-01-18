@@ -17,7 +17,7 @@ namespace Meteo.Services
 
                     if (key.Key == ConsoleKey.Backspace)
                     {
-                        dataNotMaskered = dataNotMaskered.Remove(dataNotMaskered.Length - 1, 1);
+                   dataNotMaskered = dataNotMaskered.Remove(dataNotMaskered.Length - 1, 1);
                         ClearCurrentConsoleLine();
                         foreach (var i in dataNotMaskered)
                         {

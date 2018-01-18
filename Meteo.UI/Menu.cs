@@ -108,15 +108,26 @@ namespace Meteo.UI
             Console.WriteLine("****2 - Reinserisci                                        *");
             Console.WriteLine("*********************************************************** ");
         }
-        public void Chioce ()
+        public void ChioceIT()
         {
             Console.WriteLine("\n**********************************************************");
             Console.WriteLine("********       Digitare il valore del menu     *************");
             Console.WriteLine("****1 - SI                                                 *");
             Console.WriteLine("****2 - No                                                 *");
             Console.WriteLine("*********************************************************** ");
-            
 
+        }
+
+        //inizio menu in inglese 
+        public void ChioceEN()
+        {
+            Console.WriteLine("\n**********************************************************");
+            Console.WriteLine("********       Digitare il valore del menu     *************");
+            Console.WriteLine("****1 - YES                                                *");
+            Console.WriteLine("****2 - No                                                 *");
+            Console.WriteLine("*********************************************************** ");
+
+        }
 
 
         public void ShowFirstEN()

@@ -47,6 +47,7 @@ namespace Meteo.UI
 
         static void Main(string[] args)
         {
+            var newPswClear = "";
             var menuLang = "";
             var measureUnit = "";
             var registration = new Register();
@@ -57,15 +58,13 @@ namespace Meteo.UI
             var menu = new Menu();
             var print = new PrintData();
             var queryMng = new QueryManager();
-            var filePath = "/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file";
             var exit = true;
             var choseConfigurationPc = new ChoseConfigurationPc();
             var meteoApi = new MeteoApi();
-            var selectQuestion = 0;
+            var IdSelectedForQuestion = 0;
             var validationUsername = true;
             var controlWhileAnswer = true;
             var controlForUserIfExist = 0;
-            var printQuestionForAccessAfterControl = "";
             var forAnswerInsertUsername = "";
             var password = "";
             var controlWhilePsw = 0;
@@ -81,7 +80,6 @@ namespace Meteo.UI
             var usernameNewAccount = "";
             var connection = new DbFactoryManager();
             var usernameAuthentication = "";
-            // var meteoChoiceForDB = "";
             var user = new User();
 
             menu.SelectLanguage();
@@ -186,25 +184,20 @@ namespace Meteo.UI
                                     }
 
                                     forAnswerInsertUsername = Console.ReadLine();
-                                    var userIfExist = queryMng.GetUser(forAnswerInsertUsername);
-
-                                    var reciveIDQuestion = 0;
-                                    var question = queryMng.GetQuestion(reciveIDQuestion, userIfExist);
-
-                                    // controllo se esiste user 
-                                    if (userIfExist != null)
+                                    var userIfExist = queryMng.CheckIfUsernameExisit(forAnswerInsertUsername);
+                                    if (userIfExist == true)
                                     {
-                                        var printQuestionForAccessIfExist = question.DefaultQuestion;
+                                        var IdQuestionInTableUser = queryMng.GetUser(forAnswerInsertUsername).IdQuestion;
+                                        var question = queryMng.GetQuestionIfUserNotRemeberPsw(IdQuestionInTableUser).DefaultQuestion;
 
-                                        // controllo se esiste domanda per user 
-                                        if (printQuestionForAccessIfExist != null)
-                                        {
-                                            // ricavo Domanda con stampa ed accesso a form per modifica psw 
-                                            printQuestionForAccessAfterControl = question.DefaultQuestion;
-                                            Console.WriteLine(printQuestionForAccessAfterControl);
-                                            controlForUserIfExist = 4;
-                                        }
+                                        Console.WriteLine(question);
+                                        controlForUserIfExist = 4;
+
                                     }
+
+
+
+                                    // controllo se esiste domanda per user  
                                     controlForUserIfExist++;
                                 }
 
@@ -229,11 +222,10 @@ namespace Meteo.UI
                                     // Dopo 3 volte che non vengono rispettati i criteri di sicurezza della psw termina la sessione
                                     while (controlRequirementsNewPsw)
                                     {
-                                        var newPswClear = "";
                                         // maschera nuova psw 
                                         var newPswMask = DataMaskManager.MaskData(newPswClear);
                                         // controlo su vincoli di sicurezza psw
-                                        if (Helper.RegexForPsw(pswNewAccount) == false)
+                                        if (Helper.RegexForPsw(newPswMask) == false)
                                         {
                                             if (lang == "1")
                                             {
@@ -279,7 +271,7 @@ namespace Meteo.UI
                             }
                         }
                         // uscita Whie Primario
-                        controlWhilePsw++;
+                        controlWhilePsw++; ;
                     }
                 }
 
@@ -324,9 +316,9 @@ namespace Meteo.UI
 
                             usernameNewAccount = Console.ReadLine();
 
-                            var autentication = queryMng.GetUser(usernameNewAccount).Username;
+                            var autentication = queryMng.CheckIfUsernameExisit(usernameNewAccount);
                             // autentication è vuota nel caso in cui non esiste un user con stesso username
-                            if (usernameNewAccount == autentication)
+                            if (autentication == true)
                             {
                                 // non ti fa uscire da while (reinserisci Username)
                                 if (lang == "1")
@@ -400,13 +392,13 @@ namespace Meteo.UI
                             // confronto fra le due psw scritte. Se corrispondo l'utente deve selezionare una domanda di sicurezza per recupero psw 
                             if (pswNewAccount == pswNewAccountComparison)
                             {
-                                // contro su correttezza risposta (esce Quando è seleziona "S" per salvare la risposta alla domanda)
+                                // contro su correttezza risposta (esce Quando è seleziona "1" per salvare la risposta alla domanda)
                                 while (controlWhileAnswer)
                                 {
                                     // menu per domande 
                                     menu.SelectQuestion();
                                     // stampa risposta inserita
-                                    selectQuestion = Convert.ToInt32(Console.ReadLine());
+                                    IdSelectedForQuestion = Convert.ToInt32(Console.ReadLine());
                                     if (lang == "1")
                                     {
                                         Console.WriteLine("Inserisci risposta di sicurezza");
@@ -417,7 +409,8 @@ namespace Meteo.UI
                                     }
 
                                     // stampa risposta inserita 
-                                    Console.WriteLine(selectQuestion);
+                                    var questionSelected = queryMng.GetQuestion(IdSelectedForQuestion);
+                                    Console.WriteLine(questionSelected.DefaultQuestion);
                                     // conferma rispost inserita 
                                     insertAnswer = Console.ReadLine();
                                     if (lang == "1")
@@ -460,7 +453,6 @@ namespace Meteo.UI
                                             break;
                                     }
                                     menu.SelectRole();
-                                    Console.WriteLine("Inserisci il ruolo");
                                     roleNewAccount = Convert.ToInt32(Console.ReadLine());
 
                                 }
@@ -480,11 +472,10 @@ namespace Meteo.UI
                                             break;
                                     }
                                     menu.SelectRole();
-                                    Console.WriteLine("Insert the role");
                                     roleNewAccount = Convert.ToInt32(Console.ReadLine());
                                 }
 
-                                queryMng.InsertNewUser(encryptedPwd, usernameNewAccount, surnameNewAccount, nameNewAccuont, selectQuestion, encryptedAnswer, languageNewAccount, measureUnit, roleNewAccount);
+                                queryMng.InsertNewUser(encryptedPwd, usernameNewAccount, surnameNewAccount, nameNewAccuont, IdSelectedForQuestion, encryptedAnswer, languageNewAccount, measureUnit, roleNewAccount);
                                 controlFirstChoiceLogin = false;
                                 validationManagerPsw = false;
                                 if (lang == "1")
@@ -512,13 +503,13 @@ namespace Meteo.UI
                 if (choseCreateNewAccuoutOrLogin == "1")
                 {
                     user = queryMng.GetUser(usernameAuthentication);
-                    // menuLang = user.Language;
+                    menuLang = user.Language;
                     measureUnit = user.UnitOfMeasure;
                 }
                 else
                 {
                     user = queryMng.GetUser(usernameNewAccount);
-                    // menuLang = user.Language; 
+                    menuLang = user.Language;
                     measureUnit = user.UnitOfMeasure;
                 }
                 connection.CloseConnection();
@@ -527,6 +518,8 @@ namespace Meteo.UI
                 var sceltaPrimaria = Console.ReadLine();
                 switch (sceltaPrimaria)
                 {
+
+                    //case 1 del primo switch è relativo alle previsioni ad un giorno  
                     case "1":
                         menu.ShowMenu();
                         var choseThisDay = Console.ReadLine();
@@ -534,52 +527,65 @@ namespace Meteo.UI
                         {
                             case "1":
                                 if (menuLang == "it")
-                                { Console.WriteLine(DataInterface.insertNamePlaceIT); }
+                                {
+                                    Console.WriteLine(DataInterface.insertNamePlaceIT);
+                                }
                                 else
-                                { Console.WriteLine(DataInterface.insertNamePlaceEN); }
+                                {
+                                    Console.WriteLine(DataInterface.insertNamePlaceEN);
+                                }
                                 var place = Console.ReadLine();
                                 try
                                 {
                                     var jsonObj = meteoApi.ProcessMeteoByPlaceToday(place, measureUnit).Result;
-                                    print.PrintForData(jsonObj);
+                                    print.PrintForData(jsonObj, menuLang);
                                     queryMng.InsertOneDayForecast(jsonObj);
                                     if (menuLang == "it")
                                     { Console.WriteLine(DataInterface.successIT); }
                                     else
                                     { Console.WriteLine(DataInterface.successEN); }
-                                    var prop = "Pressure";
-                                    var Propr = jsonObj.Parameters.GetType().GetProperty(prop).GetValue(jsonObj.Parameters, null);
-                                    Console.WriteLine(Propr);
+
 
                                     if (menuLang == "it")
-                                    { Console.WriteLine(DataInterface.choiceDoFileIT); }
+                                    {
+                                        Console.WriteLine(DataInterface.choiceDoFileIT);
+                                        menu.ChioceIT();
+                                    }
                                     else
-                                    { Console.WriteLine(DataInterface.choiceDoFileEN); }
+                                    {
+                                        Console.WriteLine(DataInterface.choiceDoFileEN);
+                                        menu.ChioceEN();
+                                    }
                                     var choiceSelected = Console.ReadLine();
-                                    if (choiceSelected == "S")
+                                    if (choiceSelected == "1")
                                     {
                                         if (menuLang == "it")
-                                        { Console.WriteLine(DataInterface.insertNameFileIT); }
+                                        {
+                                            Console.WriteLine(DataInterface.insertNameFileIT);
+                                        }
                                         else
-                                        { Console.WriteLine(DataInterface.insertNameFileEN); }
+                                        {
+                                            Console.WriteLine(DataInterface.insertNameFileEN);
+                                        }
                                         var fileName = Console.ReadLine();
                                         var jsonStr = JsonConvert.SerializeObject(jsonObj);
                                         var file = filemenager.CreateNewFile(fileName, jsonStr);
                                         if (menuLang == "it")
                                         {
-                                            Console.WriteLine(DataInterface.choiceSendEmailIT);
-                                            choiceSelected = Console.ReadLine();
                                             Console.WriteLine(DataInterface.successCreateFileIT);
+                                            Console.WriteLine(DataInterface.choiceSendEmailIT);
+                                            menu.ChioceIT();
                                         }
                                         else
                                         {
-                                            Console.WriteLine(DataInterface.choiceSendEmailEN);
-                                            choiceSelected = Console.ReadLine();
                                             Console.WriteLine(DataInterface.successCreateFileEN);
+                                            Console.WriteLine(DataInterface.choiceSendEmailEN);
+                                            menu.ChioceEN();
                                         }
+                                        choiceSelected = Console.ReadLine();
 
 
-                                        if (choiceSelected == "S")
+                                        if (choiceSelected == "1")
                                         {
                                             var dataForEmail = Program.InsertDataForEmail();
                                             var senderValue = dataForEmail["senderKey"];
@@ -590,40 +596,65 @@ namespace Meteo.UI
                                             emailManager.AttempsPasswordAndSendEmail(fileName, senderValue, receiverValue, bodyValue, subjectValue, userValue, password);
                                         }
                                         if (menuLang == "it")
-                                        { Console.WriteLine(DataInterface.choiceCreateXlsFileIT); }
+                                        {
+                                            Console.WriteLine(DataInterface.choiceCreateXlsFileIT);
+                                            menu.ChioceIT();
+                                        }
                                         else
-                                        { Console.WriteLine(DataInterface.choiceCreateXlsFileEN); }
+                                        {
+                                            Console.WriteLine(DataInterface.choiceCreateXlsFileEN);
+                                            menu.ChioceEN();
+                                        }
                                         choiceSelected = Console.ReadLine();
 
-                                        if (choiceSelected == "S")
+                                        if (choiceSelected == "1")
                                         {
-                                            createXlsFile.CreateXlsFileForToday(fileName, jsonObj, place);
+
+                                            if (menuLang == "it")
+                                            {
+                                                Console.WriteLine(DataInterface.insertNameFileXlsIT);
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine(DataInterface.insertNameFileXlsEN);
+                                            }
+                                            var xlsFileName = Console.ReadLine();
+
+
+                                            createXlsFile.CreateXlsFileForToday(jsonObj, place, xlsFileName);
                                         }
 
                                         else
                                         {
                                             if (menuLang == "it")
-                                            { Console.WriteLine(DataInterface.successIT); }
+                                            {
+                                                Console.WriteLine(DataInterface.successIT);
+                                            }
                                             else
-                                            { Console.WriteLine(DataInterface.successEN); }
+                                            {
+                                                Console.WriteLine(DataInterface.successEN);
+                                            }
                                         }
                                     }
                                     else
                                     {
                                         if (menuLang == "it")
-                                        { Console.WriteLine(DataInterface.successIT); }
+                                        {
+                                            Console.WriteLine(DataInterface.successIT);
+                                        }
                                         else
-                                        { Console.WriteLine(DataInterface.successEN); }
+                                        {
+                                            Console.WriteLine(DataInterface.successEN);
+                                        }
                                     }
                                 }
-                                catch
+                                catch (Exception e)
                                 {
-                                    if (menuLang == "it")
-                                    { Console.WriteLine("ERRORE!"); }
-                                    else
-                                    { Console.WriteLine("ERROR!"); }
+                                    Console.WriteLine(e.Message);
                                 }
                                 break;
+                            
+                            //relativo ad un giorno per lat e lon
                             case "2":
                                 string lon, lat;
                                 if (menuLang == "it")
@@ -643,19 +674,22 @@ namespace Meteo.UI
                                 try
                                 {
                                     var jsonObj = meteoApi.ProcessMeteoByCoordinatesToday(lon, lat, measureUnit).Result;
-                                    print.PrintForData(jsonObj);
+                                    print.PrintForData(jsonObj, menuLang);
                                     if (menuLang == "it")
                                     {
                                         Console.WriteLine(DataInterface.successIT);
                                         Console.WriteLine(DataInterface.choiceDoFileIT);
+                                        menu.ChioceIT();
                                     }
                                     else
                                     {
                                         Console.WriteLine(DataInterface.successEN);
                                         Console.WriteLine(DataInterface.choiceDoFileEN);
+                                        menu.ChioceEN();
                                     }
+
                                     var choiceSelected = Console.ReadLine();
-                                    if (choiceSelected == "S")
+                                    if (choiceSelected == "1")
                                     {
                                         string fileName, jsonStr, file;
                                         if (menuLang == "it")
@@ -666,6 +700,7 @@ namespace Meteo.UI
                                             file = filemenager.CreateNewFile(fileName, jsonStr);
                                             Console.WriteLine(DataInterface.successCreateFileIT);
                                             Console.WriteLine(DataInterface.choiceSendEmailIT);
+                                            menu.ChioceIT();
                                         }
                                         else
                                         {
@@ -675,10 +710,11 @@ namespace Meteo.UI
                                             file = filemenager.CreateNewFile(fileName, jsonStr);
                                             Console.WriteLine(DataInterface.successCreateFileEN);
                                             Console.WriteLine(DataInterface.choiceSendEmailEN);
+                                            menu.ChioceEN();
                                         }
                                         choiceSelected = Console.ReadLine();
 
-                                        if (choiceSelected == "S")
+                                        if (choiceSelected == "1")
                                         {
                                             var dataForEmail = Program.InsertDataForEmail();
                                             var senderValue = dataForEmail["senderKey"];
@@ -689,17 +725,38 @@ namespace Meteo.UI
                                             emailManager.AttempsPasswordAndSendEmail(fileName, senderValue, receiverValue, bodyValue, subjectValue, userValue, password);
                                         }
                                         if (menuLang == "it")
-                                        { Console.WriteLine(DataInterface.choiceCreateXlsFileIT); }
+                                        {
+                                            Console.WriteLine(DataInterface.choiceCreateXlsFileIT);
+                                            menu.ChioceIT();
+                                        }
                                         else
-                                        { Console.WriteLine(DataInterface.choiceCreateXlsFileEN); }
+                                        {
+                                            Console.WriteLine(DataInterface.choiceCreateXlsFileEN);
+                                            menu.ChioceEN();
+                                        }
                                         choiceSelected = Console.ReadLine();
 
-                                        if (choiceSelected == "S")
+                                        if (choiceSelected == "1")
                                         {
-                                            createXlsFile.CreateXlsFileForTodayByCoordinates(fileName, jsonObj, lat, lon);
+
+                                            if (menuLang == "it")
+                                            {
+                                                Console.WriteLine(DataInterface.insertNameFileXlsIT);
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine(DataInterface.insertNameFileXlsEN);
+                                            }
+                                            var xlsFileName = Console.ReadLine();
+
+
+
+                                            createXlsFile.CreateXlsFileForTodayByCoordinates(jsonObj, lat, lon, xlsFileName);
                                         }
                                         if (menuLang == "it")
-                                        { Console.WriteLine(DataInterface.successIT); }
+                                        {
+                                            Console.WriteLine(DataInterface.successIT);
+                                        }
                                         else
                                         { Console.WriteLine(DataInterface.successEN); }
                                     }
@@ -711,12 +768,9 @@ namespace Meteo.UI
                                         { Console.WriteLine(DataInterface.successEN); }
                                     }
                                 }
-                                catch
+                                catch (Exception e)
                                 {
-                                    if (menuLang == "it")
-                                    { Console.WriteLine("ERRORE!"); }
-                                    else
-                                    { Console.WriteLine("ERROR!"); }
+                                    Console.WriteLine(e.Message);
                                 }
                                 break;
                             case "3":
@@ -744,19 +798,21 @@ namespace Meteo.UI
                                 try
                                 {
                                     var jsonObj = meteoApi.ProcessMeteoByPlaceLast5Day(place, measureUnit).Result;
-                                    print.PrintDataLast5Day(jsonObj);
-                                    if (menuLang == "it")
+                                    print.PrintDataLast5Day(jsonObj, menuLang);
+                                    if (menuLang == "it")   
                                     {
                                         Console.WriteLine(DataInterface.successIT);
                                         Console.WriteLine(DataInterface.choiceDoFileIT);
+                                        menu.ChioceIT();
                                     }
                                     else
                                     {
                                         Console.WriteLine(DataInterface.successEN);
                                         Console.WriteLine(DataInterface.choiceDoFileEN);
+                                        menu.ChioceEN();
                                     }
                                     var choiceSelected = Console.ReadLine();
-                                    if (choiceSelected == "S")
+                                    if (choiceSelected == "1")
                                     {
                                         string fileName, jsonStr, file;
                                         if (menuLang == "it")
@@ -765,9 +821,9 @@ namespace Meteo.UI
                                             fileName = Console.ReadLine();
                                             jsonStr = JsonConvert.SerializeObject(jsonObj);
                                             file = filemenager.CreateNewFile(fileName, jsonStr);
-                                            Console.WriteLine(DataInterface.choiceSendEmailIT);
-                                            choiceSelected = Console.ReadLine();
                                             Console.WriteLine(DataInterface.successCreateFileIT);
+                                            Console.WriteLine(DataInterface.choiceSendEmailIT);
+                                            menu.ChioceIT();
                                         }
                                         else
                                         {
@@ -775,12 +831,14 @@ namespace Meteo.UI
                                             fileName = Console.ReadLine();
                                             jsonStr = JsonConvert.SerializeObject(jsonObj);
                                             file = filemenager.CreateNewFile(fileName, jsonStr);
-                                            Console.WriteLine(DataInterface.choiceSendEmailEN);
-                                            choiceSelected = Console.ReadLine();
                                             Console.WriteLine(DataInterface.successCreateFileEN);
+                                            Console.WriteLine(DataInterface.choiceSendEmailEN);
+                                            menu.ChioceEN();
                                         }
+                                        choiceSelected = Console.ReadLine();
 
-                                        if (choiceSelected == "S")
+
+                                        if (choiceSelected == "1")
                                         {
                                             var dataForEmail = Program.InsertDataForEmail();
                                             var senderValue = dataForEmail["senderKey"];
@@ -791,14 +849,31 @@ namespace Meteo.UI
                                             emailManager.AttempsPasswordAndSendEmail(fileName, senderValue, receiverValue, bodyValue, subjectValue, userValue, password);
                                         }
                                         if (menuLang == "it")
-                                        { Console.WriteLine(DataInterface.choiceCreateXlsFileIT); }
+                                        {
+                                            Console.WriteLine(DataInterface.choiceCreateXlsFileIT);
+                                            menu.ChioceIT();
+                                        }
                                         else
-                                        { Console.WriteLine(DataInterface.choiceCreateXlsFileEN); }
+                                        {
+                                            Console.WriteLine(DataInterface.choiceCreateXlsFileEN);
+                                            menu.ChioceEN();
+                                        }
                                         choiceSelected = Console.ReadLine();
 
-                                        if (choiceSelected == "S")
+                                        if (choiceSelected == "1")
                                         {
-                                            createXlsFile.CreateXlsFileForLast5Days(fileName, jsonObj, place);
+                                            if (menuLang == "it")
+                                            {
+                                                Console.WriteLine(DataInterface.insertNameFileXlsIT);
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine(DataInterface.insertNameFileXlsEN);
+                                            }
+                                            var xlsFileName = Console.ReadLine();
+
+
+                                            createXlsFile.CreateXlsFileForLast5Days(jsonObj, place, xlsFileName);
                                         }
                                     }
                                     else
@@ -809,12 +884,9 @@ namespace Meteo.UI
                                         { Console.WriteLine(DataInterface.successEN); }
                                     }
                                 }
-                                catch
+                                catch (Exception e)
                                 {
-                                    if (menuLang == "it")
-                                    { Console.WriteLine("ERRORE!"); }
-                                    else
-                                    { Console.WriteLine("ERROR!"); }
+                                    Console.WriteLine(e.Message);
                                 }
                                 break;
                             case "2":
@@ -839,19 +911,21 @@ namespace Meteo.UI
                                     if (menuLang == "it")
                                     {
                                         Console.WriteLine(DataInterface.insertNameFileIT);
-                                        print.PrintDataLast5Day(jsonObj);
+                                        print.PrintDataLast5Day(jsonObj, menuLang);
                                         Console.WriteLine(DataInterface.successIT);
                                         Console.WriteLine(DataInterface.choiceDoFileIT);
+                                        menu.ChioceIT();
                                     }
                                     else
                                     {
                                         Console.WriteLine(DataInterface.insertNameFileEN);
-                                        print.PrintDataLast5Day(jsonObj);
+                                        print.PrintDataLast5Day(jsonObj, menuLang);
                                         Console.WriteLine(DataInterface.successEN);
                                         Console.WriteLine(DataInterface.choiceDoFileEN);
+                                        menu.ChioceEN();
                                     }
                                     var choiceSelected = Console.ReadLine();
-                                    if (choiceSelected == "S")
+                                    if (choiceSelected == "1")
                                     {
                                         string fileName, jsonStr, file;
                                         if (menuLang == "it")
@@ -861,6 +935,7 @@ namespace Meteo.UI
                                             jsonStr = JsonConvert.SerializeObject(jsonObj);
                                             file = filemenager.CreateNewFile(fileName, jsonStr);
                                             Console.WriteLine(DataInterface.choiceSendEmailIT);
+                                            menu.ChioceIT();
                                         }
                                         else
                                         {
@@ -869,10 +944,11 @@ namespace Meteo.UI
                                             jsonStr = JsonConvert.SerializeObject(jsonObj);
                                             file = filemenager.CreateNewFile(fileName, jsonStr);
                                             Console.WriteLine(DataInterface.choiceSendEmailEN);
+                                            menu.ChioceEN();
                                         }
                                         choiceSelected = Console.ReadLine();
 
-                                        if (choiceSelected == "S")
+                                        if (choiceSelected == "1")
                                         {
                                             var dataForEmail = Program.InsertDataForEmail();
                                             var senderValue = dataForEmail["senderKey"];
@@ -884,13 +960,29 @@ namespace Meteo.UI
                                         }
 
                                         if (menuLang == "it")
-                                        { Console.WriteLine(DataInterface.choiceCreateXlsFileIT); }
-                                        else
-                                        { Console.WriteLine(DataInterface.choiceCreateXlsFileEN); }
-                                        choiceSelected = Console.ReadLine();
-                                        if (choiceSelected == "S")
                                         {
-                                            createXlsFile.CreateXlsFileForLast5DaysByCoordinates(fileName, jsonObj, lat, lon);
+                                            Console.WriteLine(DataInterface.choiceCreateXlsFileIT);
+                                            menu.ChioceIT();
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine(DataInterface.choiceCreateXlsFileEN);
+                                            menu.ChioceIT();
+                                        }
+                                        choiceSelected = Console.ReadLine();
+                                        if (choiceSelected == "1")
+                                        {
+                                            if (menuLang == "it")
+                                            {
+                                                Console.WriteLine(DataInterface.insertNameFileXlsIT);
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine(DataInterface.insertNameFileXlsEN);
+                                            }
+                                            var xlsFileName = Console.ReadLine();
+
+                                            createXlsFile.CreateXlsFileForLast5DaysByCoordinates(jsonObj, lat, lon, xlsFileName);
                                         }
                                     }
                                     else
@@ -901,12 +993,9 @@ namespace Meteo.UI
                                         { Console.WriteLine(DataInterface.successEN); }
                                     }
                                 }
-                                catch
+                                catch (Exception e)
                                 {
-                                    if (menuLang == "it")
-                                    { Console.WriteLine("ERRORE!"); }
-                                    else
-                                    { Console.WriteLine("ERROR!"); }
+                                    Console.WriteLine(e.Message);
                                 }
                                 break;
                             case "3":
@@ -933,18 +1022,21 @@ namespace Meteo.UI
                                 var humidity = Console.ReadLine();
                                 try
                                 {
-                                    meteoApi.FiltredMeteoByHumidityLast5Day(humidity, place).Wait();
+                                    var objFilteredForHumidity = meteoApi.FiltredMeteoByHumidityLast5Day(humidity, place).Result;
+                                    print.PrintFilteredDataHumidity(objFilteredForHumidity, menuLang);
+
                                     if (menuLang == "it")
-                                    { Console.WriteLine(DataInterface.successIT); }
+                                    {
+                                        Console.WriteLine(DataInterface.successIT);
+                                    }
                                     else
-                                    { Console.WriteLine(DataInterface.successEN); }
+                                    {
+                                        Console.WriteLine(DataInterface.successEN);
+                                    }
                                 }
-                                catch
+                                catch (Exception e)
                                 {
-                                    if (menuLang == "it")
-                                    { Console.WriteLine("ERRORE!"); }
-                                    else
-                                    { Console.WriteLine("ERROR!"); }
+                                    Console.WriteLine(e.Message);
                                 }
                                 break;
                             case "2":
@@ -967,7 +1059,9 @@ namespace Meteo.UI
                                     Console.WriteLine("Enter time with the following format HH:MM:SS");
                                 }
                                 time = Console.ReadLine();
-                                meteoApi.FiltredMeteoByDateTimeLast5Day(date, time, place).Wait();
+                                var objFilteredForTimeDate = meteoApi.FiltredMeteoByDateTimeLast5Day(date, time, place).Result;
+                                print.PrintDataLast5Day(objFilteredForTimeDate, menuLang);
+
                                 if (menuLang == "it")
                                 { Console.WriteLine(DataInterface.successIT); }
                                 else
@@ -975,14 +1069,22 @@ namespace Meteo.UI
                                 break;
                             case "3":
                                 if (menuLang == "it")
-                                { Console.WriteLine(DataInterface.insertNamePlaceIT); }
+                                {
+                                    Console.WriteLine(DataInterface.insertNamePlaceIT);
+                                }
                                 else
-                                { Console.WriteLine(DataInterface.insertNamePlaceEN); }
+                                {
+                                    Console.WriteLine(DataInterface.insertNamePlaceEN);
+                                }
                                 place = Console.ReadLine();
                                 if (menuLang == "it")
-                                { Console.WriteLine("Iserisci tipologia di tempo richiesta"); }
+                                {
+                                    Console.WriteLine("Iserisci tipologia di tempo richiesta");
+                                }
                                 else
-                                { Console.WriteLine("Enter the type of requested weather"); }
+                                {
+                                    Console.WriteLine("Enter the type of requested weather");
+                                }
                                 var typeWeather = Console.ReadLine();
                                 meteoApi.FiltredMeteoByWeatherLast5Day(typeWeather, place).Wait();
                                 if (menuLang == "it")
@@ -1027,7 +1129,7 @@ namespace Meteo.UI
                                 else
                                 { Console.WriteLine("Enter the name of the file from which to get the data"); }
                                 var todaySourceFile = Console.ReadLine();
-                                var todayFilePath = Path.Combine(filePath, todaySourceFile);
+                                var todayFilePath = Path.Combine(DataInterface.filePathAmer, todaySourceFile);
                                 if (menuLang == "it")
                                 { Console.WriteLine("Inserisci il nome del file XLS"); }
                                 else
@@ -1042,7 +1144,7 @@ namespace Meteo.UI
                                 else
                                 { Console.WriteLine("Enter the name of the file from which to get the data"); }
                                 var fiveDaysSourceFile = Console.ReadLine();
-                                var fiveDaysFilePath = Path.Combine(filePath, fiveDaysSourceFile);
+                                var fiveDaysFilePath = Path.Combine(DataInterface.filePathAmer, fiveDaysSourceFile);
                                 if (menuLang == "it")
                                 { Console.WriteLine("Inserisci il nome del file XLS"); }
                                 else

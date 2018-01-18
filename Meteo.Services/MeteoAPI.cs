@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Linq;
 using Meteo.Services.OpenWeatherMap.Models;
+using System.Collections.Generic;
 
 
 namespace Meteo.Services
@@ -58,49 +59,69 @@ namespace Meteo.Services
             return jsonObj;
         }
 
-        public async Task FiltredMeteoByHumidityLast5Day(string humidity, string place)
+        public async Task<LastFiveDaysForecast> FiltredMeteoByHumidityLast5Day(string humidity, string place)
         {
             var url = $"{_appUri}forecast?q={place}&appid={_appId}";
             var jsonStr = await Client.GetStringAsync(url);
             var jsonObj = JsonConvert.DeserializeObject<LastFiveDaysForecast>(jsonStr);
             var humidityForFilter = int.Parse(humidity);
-            var objFiltred = jsonObj.List.Where(x => x.Parameters.Humidity.Equals(humidityForFilter)).ToList();
-            foreach (var item in objFiltred)
+            var objFiltred = jsonObj.List.Where(x => x.Parameters.Humidity.Equals(humidityForFilter));
+
+            var objFiltredReady = new LastFiveDaysForecast()
             {
-                Console.WriteLine(item.Parameters.Humidity);
-            }
+                List = objFiltred.ToList()
+            };
+
+
+
+
+
+            return objFiltredReady;
         }
 
-        public async Task FiltredMeteoByDateTimeLast5Day(string place, string date, string time)
+        public async Task<LastFiveDaysForecast> FiltredMeteoByDateTimeLast5Day(string place, string date, string time)
         {
             var url = $"{_appUri}forecast?q={place}&appid={_appId}";
             var jsonStr = await Client.GetStringAsync(url);
             var jsonObj = JsonConvert.DeserializeObject<LastFiveDaysForecast>(jsonStr);
             var dateTime = date + " " + time;
-            var objFiltered = jsonObj.List.Where(x => Helper.UnixTimeStampToDateTime(x.TimeStamp)
-                .ToString(CultureInfo.InvariantCulture).Equals(dateTime)).ToList();
-            foreach (var item in objFiltered)
+            var objFiltred = jsonObj.List.Where(x => Helper.UnixTimeStampToDateTime(x.TimeStamp)
+                                                 .ToString(CultureInfo.InvariantCulture).Equals(dateTime));
+            var objFiltredReady = new LastFiveDaysForecast()
             {
-                foreach (var main in item.Weather)
-                {
-                    Console.WriteLine(main.Main);
-                }
-            }
+                List = objFiltred.ToList()
+            };
+
+
+
+
+
+            return objFiltredReady;
+
         }
 
-        public async Task FiltredMeteoByWeatherLast5Day(string typeWeather, string place)
+        public async Task FiltredMeteoByWeatherLast5Day(string typeWeather, string place)      
         {
             var url = $"{_appUri}forecast?q={place}&appid={_appId}";
             var jsonStr = await Client.GetStringAsync(url);
             var jsonObj = JsonConvert.DeserializeObject<LastFiveDaysForecast>(jsonStr);
+           
             foreach (var item in jsonObj.List)
             {
+                
                 var objFiltred = item.Weather.Where(x => x.Main.Equals(typeWeather)).ToList();
+
                 foreach (var main in objFiltred)
                 {
-                    // TODO OUTPUT
+                    Console.WriteLine("Id");
+                    Console.WriteLine(main.Id);
+                    Console.WriteLine("Description");
+                    Console.WriteLine(main.Description);
                 }
+
+              
             }
+            return ;
         }
 
         private static HttpClient CreateClient()
