@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
 using Meteo.Services.OpenWeatherMap.Models;
+using Meteo.Services.Models;
 
 namespace Meteo.UI
 {
     public class PrintData
     {
-        public void PrintForData(OneDayForecast jsonObj, string menuLang)
+        public void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang)
 
         {
             if (menuLang == "it")
@@ -38,7 +40,7 @@ namespace Meteo.UI
 
         }
 
-        public void PrintDataLast5Day(LastFiveDaysForecast jsonObj, string menuLang)
+        public void PrintDataLast5Day(Meteo.Services.OpenWeatherMap.Models.LastFiveDaysForecast jsonObj, string menuLang)
         {
             foreach (var measure in jsonObj.List)
             {
@@ -67,15 +69,10 @@ namespace Meteo.UI
                     Console.WriteLine(measure.Parameters.TempMin);
                     Console.WriteLine("Temperature max");
                     Console.WriteLine(measure.Parameters.TempMax);
-
-
                 }
-
-
             }
         }
-
-        public void PrintFilteredDataHumidity(LastFiveDaysForecast objFiltred, string menuLang)
+        public void PrintFilteredDataHumidity(Meteo.Services.OpenWeatherMap.Models.LastFiveDaysForecast objFiltred, string menuLang)
         {
             foreach (var measure in objFiltred.List)
             {
@@ -90,8 +87,6 @@ namespace Meteo.UI
                     Console.WriteLine(measure.TimeStamp);
                 }
 
-
-
                 foreach (var weather in measure.Weather)
                 {
                     if (menuLang == "it")
@@ -105,13 +100,52 @@ namespace Meteo.UI
                         Console.Write("Sky");
                         Console.WriteLine(weather.Main);
                     }
-
-
-
                 }
             }
         }
 
+        public void PrintAllUsers(List<User> allUsers)
+        {
+            foreach(var user in allUsers)
+            {
+                Console.WriteLine("IdUser");
+                Console.WriteLine(user.IdUser);
+                Console.WriteLine("Name");
+                Console.WriteLine(user.Name);
+                Console.WriteLine("Surname");
+                Console.WriteLine(user.Surname);
+                Console.WriteLine("Password");
+                Console.WriteLine(user.Password);
+                Console.WriteLine("Username");
+                Console.WriteLine(user.Username);
+                Console.WriteLine("Language");
+                Console.WriteLine(user.Language);
+                Console.WriteLine("UnitOfMeasure");
+                Console.WriteLine(user.UnitOfMeasure);
+                Console.WriteLine("IdQuestion");
+                Console.WriteLine(user.IdQuestion);
+                Console.WriteLine("Answer");
+                Console.WriteLine(user.Answer);
+                Console.WriteLine("IdRole");
+                Console.WriteLine(user.IdRole);
+                Console.WriteLine("");
+            }
+        }
 
+        public void PrintAllMasterRecords (List<Master> allMasterRecords)
+        {
+            foreach(var record in allMasterRecords)
+            {
+                Console.WriteLine("IdMaster");
+                Console.WriteLine(record.IdMaster);
+                Console.WriteLine("Choice5DayOrNow");
+                Console.WriteLine(record.Choice5DayOrNow);
+                Console.WriteLine("DateOfRequist");
+                Console.WriteLine(record.DateOfRequist);
+                Console.WriteLine("IdUser");
+                Console.WriteLine(record.IdUser);
+                Console.WriteLine("");
+            }
+        }
     }
 }

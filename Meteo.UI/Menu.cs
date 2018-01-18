@@ -8,6 +8,26 @@ namespace Meteo.UI
     {
         QueryManager queryManager = new QueryManager();
 
+        public void ShowFirtsMenuAdminIT()
+        {
+            Console.WriteLine("*****************************************************************");
+            Console.WriteLine("*************       Digitare il valore del menu       ***********");
+            Console.WriteLine("****1 - Visualizza tutti gli utenti registrati                  *");
+            Console.WriteLine("****2 - Visualizza la tabella 'Master'                          *");
+            Console.WriteLine("****3 - Modifica la tabella 'User' (crea/elimina/modifica user) *");
+            Console.WriteLine("****4 - Termina sessione                                        *");
+            Console.WriteLine("*****************************************************************");
+        }
+
+        public void ShowSecondMenuAdminIT()
+        {
+            Console.WriteLine("*****************************************************************");
+            Console.WriteLine("****1 - Vuoi creare un utente?                                  *");
+            Console.WriteLine("****2 - Vuoi eliminare un utente?                               *");
+            Console.WriteLine("****3 - Vuoi modificare la password di un utente?               *");
+            Console.WriteLine("****4 - Termina sessione                                        *");
+            Console.WriteLine("*****************************************************************");
+        }
         public void ShowMenuAuthenticationIT()
         {
             Console.WriteLine("***********************************************************");
@@ -73,7 +93,7 @@ namespace Meteo.UI
             }
             Console.WriteLine("************************************************************");
         }
-       
+
 
 
         public void SelectLanguage()

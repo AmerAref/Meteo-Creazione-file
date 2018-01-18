@@ -18,7 +18,10 @@ namespace Meteo.Services.Infrastructure
             var cmd = new MySqlCommand(query, _connection);
             var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
             CloseConnection();
-            return question[0];
+            if (question.Any())
+            { return question[0]; }
+            else
+            { return null; }
         }
        
         public User GetUser(string username)
@@ -28,7 +31,10 @@ namespace Meteo.Services.Infrastructure
             var cmd = new MySqlCommand(query, _connection);
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
-            return user[0];
+            if (user.Any())
+            { return user[0]; }
+            else
+            { return null; }
         }
         public void InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit, int role)
         {
@@ -38,7 +44,7 @@ namespace Meteo.Services.Infrastructure
             cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
         }
-        public bool CheckIfUsernameExisit(string username)
+        public User GetUserIfExist(string username, string psw)
         {
             OpenConnection();
             string query = $"SELECT * FROM User WHERE Username = '{username}'";
@@ -149,12 +155,35 @@ namespace Meteo.Services.Infrastructure
         {
             OpenConnection();
             DateTime masterDate = DateTime.Now;
-            string format = "yyy-MM-dd hh:mm:ss";
+            string format = "yyyy-MM-dd hh:mm:ss";
             string str = masterDate.ToString(format);
             string query = $"INSERT INTO `Master` (`Choice5DayOrNow`, `DateOfRequist`, `IdUser`) VALUES ('{meteoChoiceDb}', '{str}', '{idUserMaster}');";
             var cmd = new MySqlCommand(query, _connection);
             var meteoMasterData = cmd.ExecuteReader().DataReaderMapToList<Models.Master>();
             CloseConnection();
+        }
+
+
+        //Query per eseguite da utente con ruolo Admin
+
+        public List<User> GetAllUsers()
+        {
+            OpenConnection();
+            string query = "SELECT * FROM User";
+            var cmd = new MySqlCommand(query, _connection);
+            var users = cmd.ExecuteReader().DataReaderMapToList<User>();
+            CloseConnection();
+            return users;
+        }
+
+        public List<Master> GetAllMasterRecords()
+        {
+            OpenConnection();
+            string query = "SELECT * FROM Master";
+            var cmd = new MySqlCommand(query, _connection);
+            var records = cmd.ExecuteReader().DataReaderMapToList<Master>();
+            CloseConnection();
+            return records;
         }
     }
 }

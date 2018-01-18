@@ -7,16 +7,16 @@ namespace Meteo.Services.Models
     {
         [Key]
         public int IdMaster { get; set; }
-        public bool Choice5DayOrNow { get; set; }
+        public string Choice5DayOrNow { get; set; }
         public DateTime DateOfRequist { get; set; }
 
         [ForeignKey("Users")]
-        int IdUser { get; set; }
-        public User User { get; set; }
+        public int IdUser { get; set; }
+        /* public User User { get; set; }
 
         [ForeignKey("Cities")]
-        int IdCity { get; set; }
-        public City Cities { get; set; }
+        public int IdCity { get; set; }
+        public City Cities { get; set; } */
 
     }
 }
