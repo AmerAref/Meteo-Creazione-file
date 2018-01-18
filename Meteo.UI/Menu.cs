@@ -82,10 +82,10 @@ namespace Meteo.UI
         {
             var allRoles = queryManager.AllRoles();
             Console.WriteLine("\n**********************************************************");
-            Console.WriteLine("Digitare il valore del menu per scelta domanda di sicurezza ");
+            Console.WriteLine("Digitare il valore del menu per scelta del ruolo           *");
             foreach (var role in allRoles)
             {
-                Console.WriteLine($"{role.IdRole} - {role.RoleType}");
+                Console.WriteLine($"{role.IdRole} - {role.RoleType} *");
             }
             Console.WriteLine("************************************************************");
         }
@@ -120,10 +120,19 @@ namespace Meteo.UI
         public void Confirmation()
         {
             Console.WriteLine("\n**********************************************************");
-            Console.WriteLine("******** Digitare il valore del menu per scelta della lingua");
+            Console.WriteLine("******** Digitare il valore del menu per conferma risposta *");
             Console.WriteLine("****1 - Conferma                                           *");
             Console.WriteLine("****2 - Reinserisci                                        *");
             Console.WriteLine("*********************************************************** ");
+        }
+        public void Chioce ()
+        {
+            Console.WriteLine("\n**********************************************************");
+            Console.WriteLine("********       Digitare il valore del menu     *************");
+            Console.WriteLine("****1 - SI                                                 *");
+            Console.WriteLine("****2 - No                                                 *");
+            Console.WriteLine("*********************************************************** ");
+            
         }
     }
 }
