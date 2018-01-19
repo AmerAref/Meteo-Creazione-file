@@ -325,9 +325,9 @@ namespace Meteo.UI
 
                             usernameNewAccount = Console.ReadLine();
 
-                            var autentication = queryMng.GetUser(usernameNewAccount).Username;
+                            var autentication = queryMng.GetUser(usernameNewAccount);
                             // autentication è vuota nel caso in cui non esiste un user con stesso username
-                            if (autentication.Any())
+                            if (autentication != null)
                             {
                                 // non ti fa uscire da while (reinserisci Username)
                                 if (lang == "1")
