@@ -6,12 +6,14 @@ namespace Meteo.Services.OpenWeatherMap.Models
     {
         [JsonProperty("main")]
         public string Main { get; set; }
+
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public int Id { get; set; }
+
         [JsonProperty("description")]
         public string Description { get; set; }
+
         [JsonProperty("icon")]
         public string Icon { get; set; }
     }
 }
-

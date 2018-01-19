@@ -7,7 +7,7 @@ namespace Meteo.Services
     {
         public static bool RegexForPsw(string password)
         {
-            const string matchEmailPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*)(?=.*[#$^+=!*()@%&]).{8,}$";
+            const string matchEmailPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*)(?=.*[#$^+=!*()@%&]).{8,}$";
             return password != null && Regex.IsMatch(password, matchEmailPattern);
         }
         public static DateTime UnixTimeStampToDateTime(int unixTimeStamp)

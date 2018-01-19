@@ -100,7 +100,7 @@ namespace Meteo.UI
             var usernameForQuery = "";
             var user = new User();
 
-            menu.SelectLanguage();
+            menu.SelectLanguageStart();
             lang = Console.ReadLine();
 
             var kernel = new StandardKernel();
@@ -470,7 +470,7 @@ namespace Meteo.UI
                                 int roleNewAccount;
                                 if (lang == "1")
                                 {
-                                    menu.SelectLanguage();
+                                    menu.SelectLanguageIT();
                                     selectLanguage = Console.ReadLine();
                                     switch (selectLanguage)
                                     {
@@ -491,7 +491,7 @@ namespace Meteo.UI
                                 }
                                 else
                                 {
-                                    menu.SelectLanguage();
+                                    menu.SelectLanguageEN();
                                     selectLanguage = Console.ReadLine();
                                     switch (selectLanguage)
                                     {
@@ -532,7 +532,6 @@ namespace Meteo.UI
 
             while (exit)
             {
-                connection.OpenConnection();
                 if (choseCreateNewAccuoutOrLogin == "1")
                 {
                     user = queryMng.GetUser(usernameAuthentication);
@@ -549,7 +548,6 @@ namespace Meteo.UI
                     userRole = user.IdRole.ToString(); ;
                     usernameForQuery = usernameNewAccount;
                 }
-                connection.CloseConnection();
                 if (userRole == "1")
                 {
                     if (menuLang == "it")
@@ -716,7 +714,7 @@ namespace Meteo.UI
                                     if (menuLang == "it")
                                     {
                                         Console.WriteLine(DataInterface.insertNamePlaceIT);
-                                        meteoChoiceForDB = "Previsioni per un giorno (citta')";
+                                        meteoChoiceForDB = "Previsioni per un giorno (citta`)";
                                     }
                                     else
                                     {
@@ -1365,7 +1363,7 @@ namespace Meteo.UI
                                     else
                                     { Console.WriteLine("Enter the name of the file from which to get the data"); }
                                     var fiveDaysSourceFile = Console.ReadLine();
-                                    var fiveDaysFilePath = Path.Combine(DataInterface.filePathAmer, fiveDaysSourceFile);
+                                    var fiveDaysFilePath = Path.Combine(DataInterface.filePathGabriel, fiveDaysSourceFile);
                                     if (menuLang == "it")
                                     { Console.WriteLine("Inserisci il nome del file XLS"); }
                                     else

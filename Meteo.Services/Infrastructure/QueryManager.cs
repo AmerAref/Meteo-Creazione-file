@@ -74,7 +74,7 @@ namespace Meteo.Services.Infrastructure
             OpenConnection();
             string query = $" UPDATE User SET Password = '{psw}' WHERE Username = '{username}'";
             var cmd = new MySqlCommand(query, _connection);
-            var user = cmd.ExecuteReader().DataReaderMapToList<User>();
+            cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
             return;
         }
@@ -93,13 +93,13 @@ namespace Meteo.Services.Infrastructure
             var parameters = jsonObj.Parameters;
             string query = $"INSERT INTO `OneDayForecast`(`Pressure`, `Temp`, `Humidity`, `TempMin`, `TempMax`) VALUES ('{parameters.Pressure}', '{parameters.Temp}', '{parameters.Humidity}', '{parameters.TempMin}', '{parameters.TempMax}');";
             var cmd = new MySqlCommand(query, _connection);
-            var oenDayForecastData = cmd.ExecuteReader().DataReaderMapToList<Models.OneDayForecast>();
+            cmd.ExecuteReader().DataReaderMapToList<Models.OneDayForecast>();
             CloseConnection();
         }
         public List<Question> AllQuestionsEN()
         {
             OpenConnection();
-            string query = $"SELECT * FROM Question WHERE Language = 'en'  ";
+            string query = $"SELECT * FROM Question WHERE Language = 'en'";
             var cmd = new MySqlCommand(query, _connection);
             var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
             CloseConnection();
@@ -108,7 +108,7 @@ namespace Meteo.Services.Infrastructure
         public List<Question> AllQuestionsIT()
         {
             OpenConnection();
-            string query = $"SELECT * FROM Question WHERE Language = 'it'  ";
+            string query = $"SELECT * FROM Question WHERE Language = 'it'";
             var cmd = new MySqlCommand(query, _connection);
             var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
             CloseConnection();
@@ -120,9 +120,9 @@ namespace Meteo.Services.Infrastructure
             DateTime masterDate = DateTime.Now;
             string format = "yyyy-MM-dd hh:mm:ss";
             string str = masterDate.ToString(format);
-            string query = $"INSERT INTO `Master` (`Choice5DayOrNow`, `DateOfRequist`, `IdUser`) VALUES ('{meteoChoiceDb}', '{str}', '{idUserMaster}');";
+            string query = $"INSERT INTO `Master`(`Choice5DayOrNow`, `DateOfRequist`, `IdUser`) VALUES ('{meteoChoiceDb}', '{str}', '{idUserMaster}')";
             var cmd = new MySqlCommand(query, _connection);
-            var meteoMasterData = cmd.ExecuteReader().DataReaderMapToList<Models.Master>();
+            cmd.ExecuteReader().DataReaderMapToList<Master>();
             CloseConnection();
         }
 
@@ -151,7 +151,7 @@ namespace Meteo.Services.Infrastructure
             OpenConnection();
             string query = $"DELETE FROM `User` WHERE `Name` = '{name}' AND `Surname` = '{surname}' AND `Username` = '{username}';";
             var cmd = new MySqlCommand(query, _connection);
-            var delete = cmd.ExecuteReader().DataReaderMapToList<User>();
+            cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
         }
         public void QueryForUpdateRole(string username, int role)
@@ -159,7 +159,7 @@ namespace Meteo.Services.Infrastructure
             OpenConnection();
             string query = $" UPDATE User SET IdRole = '{role}' WHERE Username = '{username}'";
             var cmd = new MySqlCommand(query, _connection);
-            var user = cmd.ExecuteReader().DataReaderMapToList<User>();
+            cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
             return;
         }

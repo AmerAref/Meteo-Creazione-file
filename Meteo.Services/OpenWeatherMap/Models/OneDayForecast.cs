@@ -7,9 +7,18 @@ namespace Meteo.Services.OpenWeatherMap.Models
     {
         [JsonProperty("main")]
         public ForecastParameter Parameters { get; set; }
+
         [JsonProperty("weather")]
         public List<Forecast> Weather { get; set; }
+
+        [JsonProperty("sys")]
+        public SystemData SystemDataForWeather { get; set; }
+
         [JsonProperty("dt")]
         public int TimeStamp { get; set; }
+
+        [JsonProperty("id")]
+
+        public int Id { get; set; }
     }
 }

@@ -6,7 +6,8 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Linq;
 using Meteo.Services.OpenWeatherMap.Models;
-
+using System.Collections.Generic;
+using System.IO;
 
 namespace Meteo.Services
 {
@@ -25,7 +26,6 @@ namespace Meteo.Services
 
         public async Task<OneDayForecast> ProcessMeteoByPlaceToday(string place, string unitMeasure)
         {
-
             var url = $"{_appUri}weather?q={place}&units={unitMeasure}&appid={_appId}";
             var jsonStr = await Client.GetStringAsync(url);
             var jsonObj = JsonConvert.DeserializeObject<OneDayForecast>(jsonStr);
@@ -35,7 +35,6 @@ namespace Meteo.Services
         public async Task<OneDayForecast> ProcessMeteoByCoordinatesToday(string lat, string lon, string unitMeasure)
         {
             var url = $"{_appUri}weather?lat={lat}&lon={lon}&units={unitMeasure}&appid={_appId}";
-
             var jsonStr = await Client.GetStringAsync(url);
             var jsonObj = JsonConvert.DeserializeObject<OneDayForecast>(jsonStr);
             return jsonObj;
@@ -52,7 +51,6 @@ namespace Meteo.Services
         public async Task<LastFiveDaysForecast> ProcessMeteoByCoordinatesLast5Day(string lat, string lon, string unitMeasure)
         {
             var url = $"{_appUri}forecast?lat={lat}&lon={lon}&units={unitMeasure}&appid={_appId}";
-
             var jsonStr = await Client.GetStringAsync(url);
             var jsonObj = JsonConvert.DeserializeObject<LastFiveDaysForecast>(jsonStr);
             return jsonObj;
@@ -65,16 +63,11 @@ namespace Meteo.Services
             var jsonObj = JsonConvert.DeserializeObject<LastFiveDaysForecast>(jsonStr);
             var humidityForFilter = int.Parse(humidity);
             var objFiltred = jsonObj.List.Where(x => x.Parameters.Humidity.Equals(humidityForFilter));
-
+            
             var objFiltredReady = new LastFiveDaysForecast()
             {
                 List = objFiltred.ToList()
             };
-
-
-
-
-
             return objFiltredReady;
         }
 
@@ -90,24 +83,17 @@ namespace Meteo.Services
             {
                 List = objFiltred.ToList()
             };
-
-
-
-
-
             return objFiltredReady;
-
         }
 
-        public async Task FiltredMeteoByWeatherLast5Day(string typeWeather, string place)      
+        public async Task FiltredMeteoByWeatherLast5Day(string typeWeather, string place)
         {
             var url = $"{_appUri}forecast?q={place}&appid={_appId}";
             var jsonStr = await Client.GetStringAsync(url);
             var jsonObj = JsonConvert.DeserializeObject<LastFiveDaysForecast>(jsonStr);
-           
+
             foreach (var item in jsonObj.List)
             {
-                
                 var objFiltred = item.Weather.Where(x => x.Main.Equals(typeWeather)).ToList();
 
                 foreach (var main in objFiltred)
@@ -117,10 +103,8 @@ namespace Meteo.Services
                     Console.WriteLine("Description");
                     Console.WriteLine(main.Description);
                 }
-
-              
             }
-            return ;
+            return;
         }
 
         private static HttpClient CreateClient()

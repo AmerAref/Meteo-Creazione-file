@@ -23,7 +23,7 @@
         public static string secureQuestionIT = "Inserisci Username per la domanda di sicurezza", secureQuestionEN = "Enter Username for the security question";
         public static string insertNameFileXlsIT = "Inserisci nome FIle xls";
         public static string insertNameFileXlsEN = "Insert file name (xls)";
-        public static string filePathGabriel = "/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file";
+        public static string filePathGabriel = "/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/";
         public static string filePathAmer = "/Users/air/Documents/Progetti/Meteo/Meteo.UI/";
 
     }
