@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Meteo.Services;
 using Meteo.ExcelManager;
 using Meteo.Services.Infrastructure;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.IO;
+using System.Reflection;
 using Meteo.Services.Models;
+using Ninject;
+
 namespace Meteo.UI
 {
     public static class Program
@@ -101,6 +102,11 @@ namespace Meteo.UI
 
             menu.SelectLanguage();
             lang = Console.ReadLine();
+
+            var kernel = new StandardKernel();
+            kernel.Load(Assembly.GetAssembly(typeof(MySqlManager)));
+            var queryBuilder = kernel.Get<IQueryBuilder>();
+            var manager = new MySqlManager(queryBuilder);
 
             switch (lang)
             {

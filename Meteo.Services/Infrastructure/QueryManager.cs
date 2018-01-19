@@ -2,10 +2,7 @@ using System;
 using System.Linq;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
-using Meteo.Services.OpenWeatherMap.Models;
 using Meteo.Services.Models;
-using System.IO;
-using Newtonsoft.Json;
 
 namespace Meteo.Services.Infrastructure
 {

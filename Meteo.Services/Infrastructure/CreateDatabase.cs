@@ -1,5 +1,4 @@
-﻿using System;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 namespace Meteo.Services.Infrastructure
 {
     public class CreateDatabase : DbFactoryManager

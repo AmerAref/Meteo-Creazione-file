@@ -6,7 +6,6 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Linq;
 using Meteo.Services.OpenWeatherMap.Models;
-using System.Collections.Generic;
 
 
 namespace Meteo.Services

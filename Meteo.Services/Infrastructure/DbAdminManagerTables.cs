@@ -1,5 +1,4 @@
-﻿using System;
-namespace Meteo.Services.Infrastructure
+﻿namespace Meteo.Services.Infrastructure
 {
     public class DbAdminManagerTables : QueryManager
     {

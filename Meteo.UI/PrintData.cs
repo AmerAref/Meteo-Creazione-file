@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Meteo.Services.OpenWeatherMap.Models;
 using Meteo.Services.Models;
 
 namespace Meteo.UI

@@ -1,5 +1,4 @@
 using System;
-using Meteo.Services;
 using Meteo.Services.Infrastructure;
 
 namespace Meteo.UI
