@@ -109,7 +109,6 @@ namespace Meteo.UI
                     break;
                 case "2":
                     menu.ShowMenuAuthenticationEN();
-
                     break;
             }
 
@@ -145,7 +144,7 @@ namespace Meteo.UI
                         var authPwd = registration.EncryptPwd(passwordAuthentication);
                         // confronto se esiste psw (Massimo 3 volte )
                         var autentication = queryMng.GetUserIfExist(usernameAuthentication, authPwd);
-                        if (autentication!=null)
+                        if (autentication != null)
                         {
                             // Da il benvenuto e accede al menu Meteo
                             Console.WriteLine("\n");
@@ -219,7 +218,7 @@ namespace Meteo.UI
                                 var insertAnswerForAccessEcrypted = registration.EncryptPwd(insertAnswerMaskered);
                                 // Verifica se Risposta è corretta. Il risultato è dentro autentication 
                                 autentication = queryMng.AutentiationWithAnswer(insertAnswerForAccessEcrypted, forAnswerInsertUsername);
-                                if (autentication!=null)
+                                if (autentication != null)
                                 {
 
                                     var controlRequirementsNewPsw = true;
@@ -547,7 +546,10 @@ namespace Meteo.UI
                 connection.CloseConnection();
                 if (userRole == "1")
                 {
-                    menu.ShowFirtsMenuAdminIT();
+                    if (menuLang == "it")
+                    { menu.ShowFirtsMenuAdminIT(); }
+                    else
+                    { menu.ShowFirtsMenuAdminEN(); }
                     roleChoiceSelect = Console.ReadLine();
                     switch (roleChoiceSelect)
                     {
@@ -562,9 +564,107 @@ namespace Meteo.UI
                             break;
 
                         case "3":
-                            menu.ShowSecondMenuAdminIT();
+                            if (menuLang == "it")
+                            { menu.ShowSecondMenuAdminIT(); }
+                            else
+                            { menu.ShowSecondMenuAdminEN(); }
+                            var secondAdminChoice = Console.ReadLine();
+                            switch (secondAdminChoice)
+                            {
+                                case "1":
+                                    string nameDelete = "", surnameDelete = "";
+                                    if (menuLang == "it")
+                                    {
+                                        Console.WriteLine("Inserisci il nome dell'utente da eliminare");
+                                        nameDelete = Console.ReadLine();
+                                        Console.WriteLine("Inserisci il cognome dell'utente da elinimare");
+                                        surnameDelete = Console.ReadLine();
+                                        Console.WriteLine("Inserisci l'username dell'utente da eliminare");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Insert the name of the user to delete");
+                                        nameDelete = Console.ReadLine();
+                                        Console.WriteLine("Insert the surname of the user to delete");
+                                        surnameDelete = Console.ReadLine();
+                                        Console.WriteLine("Insert the username of the user to delete");
+                                    }
+                                    var usernameDelete = Console.ReadLine();
+                                    queryMng.DeleteUser(nameDelete, surnameDelete, usernameDelete);
+                                    break;
+                                case "2":
+                                    var pswModify = "";
+                                    var pswModifyCompare = "";
+                                    var pswModifyCount = 0;
+                                    if (menuLang == "it")
+                                    { Console.WriteLine("Inserisci l'username dell'utente da modificare"); }
+                                    else
+                                    { Console.WriteLine("Insert the username of the user to modify"); }
+                                    var usernameModify = Console.ReadLine();
+                                    while (pswModifyCount < 3)
+                                    {
+                                        var pswModifyRegex = "";
+                                        if (menuLang == "it")
+                                        {
+                                            Console.WriteLine("Inserisci la nuova password dell'utente");
+                                            pswModifyRegex = DataMaskManager.MaskData(pswModify);
+                                            Console.WriteLine("\nReinserisci la nuova password dell'utente");
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Insert the new password of the user");
+                                            pswModifyRegex = DataMaskManager.MaskData(pswModify);
+                                            Console.WriteLine("\nReenter the new password of the users");
+                                        }
+                                        var pswModifyCompareRegex = DataMaskManager.MaskData(pswModifyCompare);
+                                        if (pswModifyRegex == pswModifyCompareRegex)
+                                        {
+                                            var pswModifyCrypto = registration.EncryptPwd(pswModifyRegex);
+                                            queryMng.QueryForUpdatePsw(pswModifyCrypto, usernameModify);
+                                            pswModifyCount = 3;
+                                        }
+                                        else
+                                        {
+                                            if (menuLang == "it")
+                                            { Console.WriteLine($"\nLe due password non combaciano! Hai ancora {pswModifyCount} tentativi."); }
+                                            else
+                                            { Console.WriteLine($"\nThe two passwords do not match! You still have {pswModifyCount} attempts."); }
+                                            pswModifyCount++;
+                                            if (pswModifyCount == 3)
+                                            {
+                                                if (menuLang == "it")
+                                                { Console.WriteLine("\nMi dispiace, ma hai esaurito i tentativi!\n"); }
+                                                else
+                                                { Console.WriteLine("\n I'm sorry, but you have exhausted the attempts!\n"); }
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case "3":
+                                    if (menuLang == "it")
+                                    { Console.WriteLine("Inserisci l'username dell'utente da modificare"); }
+                                    else
+                                    { Console.WriteLine("Insert the username of the user to modify"); }
+                                    var usernameRoleModify = Console.ReadLine();
+                                    menu.SelectRoleIT();
+                                    var roleModify = Convert.ToInt32(Console.ReadLine());
+                                    queryMng.QueryForUpdateRole(usernameRoleModify, roleModify);
+                                    break;
+                                case "4":
+                                    break;
+                                case "5":
+                                    exit = false;
+                                    if (menuLang == "it")
+                                    {
+                                        Console.WriteLine("Sessione terminata");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Session ended");
+                                    }
+                                    break;
+                            }
                             break;
-                            
                         case "4":
                             exit = false;
                             if (menuLang == "it")
@@ -610,7 +710,7 @@ namespace Meteo.UI
                                     if (menuLang == "it")
                                     {
                                         Console.WriteLine(DataInterface.insertNamePlaceIT);
-                                        meteoChoiceForDB = "Previsioni per un giorno (città)";
+                                        meteoChoiceForDB = "Previsioni per un giorno (citta')";
                                     }
                                     else
                                     {
@@ -865,6 +965,9 @@ namespace Meteo.UI
                                     }
                                     break;
                                 case "3":
+                                    break;
+                                case "4":
+                                    exit = false;
                                     break;
                             }
                             break;

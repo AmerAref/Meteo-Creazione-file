@@ -22,10 +22,32 @@ namespace Meteo.UI
         public void ShowSecondMenuAdminIT()
         {
             Console.WriteLine("*****************************************************************");
-            Console.WriteLine("****1 - Vuoi creare un utente?                                  *");
-            Console.WriteLine("****2 - Vuoi eliminare un utente?                               *");
-            Console.WriteLine("****3 - Vuoi modificare la password di un utente?               *");
-            Console.WriteLine("****4 - Termina sessione                                        *");
+            Console.WriteLine("****1 - Vuoi eliminare un utente?                               *");
+            Console.WriteLine("****2 - Vuoi modificare la password di un utente?               *");
+            Console.WriteLine("****3 - Vuoi modificare il ruolo di un utente?                  *");
+            Console.WriteLine("****4 - Torna al menù principale                                *");
+            Console.WriteLine("****5 - Termina sessione                                        *");
+            Console.WriteLine("*****************************************************************");
+        }
+        public void ShowFirtsMenuAdminEN()
+        {
+            Console.WriteLine("*****************************************************************");
+            Console.WriteLine("*************       Digitare il valore del menu       ***********");
+            Console.WriteLine("****1 - View all the registrated users                          *");
+            Console.WriteLine("****2 - View the 'Master' table                                 *");
+            Console.WriteLine("****3 - Modify the 'User' table (create/delete/modify user)     *");
+            Console.WriteLine("****4 - End session                                             *");
+            Console.WriteLine("*****************************************************************");
+        }
+
+        public void ShowSecondMenuAdminEN()
+        {
+            Console.WriteLine("*****************************************************************");
+            Console.WriteLine("****1 - Do you want to delete an user?                          *");
+            Console.WriteLine("****2 - Do you want to modify an users password?                *");
+            Console.WriteLine("****3 - Do you want to modify an users role?                    *");
+            Console.WriteLine("****4 - Go back to the main menu                                *");
+            Console.WriteLine("****5 - End session                                             *");
             Console.WriteLine("*****************************************************************");
         }
         public void ShowMenuAuthenticationIT()

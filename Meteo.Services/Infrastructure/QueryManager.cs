@@ -23,7 +23,6 @@ namespace Meteo.Services.Infrastructure
             else
             { return null; }
         }
-       
         public User GetUser(string username)
         {
             OpenConnection();
@@ -44,30 +43,6 @@ namespace Meteo.Services.Infrastructure
             cmd.ExecuteReader().DataReaderMapToList<User>();
             CloseConnection();
         }
-        public User GetUserIfExist(string username, string psw)
-        {
-            OpenConnection();
-            string query = $"SELECT * FROM User WHERE Username = '{username}'";
-            try
-            {
-                var cmd = new MySqlCommand(query, _connection);
-                var user = cmd.ExecuteReader().DataReaderMapToList<User>();
-                CloseConnection();
-                if (user.Any())
-                {
-                    return true;
-                }
-                else
-                    return false;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return true;
-            }
-        }
-
-
         public User GetUserIfExist(string username, string psw)
         {
             OpenConnection();
@@ -106,7 +81,6 @@ namespace Meteo.Services.Infrastructure
             CloseConnection();
             return;
         }
-      
         public List<Role> AllRoles()
         {
             OpenConnection();
@@ -116,7 +90,6 @@ namespace Meteo.Services.Infrastructure
             CloseConnection();
             return role;
         }
-
         public void InsertOneDayForecast(OpenWeatherMap.Models.OneDayForecast jsonObj)
         {
             OpenConnection();
@@ -126,9 +99,6 @@ namespace Meteo.Services.Infrastructure
             var oenDayForecastData = cmd.ExecuteReader().DataReaderMapToList<Models.OneDayForecast>();
             CloseConnection();
         }
-
-
-      
         public List<Question> AllQuestionsEN()
         {
             OpenConnection();
@@ -147,10 +117,6 @@ namespace Meteo.Services.Infrastructure
             CloseConnection();
             return question;
         }
-           
-           
-
-           
         public void InsertDataMaster(string meteoChoiceDb, int idUserMaster)
         {
             OpenConnection();
@@ -163,9 +129,7 @@ namespace Meteo.Services.Infrastructure
             CloseConnection();
         }
 
-
         //Query per eseguite da utente con ruolo Admin
-
         public List<User> GetAllUsers()
         {
             OpenConnection();
@@ -175,7 +139,6 @@ namespace Meteo.Services.Infrastructure
             CloseConnection();
             return users;
         }
-
         public List<Master> GetAllMasterRecords()
         {
             OpenConnection();
@@ -184,6 +147,24 @@ namespace Meteo.Services.Infrastructure
             var records = cmd.ExecuteReader().DataReaderMapToList<Master>();
             CloseConnection();
             return records;
+        }
+
+        public void DeleteUser(string name, string surname, string username)
+        {
+            OpenConnection();
+            string query = $"DELETE FROM `User` WHERE `Name` = '{name}' AND `Surname` = '{surname}' AND `Username` = '{username}';";
+            var cmd = new MySqlCommand(query, _connection);
+            var delete = cmd.ExecuteReader().DataReaderMapToList<User>();
+            CloseConnection();
+        }
+        public void QueryForUpdateRole(string username, int role)
+        {
+            OpenConnection();
+            string query = $" UPDATE User SET IdRole = '{role}' WHERE Username = '{username}'";
+            var cmd = new MySqlCommand(query, _connection);
+            var user = cmd.ExecuteReader().DataReaderMapToList<User>();
+            CloseConnection();
+            return;
         }
     }
 }
