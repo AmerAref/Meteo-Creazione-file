@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+/* using System.Collections.Generic;
 using System.Linq;
 using Meteo.Services.Infrastructure;
 using Meteo.Services.Models;
@@ -33,4 +33,4 @@ namespace Meteo.Services
             return autentication;
         }
     }
-}
+} */

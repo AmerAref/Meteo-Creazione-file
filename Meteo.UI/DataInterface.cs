@@ -2,11 +2,11 @@
 {
     public static class DataInterface
     {
-        public static string insertNameFileIT = "Inserisci nome file da creare con tipo di estensione (nomefile.estensione)";
-        public static string insertNameFileEN = "Enter the name of the file to be created and its extension (filename.extension)";
+        public static string insertNameFileIT = "Inserisci nome file da creare";
+        public static string insertNameFileEN = "Enter the name of the file to be created";
         public static string successIT = "Richiesta elaborata con successo", successEN = "request processed successfully";
-        public static string choiceDoFileIT = "Vuoi creare il file con i dati precedentemente richiesti?";
-        public static string choiceDoFileEN = "Do you want to create the file with the data previously requested? ";
+        public static string choiceDoFileIT = "Vuoi creare un file JSON con i dati precedentemente richiesti?";
+        public static string choiceDoFileEN = "Do you want to create a JSON file with the data previously requested? ";
         public static string choiceSendEmailIT = "Vuoi inviare tramite email il file appena creato? ";
         public static string choiceSendEmailEN = "Do you want to send an email with the newly created file? ";
         public static string insertNamePlaceIT = "Inserisci località richiesta", insertNamePlaceEN = "Enter requested location";
@@ -21,8 +21,8 @@
         public static string reinsertUserPswIT = "Reinsersci Username e password", reinsertUserPswEN = "Reenter Username and Password";
         public static string remainingAttemptsIT = "Tentativi rimasi: ", remainingAttemptsEN = "Remaining attempts: ";
         public static string secureQuestionIT = "Inserisci Username per la domanda di sicurezza", secureQuestionEN = "Enter Username for the security question";
-        public static string insertNameFileXlsIT = "Inserisci nome FIle xls";
-        public static string insertNameFileXlsEN = "Insert file name (xls)";
+        public static string insertNameFileXlsIT = "Inserisci nome file";
+        public static string insertNameFileXlsEN = "Insert file name";
         public static string filePathGabriel = "/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/";
         public static string filePathAmer = "/Users/air/Documents/Progetti/Meteo/Meteo.UI/";
 

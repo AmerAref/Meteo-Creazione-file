@@ -6,8 +6,10 @@ namespace Meteo.UI
 {
     public class PrintData
     {
+        static DateTime masterDate = DateTime.Now;
+        static string format = "yyyy-MM-dd hh:mm:ss";
+        static string str = masterDate.ToString(format);
         public void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang)
-
         {
             if (menuLang == "it")
             {
@@ -21,6 +23,9 @@ namespace Meteo.UI
                 Console.WriteLine(jsonObj.Parameters.TempMin);
                 Console.WriteLine("Temperatura massima");
                 Console.WriteLine(jsonObj.Parameters.TempMax);
+                Console.WriteLine("Data e ora della stampa");
+                Console.WriteLine(str);
+                Console.WriteLine("");
             }
             else
             {
@@ -34,9 +39,10 @@ namespace Meteo.UI
                 Console.WriteLine(jsonObj.Parameters.TempMin);
                 Console.WriteLine("Temperature max");
                 Console.WriteLine(jsonObj.Parameters.TempMax);
-
+                Console.WriteLine("Date and time of the print");
+                Console.WriteLine(str);
+                Console.WriteLine("");
             }
-
         }
 
         public void PrintDataLast5Day(Meteo.Services.OpenWeatherMap.Models.LastFiveDaysForecast jsonObj, string menuLang)
@@ -55,6 +61,9 @@ namespace Meteo.UI
                     Console.WriteLine(measure.Parameters.TempMin);
                     Console.WriteLine("Temperatura massima");
                     Console.WriteLine(measure.Parameters.TempMax);
+                    Console.WriteLine("Data e ora della stampa");
+                    Console.WriteLine(str);
+                    Console.WriteLine("");
                 }
                 else
                 {
@@ -68,6 +77,9 @@ namespace Meteo.UI
                     Console.WriteLine(measure.Parameters.TempMin);
                     Console.WriteLine("Temperature max");
                     Console.WriteLine(measure.Parameters.TempMax);
+                    Console.WriteLine("Date and time of the print");
+                    Console.WriteLine(str);
+                    Console.WriteLine("");
                 }
             }
         }
@@ -92,7 +104,6 @@ namespace Meteo.UI
                     {
                         Console.Write("Cielo");
                         Console.WriteLine(weather.Main);
-
                     }
                     else
                     {
@@ -105,7 +116,7 @@ namespace Meteo.UI
 
         public void PrintAllUsers(List<User> allUsers)
         {
-            foreach(var user in allUsers)
+            foreach (var user in allUsers)
             {
                 Console.WriteLine("IdUser");
                 Console.WriteLine(user.IdUser);
@@ -131,9 +142,9 @@ namespace Meteo.UI
             }
         }
 
-        public void PrintAllMasterRecords (List<Master> allMasterRecords)
+        public void PrintAllMasterRecords(List<Master> allMasterRecords)
         {
-            foreach(var record in allMasterRecords)
+            foreach (var record in allMasterRecords)
             {
                 Console.WriteLine("IdMaster");
                 Console.WriteLine(record.IdMaster);

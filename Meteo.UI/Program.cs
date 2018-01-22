@@ -99,6 +99,8 @@ namespace Meteo.UI
             string userRole = "";
             var usernameForQuery = "";
             var user = new User();
+            string formatForFile = "yyyy-MM-dd";
+            string str = "";
 
             menu.SelectLanguageStart();
             lang = Console.ReadLine();
@@ -467,7 +469,7 @@ namespace Meteo.UI
                                 var encryptedAnswer = registration.EncryptPwd(insertAnswer);
                                 var selectLanguage = "";
                                 var languageNewAccount = "";
-                                int roleNewAccount;
+                                int roleNewAccount = 2;
                                 if (lang == "1")
                                 {
                                     menu.SelectLanguageIT();
@@ -483,11 +485,6 @@ namespace Meteo.UI
                                             measureUnit = "imperial";
                                             break;
                                     }
-
-
-                                    menu.SelectRoleIT();
-                                    roleNewAccount = Convert.ToInt32(Console.ReadLine());
-
                                 }
                                 else
                                 {
@@ -724,6 +721,8 @@ namespace Meteo.UI
                                     var place = Console.ReadLine();
                                     try
                                     {
+                                        DateTime printDate = DateTime.Now;
+                                        str = printDate.Date.ToString(formatForFile);
                                         var jsonObj = meteoApi.ProcessMeteoByPlaceToday(place, measureUnit).Result;
                                         print.PrintForData(jsonObj, menuLang);
                                         queryMng.InsertOneDayForecast(jsonObj);
@@ -758,7 +757,7 @@ namespace Meteo.UI
                                             {
                                                 Console.WriteLine(DataInterface.insertNameFileEN);
                                             }
-                                            var fileName = Console.ReadLine();
+                                            var fileName = string.Concat(Console.ReadLine() + "1Day" + str + ".json");
                                             var jsonStr = JsonConvert.SerializeObject(jsonObj);
                                             var file = filemenager.CreateNewFile(fileName, jsonStr);
                                             if (menuLang == "it")
@@ -812,7 +811,7 @@ namespace Meteo.UI
                                                 var xlsFileName = Console.ReadLine();
 
 
-                                                createXlsFile.CreateXlsFileForToday(jsonObj, place, xlsFileName);
+                                                createXlsFile.CreateXlsFileForToday(jsonObj, place, xlsFileName, str);
                                             }
 
                                             else
@@ -866,6 +865,8 @@ namespace Meteo.UI
                                     }
                                     try
                                     {
+                                        DateTime printDate = DateTime.Now;
+                                        str = printDate.Date.ToString(formatForFile);
                                         var jsonObj = meteoApi.ProcessMeteoByCoordinatesToday(lon, lat, measureUnit).Result;
                                         print.PrintForData(jsonObj, menuLang);
                                         queryMng.InsertOneDayForecast(jsonObj);
@@ -890,7 +891,7 @@ namespace Meteo.UI
                                             if (menuLang == "it")
                                             {
                                                 Console.WriteLine(DataInterface.insertNameFileIT);
-                                                fileName = Console.ReadLine();
+                                                fileName = string.Concat(Console.ReadLine() + "1Day" + str + ".json");
                                                 jsonStr = JsonConvert.SerializeObject(jsonObj);
                                                 file = filemenager.CreateNewFile(fileName, jsonStr);
                                                 Console.WriteLine(DataInterface.successCreateFileIT);
@@ -900,7 +901,7 @@ namespace Meteo.UI
                                             else
                                             {
                                                 Console.WriteLine(DataInterface.insertNameFileEN);
-                                                fileName = Console.ReadLine();
+                                                fileName = string.Concat(Console.ReadLine() + "1Day" + str + ".json");
                                                 jsonStr = JsonConvert.SerializeObject(jsonObj);
                                                 file = filemenager.CreateNewFile(fileName, jsonStr);
                                                 Console.WriteLine(DataInterface.successCreateFileEN);
@@ -946,7 +947,7 @@ namespace Meteo.UI
 
 
 
-                                                createXlsFile.CreateXlsFileForTodayByCoordinates(jsonObj, lat, lon, xlsFileName);
+                                                createXlsFile.CreateXlsFileForTodayByCoordinates(jsonObj, lat, lon, xlsFileName, str);
                                             }
                                             if (menuLang == "it")
                                             {
@@ -1002,6 +1003,8 @@ namespace Meteo.UI
                                     }
                                     try
                                     {
+                                        DateTime printDate = DateTime.Now;
+                                        str = printDate.Date.ToString(formatForFile);
                                         var jsonObj = meteoApi.ProcessMeteoByPlaceLast5Day(place, measureUnit).Result;
                                         print.PrintDataLast5Day(jsonObj, menuLang);
                                         if (menuLang == "it")
@@ -1023,7 +1026,7 @@ namespace Meteo.UI
                                             if (menuLang == "it")
                                             {
                                                 Console.WriteLine(DataInterface.insertNameFileIT);
-                                                fileName = Console.ReadLine();
+                                                fileName = string.Concat(Console.ReadLine() + "5Days" + str + ".json");
                                                 jsonStr = JsonConvert.SerializeObject(jsonObj);
                                                 file = filemenager.CreateNewFile(fileName, jsonStr);
                                                 Console.WriteLine(DataInterface.successCreateFileIT);
@@ -1033,7 +1036,7 @@ namespace Meteo.UI
                                             else
                                             {
                                                 Console.WriteLine(DataInterface.insertNameFileEN);
-                                                fileName = Console.ReadLine();
+                                                fileName = string.Concat(Console.ReadLine() + "5Days" + str + ".json");
                                                 jsonStr = JsonConvert.SerializeObject(jsonObj);
                                                 file = filemenager.CreateNewFile(fileName, jsonStr);
                                                 Console.WriteLine(DataInterface.successCreateFileEN);
@@ -1078,7 +1081,7 @@ namespace Meteo.UI
                                                 var xlsFileName = Console.ReadLine();
 
 
-                                                createXlsFile.CreateXlsFileForLast5Days(jsonObj, place, xlsFileName);
+                                                createXlsFile.CreateXlsFileForLast5Days(jsonObj, place, xlsFileName, str);
                                             }
                                         }
                                         else
@@ -1112,6 +1115,8 @@ namespace Meteo.UI
                                     }
                                     try
                                     {
+                                        DateTime printDate = DateTime.Now;
+                                        str = printDate.Date.ToString(formatForFile);
                                         var jsonObj = meteoApi.ProcessMeteoByCoordinatesLast5Day(lon, lat, measureUnit).Result;
                                         if (menuLang == "it")
                                         {
@@ -1136,7 +1141,7 @@ namespace Meteo.UI
                                             if (menuLang == "it")
                                             {
                                                 Console.WriteLine(DataInterface.insertNameFileIT);
-                                                fileName = Console.ReadLine();
+                                                fileName = string.Concat(Console.ReadLine() + "5Days" + str + ".json");
                                                 jsonStr = JsonConvert.SerializeObject(jsonObj);
                                                 file = filemenager.CreateNewFile(fileName, jsonStr);
                                                 Console.WriteLine(DataInterface.choiceSendEmailIT);
@@ -1145,7 +1150,7 @@ namespace Meteo.UI
                                             else
                                             {
                                                 Console.WriteLine(DataInterface.insertNameFileEN);
-                                                fileName = Console.ReadLine();
+                                                fileName = string.Concat(Console.ReadLine() + "5Days" + str + ".json");
                                                 jsonStr = JsonConvert.SerializeObject(jsonObj);
                                                 file = filemenager.CreateNewFile(fileName, jsonStr);
                                                 Console.WriteLine(DataInterface.choiceSendEmailEN);
@@ -1187,7 +1192,7 @@ namespace Meteo.UI
                                                 }
                                                 var xlsFileName = Console.ReadLine();
 
-                                                createXlsFile.CreateXlsFileForLast5DaysByCoordinates(jsonObj, lat, lon, xlsFileName);
+                                                createXlsFile.CreateXlsFileForLast5DaysByCoordinates(jsonObj, lat, lon, xlsFileName, str);
                                             }
                                         }
                                         else
@@ -1258,6 +1263,8 @@ namespace Meteo.UI
                                     { Console.WriteLine(DataInterface.insertNamePlaceEN); }
                                     place = Console.ReadLine();
                                     string date, time;
+                                    DateTime printDate = DateTime.Now;
+                                    str = printDate.Date.ToString(formatForFile);
                                     if (menuLang == "it")
                                     {
                                         Console.WriteLine("Inserisci data con il seguente formato YYYY-mm-GG");
