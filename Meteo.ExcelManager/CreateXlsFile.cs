@@ -10,11 +10,11 @@ namespace Meteo.ExcelManager
     public class CreateXlsFile
     {
         string _pathAmer = "/Users/air/Documents/Progetti/Meteo/Meteo.UI/";
-        string _pathGabriel = "/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/ ";
+        string _pathGabriel= "/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/ ";
         int _i, _j = 2, _c = 1;
         public void CreateXlsFileForToday(OneDayForecast jsonObjForExcel, string place, string xlsFile, string str)
         {
-            var newFile = new FileInfo(_pathGabriel + $@"{xlsFile}" + "1Day" + str + ".xls");
+            var newFile = new FileInfo(_pathAmer + $@"{xlsFile}" + "1Day" + str + ".xls");
 
             var firstValueHeader = jsonObjForExcel.Parameters.GetType().GetProperties();
 
@@ -39,7 +39,7 @@ namespace Meteo.ExcelManager
 
         public void CreateXlsFileForTodayByCoordinates( OneDayForecast jsonObjForExcel, string lat, string lon, string xlsFile, string str)
         {
-            var newFile = new FileInfo(_pathGabriel + $@"{xlsFile}" + "1Day" + str + ".xls");
+            var newFile = new FileInfo(_pathAmer + $@"{xlsFile}" + "1Day" + str + ".xls");
 
             var firstValueHeader = jsonObjForExcel.Parameters.GetType().GetProperties();
 
@@ -65,7 +65,7 @@ namespace Meteo.ExcelManager
         public void CreateXlsFileForLast5Days( LastFiveDaysForecast jsonObjForExcel, string place, string xlsFile, string str)
         {
            
-            var newFile = new FileInfo(_pathGabriel+ $@"{xlsFile}" + "5Days" + str + ".xls");
+            var newFile = new FileInfo(_pathAmer+ $@"{xlsFile}" + "5Days" + str + ".xls");
 
             using (var pkg = new ExcelPackage(newFile))
             {
@@ -104,7 +104,7 @@ namespace Meteo.ExcelManager
         public void CreateXlsFileForLast5DaysByCoordinates( LastFiveDaysForecast jsonObjForExcel, string lat, string lon, string xlsFile, string str)
         {
       
-            var newFile = new FileInfo(_pathGabriel + $@"{xlsFile}" + "5Days" + str + ".xls");
+            var newFile = new FileInfo(_pathAmer + $@"{xlsFile}" + "5Days" + str + ".xls");
 
             using (var pkg = new ExcelPackage(newFile))
             {

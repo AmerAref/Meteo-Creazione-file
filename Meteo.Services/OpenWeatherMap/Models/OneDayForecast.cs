@@ -11,11 +11,8 @@ namespace Meteo.Services.OpenWeatherMap.Models
         [JsonProperty("weather")]
         public List<Forecast> Weather { get; set; }
 
-        [JsonProperty("sys")]
-        public SystemData SystemDataForWeather { get; set; }
-
-        [JsonProperty("dt")]
-        public int TimeStamp { get; set; }
+        [JsonProperty("dt_txt")]
+        public string TimeStamp { get; set; }
 
         [JsonProperty("id")]
 

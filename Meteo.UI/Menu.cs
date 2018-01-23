@@ -5,7 +5,12 @@ namespace Meteo.UI
 {
     public class Menu
     {
-        QueryManager queryManager = new QueryManager();
+        private IQueryBuilder _queryBuilder { get; set; }
+
+        public Menu(IQueryBuilder queryBuilder)
+        {
+            _queryBuilder = queryBuilder;
+        }
 
         public void SelectLanguageStart()
         {
@@ -87,7 +92,7 @@ namespace Meteo.UI
         }
         public void SelectQuestionIT()
         {
-            var allQuestionObj = queryManager.AllQuestionsIT();
+            var allQuestionObj = _queryBuilder.AllQuestionsIT();
             Console.WriteLine("\n**********************************************************");
             Console.WriteLine(" Digitare il valore del menu per scelta domanda di sicurezza");
 
@@ -99,7 +104,7 @@ namespace Meteo.UI
         }
         public void SelectRoleIT()
         {
-            var allRoles = queryManager.AllRoles();
+            var allRoles = _queryBuilder.AllRoles();
             Console.WriteLine("\n**********************************************************");
             Console.WriteLine("Digitare il valore del menu per scelta del ruolo           *");
             foreach (var role in allRoles)
@@ -218,7 +223,7 @@ namespace Meteo.UI
         }
         public void SelectQuestionEN()
         {
-            var allQuestionObj = queryManager.AllQuestionsEN();
+            var allQuestionObj = _queryBuilder.AllQuestionsEN();
             Console.WriteLine("\n**********************************************************");
             Console.WriteLine(" Digit value  ");
             foreach (var question in allQuestionObj)
@@ -265,7 +270,7 @@ namespace Meteo.UI
         }
         public void SelectRoleEN()
         {
-            var allRoles = queryManager.AllRoles();
+            var allRoles = _queryBuilder.AllRoles();
             Console.WriteLine("\n**********************************************************");
             Console.WriteLine("*************            Digit value            ************");
             foreach (var role in allRoles)

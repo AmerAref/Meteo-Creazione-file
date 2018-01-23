@@ -63,7 +63,7 @@ namespace Meteo.Services
             var jsonObj = JsonConvert.DeserializeObject<LastFiveDaysForecast>(jsonStr);
             var humidityForFilter = int.Parse(humidity);
             var objFiltred = jsonObj.List.Where(x => x.Parameters.Humidity.Equals(humidityForFilter));
-            
+
             var objFiltredReady = new LastFiveDaysForecast()
             {
                 List = objFiltred.ToList()
@@ -71,14 +71,14 @@ namespace Meteo.Services
             return objFiltredReady;
         }
 
-        public async Task<LastFiveDaysForecast> FiltredMeteoByDateTimeLast5Day(string place, string date, string time)
+        public async Task<LastFiveDaysForecast> FiltredMeteoByDateTimeLast5Day(string date, string time, string place)
         {
             var url = $"{_appUri}forecast?q={place}&appid={_appId}";
             var jsonStr = await Client.GetStringAsync(url);
             var jsonObj = JsonConvert.DeserializeObject<LastFiveDaysForecast>(jsonStr);
             var dateTime = date + " " + time;
-            var objFiltred = jsonObj.List.Where(x => Helper.UnixTimeStampToDateTime(x.TimeStamp)
-                                                 .ToString(CultureInfo.InvariantCulture).Equals(dateTime));
+            var objFiltred = jsonObj.List.Where(x => x.TimeStamp
+                                                .Equals(dateTime));
             var objFiltredReady = new LastFiveDaysForecast()
             {
                 List = objFiltred.ToList()
