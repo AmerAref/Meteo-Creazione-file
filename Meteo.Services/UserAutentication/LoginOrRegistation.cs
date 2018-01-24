@@ -12,16 +12,12 @@ namespace Meteo.Services
         {
            
             var lang = "";
-            var registrationServices = new RegistrationServices();
             var usernameAuthentication = "";
-            var registration = new Register();
             var choseCreateNewAccuoutOrLogin = "";
-            var loginServices = new LoginServices();
-            var queryBuilderServices = new QueryBuilderServices();
 
 
 
-           var queryBuilder = queryBuilderServices.QueryBuilder();
+           var queryBuilder = QueryBuilderServices.QueryBuilder();
 
 
             var menu = new Menu(queryBuilder);
@@ -38,6 +34,11 @@ namespace Meteo.Services
                     menu.ShowMenuAuthenticationEN();
                     break;
             }
+            var loginServices = new LoginService(lang);
+
+            var registrationServices = new RegistrationService(lang);
+
+
 
             var controlFirstChoiceLogin = true;
             while (controlFirstChoiceLogin)
@@ -47,17 +48,24 @@ namespace Meteo.Services
                 if (choseCreateNewAccuoutOrLogin == "1")
                 {
 
+                    var accessOrNot = loginServices.LoginWithUserAndPsw();
+                    if ( accessOrNot == false)
+                    {
+                        loginServices.GetQuestion();
+                        loginServices.AutenticationWithAnswer();
+                        usernameAuthentication = loginServices.InsertNewPsw();
 
-                    usernameAuthentication = loginServices.Login(lang);
-                    controlFirstChoiceLogin = false;
+                        
+                    }
+
 
 
                 }
                 if (choseCreateNewAccuoutOrLogin == "2")
                 {
 
-                    usernameAuthentication = registrationServices.Registration(lang);
-                    controlFirstChoiceLogin = false;
+                    usernameAuthentication = registrationServices.Registration();
+
 
                 }
 

@@ -3,9 +3,9 @@ using System.Text;
 
 namespace Meteo.Services
 {
-    public class Register
+    public static class Register
     {
-        public string EncryptPwd(string clearPwd)
+        public static string EncryptPwd(string clearPwd)
         {
             var bytePwd = Encoding.Unicode.GetBytes(clearPwd);
             var hasher = System.Security.Cryptography.SHA256.Create();

@@ -4,9 +4,9 @@ using Ninject;
 
 namespace Meteo.Services.Infrastructure
 {
-    public class QueryBuilderServices
+    public static class QueryBuilderServices
     {
-        public IQueryBuilder QueryBuilder()
+        public static  IQueryBuilder QueryBuilder()
         {
             var kernel = new StandardKernel();
             kernel.Load(Assembly.GetAssembly(typeof(MySqlManager)));

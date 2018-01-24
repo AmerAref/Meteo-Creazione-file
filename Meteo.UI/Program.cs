@@ -62,7 +62,6 @@ namespace Meteo.UI
         {
             var menuLang = "";
             var measureUnit = "";
-            var registration = new Register();
             var emailManager = new EmailManager();
             var filemenager = new FileMenager();
             var createXlsFile = new CreateXlsFile();
@@ -79,9 +78,7 @@ namespace Meteo.UI
             string str = "";
             var username = "";
             var loginServices = new LoginOrRegistration();
-            var queryBuilderServices = new QueryBuilderServices();
-            var queryBuilder = queryBuilderServices.QueryBuilder();
-
+            var queryBuilder = QueryBuilderServices.QueryBuilder();
 
           
             var menu = new Menu(queryBuilder);
@@ -177,7 +174,7 @@ namespace Meteo.UI
                                         var pswModifyCompareRegex = DataMaskManager.MaskData(pswModifyCompare);
                                         if (pswModifyRegex == pswModifyCompareRegex)
                                         {
-                                            var pswModifyCrypto = registration.EncryptPwd(pswModifyRegex);
+                                            var pswModifyCrypto = Register.EncryptPwd(pswModifyRegex);
                                             queryBuilder.QueryForUpdatePsw(pswModifyCrypto, usernameModify);
                                             pswModifyCount = 3;
                                         }
