@@ -94,7 +94,7 @@ namespace Meteo.UI
                 }
                 else
                 {
-                    Console.WriteLine("TimeStamp");
+                    Console.WriteLine("Date and time");
                     Console.WriteLine(measure.TimeStamp);
                 }
 

@@ -9,12 +9,11 @@ namespace Meteo.ExcelManager
 {
     public class CreateXlsFile
     {
-        string _pathAmer = "/Users/air/Documents/Progetti/Meteo/Meteo.UI/";
-        string _pathGabriel= "/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/ ";
+        private readonly string _path = Directory.GetCurrentDirectory() + "/";
         int _i, _j = 2, _c = 1;
-        public void CreateXlsFileForToday(OneDayForecast jsonObjForExcel, string place, string xlsFile, string str)
+        public void CreateXlsFileForToday(OneDayForecast jsonObjForExcel, string place, string xlsFile, string dateTime)
         {
-            var newFile = new FileInfo(_pathAmer + $@"{xlsFile}" + "1Day" + str + ".xls");
+            var newFile = new FileInfo(_path + $@"{xlsFile}" + "1Day" + dateTime + ".xls");
 
             var firstValueHeader = jsonObjForExcel.Parameters.GetType().GetProperties();
 
@@ -37,9 +36,9 @@ namespace Meteo.ExcelManager
             }
         }
 
-        public void CreateXlsFileForTodayByCoordinates( OneDayForecast jsonObjForExcel, string lat, string lon, string xlsFile, string str)
+        public void CreateXlsFileForTodayByCoordinates(OneDayForecast jsonObjForExcel, string lat, string lon, string xlsFile, string dateTime)
         {
-            var newFile = new FileInfo(_pathAmer + $@"{xlsFile}" + "1Day" + str + ".xls");
+            var newFile = new FileInfo(_path + $@"{xlsFile}" + "1Day" + dateTime + ".xls");
 
             var firstValueHeader = jsonObjForExcel.Parameters.GetType().GetProperties();
 
@@ -62,10 +61,10 @@ namespace Meteo.ExcelManager
             }
         }
 
-        public void CreateXlsFileForLast5Days( LastFiveDaysForecast jsonObjForExcel, string place, string xlsFile, string str)
+        public void CreateXlsFileForLast5Days(LastFiveDaysForecast jsonObjForExcel, string place, string xlsFile, string dateTime)
         {
-           
-            var newFile = new FileInfo(_pathAmer+ $@"{xlsFile}" + "5Days" + str + ".xls");
+
+            var newFile = new FileInfo(_path + $@"{xlsFile}" + "5Days" + dateTime + ".xls");
 
             using (var pkg = new ExcelPackage(newFile))
             {
@@ -101,10 +100,10 @@ namespace Meteo.ExcelManager
             }
         }
 
-        public void CreateXlsFileForLast5DaysByCoordinates( LastFiveDaysForecast jsonObjForExcel, string lat, string lon, string xlsFile, string str)
+        public void CreateXlsFileForLast5DaysByCoordinates(LastFiveDaysForecast jsonObjForExcel, string lat, string lon, string xlsFile, string dateTime)
         {
-      
-            var newFile = new FileInfo(_pathAmer + $@"{xlsFile}" + "5Days" + str + ".xls");
+
+            var newFile = new FileInfo(_path + $@"{xlsFile}" + "5Days" + dateTime + ".xls");
 
             using (var pkg = new ExcelPackage(newFile))
             {

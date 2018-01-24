@@ -1,4 +1,6 @@
-﻿namespace Meteo.UI
+﻿using System.IO;
+
+namespace Meteo.UI
 {
     public static class DataInterface
     {
@@ -23,8 +25,7 @@
         public static string secureQuestionIT = "Inserisci Username per la domanda di sicurezza", secureQuestionEN = "Enter Username for the security question";
         public static string insertNameFileXlsIT = "Inserisci nome file";
         public static string insertNameFileXlsEN = "Insert file name";
-        public static string filePathGabriel = "/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/";
-        public static string filePathAmer = "/Users/air/Documents/Progetti/Meteo/Meteo.UI/";
+        public static string filePath = Directory.GetCurrentDirectory();
 
     }
 }

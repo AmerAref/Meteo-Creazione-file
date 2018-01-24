@@ -16,8 +16,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="UserAutentication\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Infrastructure\ApplicationDbContext.cs" />
+    <Compile Remove="Login.cs" />
+    <Compile Remove="LoginOrRegistration.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Meteo.UI">
+      <HintPath>..\Meteo.UI\bin\Debug\netcoreapp2.0\Meteo.UI.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

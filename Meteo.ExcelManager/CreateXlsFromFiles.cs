@@ -10,14 +10,16 @@ namespace Meteo.ExcelManager
 {
     public class CreateXlsFromFiles
     {
+
         private int _i;
         private int _j = 2;
         private int _c = 1;
-
-        public void CreateXlsFromFileForToday(string filePath, string xlsFile)
+        private string _path = Directory.GetCurrentDirectory() + "/";
+        public void CreateXlsFromFileForToday(string filePath, string xlsFile, string date)
         {
-            var newFile = new FileInfo("/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/" + $@"{xlsFile}" + ".xls");
-
+            
+            var newFile = new FileInfo(_path + $@"{xlsFile}" + "1Day" + date + ".xls");
+            filePath = filePath + ".json";
             var dataFromJson = File.ReadAllText(@filePath);
             var jsonObj = JsonConvert.DeserializeObject<OneDayForecast>(dataFromJson);
             var jsonData = jsonObj.Parameters.GetType().GetProperties();
@@ -41,10 +43,10 @@ namespace Meteo.ExcelManager
             }
         }
 
-        public void CreateXlsFromFileFor5Days(string filePath, string xlsFile)
+        public void CreateXlsFromFileFor5Days(string filePath, string xlsFile, string date )
         {
-            var newFile = new FileInfo("/home/gabriel/Scrivania/GitRepos/Meteo-Creazione-file/Meteo.UI/" + $@"{xlsFile}" + ".xls");
-
+            var newFile = new FileInfo(_path + $@"{xlsFile}"+ "5Days" + date  + ".xls");
+            filePath = filePath + ".json";
             var dataFromJson = File.ReadAllText(@filePath);
             var jsonObj = JsonConvert.DeserializeObject<LastFiveDaysForecast>(dataFromJson);
             var jsonData = jsonObj.List.GetType().GetProperties();
