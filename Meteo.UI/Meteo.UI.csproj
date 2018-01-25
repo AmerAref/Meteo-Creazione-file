@@ -18,6 +18,9 @@
   <ItemGroup>
     <Folder Include="ViewModels\" />
     <Folder Include="Infrastructure\" />
+    <Folder Include="Authentication\" />
+    <Folder Include="AuthenticationWithAdmin\" />
+    <Folder Include="AuthenticationUser\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="Microsoft.NETCore.App" Version="2.0.5" />

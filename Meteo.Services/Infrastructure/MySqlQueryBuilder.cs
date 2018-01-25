@@ -183,10 +183,10 @@ namespace Meteo.Services.Infrastructure
             return records;
         }
 
-        public void DeleteUser(string name, string surname, string username)
+        public void DeleteUser(string username)
         {
             _manager.Open();
-            var query = $"DELETE FROM `User` WHERE `Name` = '{name}' AND `Surname` = '{surname}' AND `Username` = '{username}';";
+            var query = $"DELETE FROM `User` WHERE `Username` = '{username}';";
             var cmd = _manager.GetCommand(query);
             cmd.ExecuteReader().DataReaderMapToList<User>();
             _manager.Close();

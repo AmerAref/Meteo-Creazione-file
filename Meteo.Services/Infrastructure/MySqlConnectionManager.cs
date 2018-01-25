@@ -80,7 +80,7 @@ namespace Meteo.Services.Infrastructure
         void InsertDataMaster(string meteoChoiceDb, int idUserMaster);
         List<User> GetAllUsers();
         List<Master> GetAllMasterRecords();
-        void DeleteUser(string name, string surname, string username);
+        void DeleteUser(string username);
         void QueryForUpdateRole(string username, int role);
         void Insert5DaysForecast(OpenWeatherMap.Models.LastFiveDaysForecast jsonobj);
 

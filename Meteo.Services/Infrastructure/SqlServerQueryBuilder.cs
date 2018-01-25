@@ -100,7 +100,7 @@ namespace Meteo.Services.Infrastructure
 
 
         }
-        public void DeleteUser(string name, string surname, string username)
+        public void DeleteUser(string username)
         {
             return;
 
