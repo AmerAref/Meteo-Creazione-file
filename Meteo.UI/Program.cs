@@ -71,7 +71,7 @@ namespace Meteo.UI
             var exit = true;
             var meteoApi = new MeteoApi();
             var password = "";
-            var roleChoiceSelect = "";
+            var choiceSelect = "";
             var meteoChoiceForDB = "";
             string userRole = "";
             var user = new User();
@@ -80,26 +80,39 @@ namespace Meteo.UI
             var username = "";
             var queryBuilder = QueryBuilderServices.QueryBuilder();
 
-            var lang = Console.ReadLine();
-            var loginServices = new LoginOrRegistration(menuLang);
+            var lang = "";
+            var loginOrRegistration = new LoginOrRegistration(menuLang);
 
-            var menu = new Menu(queryBuilder, lang, menuLang);
-            var admin = new AuthenticatedAdmin();
+            var menu = new Menu(queryBuilder);
 
             menu.SelectLanguageStart();
             lang = Console.ReadLine();
 
+            menu.ChangeLangages(lang);
 
-            try
+            menu.ShowFirst();
+            var choseCreateNewAccuoutOrLogin = Console.ReadLine();
+
+            switch (choseCreateNewAccuoutOrLogin)
             {
-                username = loginServices.AuthenticationOrRegistration();
-            }
-            catch
+                case "1":
+
+                    username = loginOrRegistration.Login();
+                    break;
+                case "2":
+                    username = loginOrRegistration.Registrartion();
+                    break;
+
+            
+           
             {
-                Console.WriteLine("Inserimento errato");
+
             }
 
-            // salvataggio modifiche su DB 
+            if (username == null)
+            {
+                return;
+            }
 
             while (exit)
             {
@@ -108,11 +121,27 @@ namespace Meteo.UI
                 measureUnit = user.UnitOfMeasure;
                 userRole = user.IdRole.ToString();
 
+
                 if (userRole == "1")
                 {
                     try
                     {
-                        admin.LoginAdmin();
+                        menu.ShowFirtsMenuAdmin();
+                        var admin = new AuthenticatedAdmin(menuLang);
+                        choiceSelect = Console.ReadLine();
+                        admin.LoginAdmin(choiceSelect);
+                        if (choiceSelect == "3")
+                        {
+                            menu.ShowSecondMenuAdmin();
+                            var secondAdminChoice = Console.ReadLine();
+                            admin.ModifyUserTable(secondAdminChoice);
+
+
+
+                        }
+
+
+
 
                     }
                     catch (Exception e)

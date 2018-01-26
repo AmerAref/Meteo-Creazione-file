@@ -7,12 +7,14 @@ namespace Meteo.UI
     {
         private IQueryBuilder _queryBuilder { get; set; }
         private string _lang;
-        private string _langAfterAutentication;
-        public Menu(IQueryBuilder queryBuilder, string lang, string menuLang)
+        public Menu(IQueryBuilder queryBuilder)
         {
             _queryBuilder = queryBuilder;
+        }
+        public void ChangeLangages(string lang)
+        {
             _lang = lang;
-            _langAfterAutentication = menuLang;
+
         }
 
         public void SelectLanguageStart()
@@ -26,7 +28,7 @@ namespace Meteo.UI
 
         public void ShowFirtsMenuAdmin()
         {
-            switch (_langAfterAutentication)
+            switch (_lang)
             {
                 case "1":
 
@@ -36,7 +38,8 @@ namespace Meteo.UI
                     Console.WriteLine("****1 - Visualizza tutti gli utenti registrati                  *");
                     Console.WriteLine("****2 - Visualizza la tabella 'Master'                          *");
                     Console.WriteLine("****3 - Modifica la tabella 'User' (crea/elimina/modifica user) *");
-                    Console.WriteLine("****4 - Termina sessione                                        *");
+                    Console.WriteLine("****4 - Accedi al menu previsioni                               *");
+                    Console.WriteLine("****5 - Termina sessione                                        *");
                     Console.WriteLine("*****************************************************************");
 
                     break;
@@ -48,7 +51,8 @@ namespace Meteo.UI
                     Console.WriteLine("****1 - View all the registrated users                          *");
                     Console.WriteLine("****2 - View the 'Master' table                                 *");
                     Console.WriteLine("****3 - Modify the 'User' table (create/delete/modify user)     *");
-                    Console.WriteLine("****4 - End session                                             *");
+                    Console.WriteLine("****4 - Access to forecast menu                             *");
+                    Console.WriteLine("****5 - End session                                             *");
                     Console.WriteLine("*****************************************************************");
                     break;
             }
@@ -57,7 +61,7 @@ namespace Meteo.UI
 
         public void ShowSecondMenuAdmin()
         {
-            switch (_langAfterAutentication)
+            switch (_lang)
             {
                 case "1":
                     Console.WriteLine("*****************************************************************");
@@ -113,7 +117,7 @@ namespace Meteo.UI
 
         public void ShowFirst()
         {
-            switch (_langAfterAutentication)
+            switch (_lang)
             {
                 case "1":
                     Console.WriteLine("***********************************************************");
@@ -148,7 +152,7 @@ namespace Meteo.UI
         }
         public void ShowSecondMenu()
         {
-            switch (_langAfterAutentication)
+            switch (_lang)
             {
                 case "1":
 
@@ -178,7 +182,7 @@ namespace Meteo.UI
 
         public void SelectLanguage()
         {
-            switch (_langAfterAutentication)
+            switch (_lang)
             {
                 case "1":
                     Console.WriteLine("\n************************************************************");
@@ -198,7 +202,7 @@ namespace Meteo.UI
         }
         public void ShowFiltredMenu()
         {
-            switch (_langAfterAutentication)
+            switch (_lang)
             {
                 case "1":
                     Console.WriteLine("***********************************************************");
@@ -256,7 +260,7 @@ namespace Meteo.UI
         public void SelectRole()
         {
 
-            switch (_langAfterAutentication)
+            switch (_lang)
             {
                 case "1":
 
@@ -299,7 +303,7 @@ namespace Meteo.UI
 
         public void ShowMenuCreateXlsFile()
         {
-            switch (_langAfterAutentication)
+            switch (_lang)
             {
                 case "1":
 

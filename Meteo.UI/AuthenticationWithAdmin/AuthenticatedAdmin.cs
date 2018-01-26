@@ -4,12 +4,21 @@ using Meteo.Services.Infrastructure;
 
 namespace Meteo.UI.AdminActions
 {
+
+
+
+
+    //Prendo le credenziali e faccio la validazione sul db
+    // se errore lancio eccezione
+    // se risposta corretta ritorno valore admin
+
+
     public class AuthenticatedAdmin
 
 
 
     {
-        public  Menu menu;
+        public Menu menu;
         public string _lang;
         public AuthenticatedAdmin(string menuLang)
         {
@@ -19,12 +28,13 @@ namespace Meteo.UI.AdminActions
         public static AdminInterface adminInterface;
 
 
-        public void LoginAdmin()
+
+        public void LoginAdmin(string choiceSelect)
         {
             var print = new PrintData();
-            menu.ShowFirtsMenuAdmin();
-            var roleChoiceSelect = Console.ReadLine();
-            switch (roleChoiceSelect)
+
+            
+            switch (choiceSelect)
             {
                 case "1":
                     var allUsers = queryBuilder.GetAllUsers();
@@ -37,9 +47,12 @@ namespace Meteo.UI.AdminActions
                     break;
 
                 case "3":
-                    ModifyUserTable();
                     break;
                 case "4":
+
+                    break;
+                
+                case "5":
 
                     adminInterface.Exit();
                     Environment.Exit(0);
@@ -50,12 +63,10 @@ namespace Meteo.UI.AdminActions
             return;
         }
 
-        private void ModifyUserTable()
+        public void ModifyUserTable(string secondAdminChoice)
         {
             {
-                menu.ShowSecondMenuAdmin();
-
-                var secondAdminChoice = Console.ReadLine();
+               
                 switch (secondAdminChoice)
                 {
                     case "1":
@@ -113,7 +124,7 @@ namespace Meteo.UI.AdminActions
                 }
 
             }
-            return;   
+            return;
         }
     }
 }

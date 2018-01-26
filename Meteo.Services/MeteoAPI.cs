@@ -9,6 +9,7 @@ using Meteo.Services.OpenWeatherMap.Models;
 using System.Collections.Generic;
 using System.IO;
 
+
 namespace Meteo.Services
 {
     public class MeteoApi
@@ -76,14 +77,27 @@ namespace Meteo.Services
             var url = $"{_appUri}forecast?q={place}&appid={_appId}";
             var jsonStr = await Client.GetStringAsync(url);
             var jsonObj = JsonConvert.DeserializeObject<LastFiveDaysForecast>(jsonStr);
-            var dateTime = date + " " + time;
-            var objFiltred = jsonObj.List.Where(x => x.TimeStamp
-                                                .Equals(dateTime));
-            var objFiltredReady = new LastFiveDaysForecast()
+            var dateTime = Console.ReadLine();
+            var dateTimeUserInput = new DateTimeUserInput(dateTime);
+            var authenticationData = dateTimeUserInput.GetResponse();
+            var dataReady = true;
+            while(dataReady)
             {
-                List = objFiltred.ToList()
-            };
-            return objFiltredReady;
+                if (authenticationData != null)
+                {
+                    var objFiltred = jsonObj.List.Where(x => x.TimeStamp
+                                                    .Equals(dateTime));
+                    var objFiltredReady = new LastFiveDaysForecast()
+                    {
+                        List = objFiltred.ToList()
+                    };
+                    return objFiltredReady;
+                }
+            }
+            return null;
+
+
+
         }
 
         public async Task FiltredMeteoByWeatherLast5Day(string typeWeather, string place)
