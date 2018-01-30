@@ -3,6 +3,7 @@ namespace Meteo.Services
 {
     public interface IUserInput<T>
     {
+        
 
         bool Validate();
         T Parse();
@@ -39,7 +40,7 @@ namespace Meteo.Services
         public abstract T Parse();
         public abstract TResponse GetResponse();
 
-
+        public abstract bool Validate();
     }
 
     public class DateTimeUserInput : UserInput<DateTime, UserResponse<DateTime>>
@@ -81,16 +82,12 @@ namespace Meteo.Services
             return null;
 
 
-
-
-            {
-
-
-            }
-
-
         }
 
+        public override bool Validate()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

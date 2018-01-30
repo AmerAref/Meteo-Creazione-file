@@ -75,38 +75,10 @@ namespace Meteo.UI.AdminActions
                         queryBuilder.DeleteUser(usernameDelete);
                         break;
                     case "2":
-                        var pswModify = "";
-                        var pswModifyCompare = "";
-                        var pswModifyCount = 0;
-                        adminInterface.InsertNmeUserToModfy();
-                        var usernameModify = Console.ReadLine();
-                        for (pswModifyCount = 0; pswModifyCount != 3; pswModifyCount++)
-                        {
-                            var pswModifyRegex = "";
-                            adminInterface.InsertSecondPsw();
-                            pswModifyRegex = DataMaskManager.MaskData(pswModify);
-                            adminInterface.InsertSecondPsw();
-                            var pswModifyCompareRegex = DataMaskManager.MaskData(pswModifyCompare);
-                            if (pswModifyRegex == pswModifyCompareRegex)
-                            {
-                                var pswModifyCrypto = Register.EncryptPwd(pswModifyRegex);
-                                queryBuilder.QueryForUpdatePsw(pswModifyCrypto, usernameModify);
-                                pswModifyCount = 3;
-                            }
-                            else
-                            {
-                                pswModifyCount++;
-                                adminInterface.AttemptsPsw(pswModifyCount);
-
-                                if (pswModifyCount == 3)
-                                {
-                                    break;
-                                }
-                            }
-                        }
+                        ModifyPsw();
                         break;
                     case "3":
-                        adminInterface.InsertNmeUserToModfy();
+                        adminInterface.InsertNameUserToModfy();
                         var usernameRoleModify = Console.ReadLine();
                         menu.SelectRole();
                         var roleModify = Convert.ToInt32(Console.ReadLine());
@@ -125,6 +97,42 @@ namespace Meteo.UI.AdminActions
 
             }
             return;
+        }
+
+
+        private void ModifyPsw()
+        {
+            var pswModify = "";
+            var pswModifyCompare = "";
+            var pswModifyCount = 0;
+            adminInterface.InsertNameUserToModfy();
+            var usernameModify = Console.ReadLine();
+            for (pswModifyCount = 0; pswModifyCount != 3; pswModifyCount++)
+            {
+                var pswModifyRegex = "";
+                adminInterface.InsertSecondPsw();
+                pswModifyRegex = DataMaskManager.MaskData(pswModify);
+                adminInterface.InsertSecondPsw();
+                var pswModifyCompareRegex = DataMaskManager.MaskData(pswModifyCompare);
+                if (pswModifyRegex == pswModifyCompareRegex)
+                {
+                    var pswModifyCrypto = Register.EncryptPwd(pswModifyRegex);
+                    queryBuilder.QueryForUpdatePsw(pswModifyCrypto, usernameModify);
+                    pswModifyCount = 3;
+                }
+                else
+                {
+                    pswModifyCount++;
+                    adminInterface.AttemptsPsw(pswModifyCount);
+
+                    if (pswModifyCount == 3)
+                    {
+                        Environment.Exit(0);
+
+                    }
+                }
+            }
+            
         }
     }
 }

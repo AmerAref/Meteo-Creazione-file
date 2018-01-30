@@ -37,7 +37,7 @@ namespace Meteo.UI.AdminActions
 
 
         }
-        public void InsertNmeUserToModfy ()
+        public void InsertNameUserToModfy ()
         {
             if (_lang == "it")
             { 

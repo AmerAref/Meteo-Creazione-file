@@ -97,6 +97,7 @@ namespace Meteo.UI
                     Console.WriteLine("*************    Digitare il valore del menu    ***********");
                     Console.WriteLine("****1 - Effettua Login                                    *");
                     Console.WriteLine("****2 - Crea nuovo utente                                 *");
+                    Console.WriteLine("****3 - Termina sessione                                  *");
                     Console.WriteLine("***********************************************************");
                     break;
 
@@ -107,6 +108,7 @@ namespace Meteo.UI
                     Console.WriteLine("*************            Digit value            ***********");
                     Console.WriteLine("****1 - Login                                             *");
                     Console.WriteLine("****2 - Create new account                                *");
+                    Console.WriteLine("****3 - End session                                       *");
                     Console.WriteLine("***********************************************************");
                     break;
             }

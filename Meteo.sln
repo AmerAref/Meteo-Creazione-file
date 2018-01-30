@@ -2,11 +2,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meteo.Services", "Meteo.Services\Meteo.Services.csproj", "{8D0313EC-CE77-42F4-B37C-1FDE4473A3E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meteo.Services", "Meteo.Services\Meteo.Services.csproj", "{8D0313EC-CE77-42F4-B37C-1FDE4473A3E8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meteo.UI", "Meteo.UI\Meteo.UI.csproj", "{CBE7EC56-A0CF-40B1-AD46-7FE29A5E2E9A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meteo.UI", "Meteo.UI\Meteo.UI.csproj", "{CBE7EC56-A0CF-40B1-AD46-7FE29A5E2E9A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meteo.ExcelManager", "Meteo.ExcelManager\Meteo.ExcelManager.csproj", "{C64A10E2-A251-4961-BA12-B7542D04058E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meteo.ExcelManager", "Meteo.ExcelManager\Meteo.ExcelManager.csproj", "{C64A10E2-A251-4961-BA12-B7542D04058E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

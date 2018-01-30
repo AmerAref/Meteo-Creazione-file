@@ -35,10 +35,12 @@ namespace Meteo.Services
 
         public async Task<OneDayForecast> ProcessMeteoByCoordinatesToday(string lat, string lon, string unitMeasure)
         {
+            List<OneDayForecast> jsonObj = new List<OneDayForecast>();
             var url = $"{_appUri}weather?lat={lat}&lon={lon}&units={unitMeasure}&appid={_appId}";
             var jsonStr = await Client.GetStringAsync(url);
-            var jsonObj = JsonConvert.DeserializeObject<OneDayForecast>(jsonStr);
-            return jsonObj;
+             var jsonObjNotReady = JsonConvert.DeserializeObject<OneDayForecast>(jsonStr);
+            jsonObj.Add(jsonObjNotReady);
+            return jsonObj[0];
         }
 
         public async Task<LastFiveDaysForecast> ProcessMeteoByPlaceLast5Day(string place, string unitMeasure)

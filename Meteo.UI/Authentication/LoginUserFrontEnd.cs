@@ -2,10 +2,10 @@
 namespace Meteo.UI.Authentication
 {
 
-   public class LoginUserInterface
+   public class LoginUserFrotEnd
     {
         private string _lang;
-        public LoginUserInterface(string lang)
+        public LoginUserFrotEnd(string lang)
         {
             _lang = lang;
         }

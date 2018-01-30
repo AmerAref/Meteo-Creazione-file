@@ -9,12 +9,13 @@ using System.Reflection;
 using Meteo.Services.Models;
 using Ninject;
 using Meteo.UI.AdminActions;
+using Meteo.UI.AuthenticationUser;
 
 namespace Meteo.UI
 {
     public static class Program
     {
-        private static Dictionary<string, string> InsertDataForEmail(string lang)
+        public static Dictionary<string, string> InsertDataForEmail(string lang)
         {
             string insertSender = "", insertReciver = "", insertBody = "", insertSubject = "";
             var dictionaryForEmail = new Dictionary<string, string>();
@@ -84,79 +85,92 @@ namespace Meteo.UI
             var loginOrRegistration = new LoginOrRegistration(menuLang);
 
             var menu = new Menu(queryBuilder);
-
+            //scleta prima lingua nel menu
             menu.SelectLanguageStart();
             lang = Console.ReadLine();
 
             menu.ChangeLangages(lang);
-
+            //menu login o registrazione 
             menu.ShowFirst();
             var choseCreateNewAccuoutOrLogin = Console.ReadLine();
+            // scelta effettuata 
+
+
 
             switch (choseCreateNewAccuoutOrLogin)
             {
                 case "1":
-
+                    // ritonro l'username utente loggato  
                     username = loginOrRegistration.Login();
                     break;
                 case "2":
-                    username = loginOrRegistration.Registrartion();
+
+                    // ritonro l'username utente registrato  
+                    username = loginOrRegistration.RegistrationNewAccount();
                     break;
-
-            
-           
-            {
-
-            }
-
-            if (username == null)
-            {
-                return;
-            }
-
-            while (exit)
-            {
-                user = queryBuilder.GetUser(username);
-                menuLang = user.Language;
-                measureUnit = user.UnitOfMeasure;
-                userRole = user.IdRole.ToString();
+                case "3":
 
 
-                if (userRole == "1")
-                {
-                    try
+                    return;
+
+
+
+
+
+                    while (exit)
                     {
-                        menu.ShowFirtsMenuAdmin();
-                        var admin = new AuthenticatedAdmin(menuLang);
-                        choiceSelect = Console.ReadLine();
-                        admin.LoginAdmin(choiceSelect);
-                        if (choiceSelect == "3")
+                        user = queryBuilder.GetUser(username);
+                        menuLang = user.Language;
+                        measureUnit = user.UnitOfMeasure;
+                        userRole = user.IdRole.ToString();
+
+
+                        if (userRole == "1")
                         {
-                            menu.ShowSecondMenuAdmin();
-                            var secondAdminChoice = Console.ReadLine();
-                            admin.ModifyUserTable(secondAdminChoice);
+                            try
+                            {
+                                menu.ShowFirtsMenuAdmin();
+                                var admin = new AuthenticatedAdmin(menuLang);
+                                choiceSelect = Console.ReadLine();
+                                admin.LoginAdmin(choiceSelect);
+                                if (choiceSelect == "3")
+                                {
+                                    menu.ShowSecondMenuAdmin();
+                                    var secondAdminChoice = Console.ReadLine();
+                                    admin.ModifyUserTable(secondAdminChoice);
+
+
+
+                                }
+
+
+
+
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
+                        }
+                        else
+                        {
+
+                            menu.ShowFirst();
+                            choiceSelect = Console.ReadLine();
+                            var authenticationUserOrSecondMenuAdmin = new AuthenticatedUser();
+
+                            authenticationUserOrSecondMenuAdmin.ForecastActions(username, choiceSelect, menuLang, measureUnit);
+                            if (choiceSelect=="1")
+                            {
+                                menu.ShowSecondMenu();
+
+                               
+                            }
 
 
 
                         }
-
-
-
-
                     }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-                }
-                else
-                {
-
-                    menu.ShowFirst();
-
-
-
-                }
             }
         }
     }

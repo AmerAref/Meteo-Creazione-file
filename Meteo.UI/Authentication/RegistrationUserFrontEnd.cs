@@ -3,11 +3,11 @@ using Meteo.UI;
 
 namespace Meteo.Services
 {
-    public class RegistrationUserInterface
+    public class RegistrationUserFrontEnd
     {
         public string _lang;
 
-        public RegistrationUserInterface(string lang)
+        public RegistrationUserFrontEnd(string lang)
         {
             _lang = lang;
         }
