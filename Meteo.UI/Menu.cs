@@ -12,7 +12,7 @@ namespace Meteo.UI
             _queryBuilder = queryBuilder;
         }
         public void ChangeLangages(string lang)
-        {
+        {   
             _lang = lang;
 
         }
@@ -30,7 +30,7 @@ namespace Meteo.UI
         {
             switch (_lang)
             {
-                case "1":
+                case "it":
 
 
                     Console.WriteLine("*****************************************************************");
@@ -44,7 +44,7 @@ namespace Meteo.UI
 
                     break;
 
-                case "2":
+                case "en":
 
                     Console.WriteLine("*****************************************************************");
                     Console.WriteLine("*************       Digitare il valore del menu       ***********");
@@ -63,7 +63,7 @@ namespace Meteo.UI
         {
             switch (_lang)
             {
-                case "1":
+                case "it":
                     Console.WriteLine("*****************************************************************");
                     Console.WriteLine("****1 - Vuoi eliminare un utente?                               *");
                     Console.WriteLine("****2 - Vuoi modificare la password di un utente?               *");
@@ -73,7 +73,7 @@ namespace Meteo.UI
                     Console.WriteLine("*****************************************************************");
                     break;
 
-                case "2":
+                case "en":
 
                     Console.WriteLine("*****************************************************************");
                     Console.WriteLine("****1 - Do you want to delete an user?                          *");
@@ -156,7 +156,7 @@ namespace Meteo.UI
         {
             switch (_lang)
             {
-                case "1":
+                case "it":
 
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************    Digitare il valore del menu    ***********");
@@ -167,7 +167,7 @@ namespace Meteo.UI
                     Console.WriteLine("***********************************************************");
                     break;
 
-                case "2":
+                case "en":
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************            Digit value            ***********");
                     Console.WriteLine("****1 - Search for data about city                        *");
@@ -186,14 +186,14 @@ namespace Meteo.UI
         {
             switch (_lang)
             {
-                case "1":
+                case "it":
                     Console.WriteLine("\n************************************************************");
                     Console.WriteLine("***** Digitare il valore del menu per scelta della lingua ****");
                     Console.WriteLine("****1 - Italiano                                             *");
                     Console.WriteLine("****2 - Inglese                                              *");
                     Console.WriteLine("**************************************************************");
                     break;
-                case "2":
+                case "en":
                     Console.WriteLine("\n*********************************************************");
                     Console.WriteLine("*************            Digit value            ***********");
                     Console.WriteLine("****1 - Italian                                           *");
@@ -206,7 +206,7 @@ namespace Meteo.UI
         {
             switch (_lang)
             {
-                case "1":
+                case "it":
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************    Digitare il valore del menu    ***********");
                     Console.WriteLine("****1 - Filtra dati relativi a umidità                    *");
@@ -216,7 +216,7 @@ namespace Meteo.UI
                     Console.WriteLine("***********************************************************");
                     break;
 
-                case "2":
+                case "en":
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************            Digit value            ***********");
                     Console.WriteLine("****1 - Filter humidity data                              *");
@@ -307,7 +307,7 @@ namespace Meteo.UI
         {
             switch (_lang)
             {
-                case "1":
+                case "it":
 
 
                     Console.WriteLine("***********************************************************");
@@ -320,7 +320,7 @@ namespace Meteo.UI
 
                     break;
 
-                case "2":
+                case "en":
 
 
                     Console.WriteLine("***********************************************************");
@@ -338,7 +338,7 @@ namespace Meteo.UI
         {
             switch (_lang)
             {
-                case "1":
+                case "it":
 
                     Console.WriteLine("\n**********************************************************");
                     Console.WriteLine("******** Digitare il valore del menu per conferma risposta *");
@@ -348,7 +348,7 @@ namespace Meteo.UI
 
                     break;
 
-                case "2":
+                case "en":
 
                     Console.WriteLine("\n**********************************************************");
                     Console.WriteLine("*************            Digit value            ************");
@@ -362,7 +362,7 @@ namespace Meteo.UI
         {
             switch (_lang)
             {
-                case "1":
+                case "it":
 
 
                     Console.WriteLine("\n**********************************************************");
@@ -373,7 +373,7 @@ namespace Meteo.UI
 
                     break;
 
-                case "2":
+                case "en":
 
 
 

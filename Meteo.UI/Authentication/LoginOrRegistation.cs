@@ -8,16 +8,14 @@ namespace Meteo.UI
 {
     public class LoginOrRegistration
     {
-        private Menu menu;
         public string _lang;
         public LoginOrRegistration(string lang)
         {
             _lang = lang;
         }
-        static IQueryBuilder queryBuilder = QueryBuilderServices.QueryBuilder();
-        private int _countAttemptsPswRegister = 0;
+        public static IQueryBuilder queryBuilder = QueryBuilderServices.QueryBuilder();
+        private Menu menu =new  Menu(queryBuilder);
         public Services.Models.User _authentication;
-        public LoginUserFrotEnd loginInterface;
         public string RegistrationNewAccount()
         {
             var nameNewAccount = "";
@@ -151,6 +149,10 @@ namespace Meteo.UI
             var attemptsAnswerForQuestion = 0;
             var newPswClear = "";
 
+            var loginInterface = new LoginUserFrotEnd(_lang);
+
+
+
 
 
             for (var countPsw = 0; countPsw < 5; countPsw++)
@@ -161,7 +163,7 @@ namespace Meteo.UI
                 {
                     loginInterface.WelcomeUser(_authentication.Username);
                     countPsw = 5;
-                    return null;
+                    return _authentication.Username;
                 }
                 else
                 {
@@ -248,6 +250,8 @@ namespace Meteo.UI
         private Services.Models.User AuthenicationUserAndPsw()
         {
             var passwordLogin = "";
+            var loginInterface = new LoginUserFrotEnd(_lang);
+
 
             // Inserimento User
             loginInterface.InsertUsername();

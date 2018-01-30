@@ -12,18 +12,20 @@ namespace Meteo.UI.AuthenticationUser
     {
 
         public string _fileName;
-        public MeteoApi meteoApi;
-        public PrintData printData;
-        public IQueryBuilder queryBuilder;
-        public Menu menu;
-        public EmailManager emailManager;
-        public PrintData print;
-        public FileMenager filemenager;
-        public CreateXlsFile createXlsFile;
-        public AuthenticationUserInterface aunthenticationUserInterface;
-        public string _menuLang;
+        public MeteoApi meteoApi = new MeteoApi();
+        public PrintData printData = new PrintData();
+        public static IQueryBuilder queryBuilder = QueryBuilderServices.QueryBuilder();
+        public static Menu menu = new Menu(queryBuilder) ;
+        public EmailManager emailManager = new EmailManager();
+        public FileMenager filemenager = new FileMenager();
+        public CreateXlsFile createXlsFile = new CreateXlsFile();
+        public static string _menuLang;
         public string _measureUnit;
         public int _idUserMaster;
+
+
+        public AuthenticationUserInterface aunthenticationUserInterface = new AuthenticationUserInterface(_menuLang, menu);
+       
 
 
 
@@ -34,7 +36,7 @@ namespace Meteo.UI.AuthenticationUser
         public void ForecastActions(string username, string choiceSelect, string menuLang, string measureUnit)
 
         {
-
+            aunthenticationUserInterface.GetMenuLang(menuLang);
 
             _measureUnit = measureUnit;
             _menuLang = menuLang;
@@ -43,6 +45,7 @@ namespace Meteo.UI.AuthenticationUser
             var createXlsFromFile = new CreateXlsFromFiles();
             var searchingFor = "";
             _idUserMaster = queryBuilder.GetUser(username).IdUser;
+            menu.ChangeLangages(menuLang);
 
             switch (choiceSelect)
             {
@@ -53,16 +56,12 @@ namespace Meteo.UI.AuthenticationUser
                     {
                         case "1":
                             var place = aunthenticationUserInterface.InsertNamePlace();
-                            try
-                            {
+                           
                                 OneDayOr5Days = "1Day";
                                 searchingFor = "city";
                                 UserActions(place, null, null, searchingFor, OneDayOr5Days);
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e.Message);
-                            }
+
+                          
                             break;
 
                         case "2":
@@ -101,7 +100,6 @@ namespace Meteo.UI.AuthenticationUser
                             {
 
                                 OneDayOr5Days = "5Days";
-                                var extension = ".json";
                                 searchingFor = "place";
                                 UserActions(place, null, null, searchingFor, OneDayOr5Days);
 
@@ -146,7 +144,7 @@ namespace Meteo.UI.AuthenticationUser
                                     try
                                     {
                                         var objFilteredForHumidity = meteoApi.FiltredMeteoByHumidityLast5Day(humidity, place).Result;
-                                        print.PrintFilteredDataHumidity(objFilteredForHumidity, menuLang);
+                                        printData.PrintFilteredDataHumidity(objFilteredForHumidity, menuLang);
 
                                         aunthenticationUserInterface.RequestSucces();
                                     }
@@ -167,7 +165,7 @@ namespace Meteo.UI.AuthenticationUser
 
                                     time = aunthenticationUserInterface.ReadTime();
                                     var objFilteredForTimeDate = meteoApi.FiltredMeteoByDateTimeLast5Day(date, time, place).Result;
-                                    print.PrintDataLast5Day(objFilteredForTimeDate, menuLang);
+                                    printData.PrintDataLast5Day(objFilteredForTimeDate, menuLang);
                                     aunthenticationUserInterface.RequestSucces();
                                     break;
                                 case "3":
@@ -232,13 +230,13 @@ namespace Meteo.UI.AuthenticationUser
         {
             var extension = ".json";
             var choiceSelected = "";
-            var formatDateForFile = " ";
+
 
             DateTime dateForFile = DateTime.Now;
-            var dataPrinted = dateForFile.Date.ToString(formatDateForFile);
+            var dataPrinted = dateForFile.ToString("yyyy-MM-dd");
 
             var jsonObj = ReciveJsonObj(lat, lon, place, OneDayOr5DaysChoice);
-            print.PrintForData(jsonObj, _menuLang);
+            printData.PrintForData(jsonObj, _menuLang);
             queryBuilder.InsertOneDayForecast(jsonObj);
             var insertChoiceSelected = aunthenticationUserInterface.MeteoChoice1Day(requestFor);
             queryBuilder.InsertDataMaster(insertChoiceSelected, _idUserMaster);
@@ -253,7 +251,7 @@ namespace Meteo.UI.AuthenticationUser
                 choiceSelected = aunthenticationUserInterface.ChoceSendEmail();
                 if (choiceSelected == "1")
                 {
-                    aunthenticationUserInterface = new AuthenticationUserInterface();
+                    aunthenticationUserInterface.AuthenticationUserInterfaceSendEmail();
                     emailManager.AttempsPasswordAndSendEmail(_fileName, aunthenticationUserInterface.senderValue, aunthenticationUserInterface.receiverValue, aunthenticationUserInterface.bodyValue, aunthenticationUserInterface.subjectValue, aunthenticationUserInterface.userValue, aunthenticationUserInterface.passwordMaskered);
                 }
                 choiceSelected = aunthenticationUserInterface.ChoiceDoFileXls();

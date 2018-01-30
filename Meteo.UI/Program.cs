@@ -69,30 +69,26 @@ namespace Meteo.UI
             var createXlsFile = new CreateXlsFile();
             var createXlsFromFile = new CreateXlsFromFiles();
             var print = new PrintData();
-            var exit = true;
             var meteoApi = new MeteoApi();
-            var password = "";
             var choiceSelect = "";
-            var meteoChoiceForDB = "";
             string userRole = "";
             var user = new User();
-            string formatDateForFile = "yyyy-MM-dd";
-            string str = "";
             var username = "";
             var queryBuilder = QueryBuilderServices.QueryBuilder();
 
             var lang = "";
-            var loginOrRegistration = new LoginOrRegistration(menuLang);
 
             var menu = new Menu(queryBuilder);
             //scleta prima lingua nel menu
             menu.SelectLanguageStart();
             lang = Console.ReadLine();
+            var loginOrRegistration = new LoginOrRegistration(lang);
 
             menu.ChangeLangages(lang);
             //menu login o registrazione 
-            menu.ShowFirst();
+            menu.ShowMenuAuthentication();
             var choseCreateNewAccuoutOrLogin = Console.ReadLine();
+
             // scelta effettuata 
 
 
@@ -112,67 +108,56 @@ namespace Meteo.UI
 
 
                     return;
+            }
+            user = queryBuilder.GetUser(username);
+            menuLang = user.Language;
+            measureUnit = user.UnitOfMeasure;
+            userRole = user.IdRole.ToString();
 
 
-
-
-
-                    while (exit)
+            if (userRole == "1")
+            {
+                try
+                {
+                    menu.ShowFirtsMenuAdmin();
+                    var admin = new AuthenticatedAdmin(menuLang);
+                    choiceSelect = Console.ReadLine();
+                    admin.LoginAdmin(choiceSelect);
+                    if (choiceSelect == "3")
                     {
-                        user = queryBuilder.GetUser(username);
-                        menuLang = user.Language;
-                        measureUnit = user.UnitOfMeasure;
-                        userRole = user.IdRole.ToString();
-
-
-                        if (userRole == "1")
-                        {
-                            try
-                            {
-                                menu.ShowFirtsMenuAdmin();
-                                var admin = new AuthenticatedAdmin(menuLang);
-                                choiceSelect = Console.ReadLine();
-                                admin.LoginAdmin(choiceSelect);
-                                if (choiceSelect == "3")
-                                {
-                                    menu.ShowSecondMenuAdmin();
-                                    var secondAdminChoice = Console.ReadLine();
-                                    admin.ModifyUserTable(secondAdminChoice);
+                        menu.ShowSecondMenuAdmin();
+                        var secondAdminChoice = Console.ReadLine();
+                        admin.ModifyUserTable(secondAdminChoice);
 
 
 
-                                }
-
-
-
-
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e.Message);
-                            }
-                        }
-                        else
-                        {
-
-                            menu.ShowFirst();
-                            choiceSelect = Console.ReadLine();
-                            var authenticationUserOrSecondMenuAdmin = new AuthenticatedUser();
-
-                            authenticationUserOrSecondMenuAdmin.ForecastActions(username, choiceSelect, menuLang, measureUnit);
-                            if (choiceSelect=="1")
-                            {
-                                menu.ShowSecondMenu();
-
-                               
-                            }
-
-
-
-                        }
                     }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            else
+            {
+
+                menu.ShowFirst();
+                choiceSelect = Console.ReadLine();
+                var authenticationUserOrSecondMenuAdmin = new AuthenticatedUser();
+
+                authenticationUserOrSecondMenuAdmin.ForecastActions(username, choiceSelect, menuLang, measureUnit);
+                if (choiceSelect == "1")
+                {
+                    menu.ShowSecondMenu();
+
+
+                }
+
+
+
             }
         }
     }
 }
+
 

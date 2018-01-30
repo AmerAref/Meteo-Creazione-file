@@ -6,7 +6,7 @@ namespace Meteo.Services.Infrastructure
 {
     public static class QueryBuilderServices
     {
-        public static  IQueryBuilder QueryBuilder()
+        public static IQueryBuilder QueryBuilder()
         {
             var kernel = new StandardKernel();
             kernel.Load(Assembly.GetAssembly(typeof(MySqlManager)));

@@ -29,6 +29,12 @@ namespace Meteo.UI.AuthenticationUser
             _menuLang = menuLang;
             _menu = menu;
         }
+        public void GetMenuLang(string menuLang)
+        {
+            _menuLang = menuLang;
+            
+        }
+
 
         public string InsertNamePlace()
         {
@@ -140,7 +146,7 @@ namespace Meteo.UI.AuthenticationUser
             if (extension == ".json")
             {
                 
-                    var fileName = string.Concat(Console.ReadLine() + OneDayOr5Days + extension);
+                var fileName = string.Concat(Console.ReadLine() + OneDayOr5Days + dataPrinted + extension );
                     return fileName;
 
              
@@ -178,7 +184,7 @@ namespace Meteo.UI.AuthenticationUser
         }
 
 
-        public AuthenticationUserInterface()
+        public void AuthenticationUserInterfaceSendEmail()
         {
 
             dataForEmail = Program.InsertDataForEmail(_menuLang);
