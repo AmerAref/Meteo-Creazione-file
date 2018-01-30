@@ -8,12 +8,14 @@ namespace Meteo.UI
 {
     public class LoginOrRegistration
     {
+        private Menu menu;
         public string _lang;
         public LoginOrRegistration(string lang)
         {
             _lang = lang;
         }
         static IQueryBuilder queryBuilder = QueryBuilderServices.QueryBuilder();
+        private int _countAttemptsPswRegister = 0;
         public Services.Models.User _authentication;
         public LoginUserFrotEnd loginInterface;
         public string RegistrationNewAccount()
