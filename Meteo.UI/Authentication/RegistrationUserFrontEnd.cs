@@ -36,7 +36,7 @@ namespace Meteo.Services
             }
             return;
         }
-        public void InsertUser()
+        public string InsertUser()
         {
             if (_lang == "1")
             {
@@ -46,6 +46,10 @@ namespace Meteo.Services
             {
                 Console.WriteLine(DataInterface.insertUserEN);
             }
+            var newUsername = Console.ReadLine();
+            return newUsername;
+
+
         }
 
 
@@ -61,8 +65,9 @@ namespace Meteo.Services
             }
         }
 
-        public void InserPsw()
+        public string InserPsw()
         {
+            var passwordRegistration = "";
             if (_lang == "1")
             {
                 Console.WriteLine(DataInterface.insertPswIT);
@@ -71,7 +76,8 @@ namespace Meteo.Services
             {
                 Console.WriteLine(DataInterface.insertPswEN);
             }
-            return;
+          var  newpsw = DataMaskManager.MaskData(passwordRegistration);
+            return newpsw;
 
         }
         public void ReinsertPsw()
@@ -87,8 +93,9 @@ namespace Meteo.Services
                 Console.WriteLine("\nReenter Password.");
             }
         }
-        public void ComparisonReinsertPsw()
+        public string ComparisonReinsertPsw()
         {
+            var passwordComparisonNotEcrypted = "";
             if (_lang == "1")
             {
                 Console.WriteLine("\nReinserisci Password.");
@@ -97,6 +104,9 @@ namespace Meteo.Services
             {
                 Console.WriteLine("\nReenter Password.");
             }
+            var compPsw = DataMaskManager.MaskData(passwordComparisonNotEcrypted);
+            return compPsw;
+
         }
 
         public void PswNotEquals()

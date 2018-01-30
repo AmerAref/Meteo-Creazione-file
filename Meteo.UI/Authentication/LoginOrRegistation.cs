@@ -8,14 +8,12 @@ namespace Meteo.UI
 {
     public class LoginOrRegistration
     {
-        private Menu menu;
         public string _lang;
         public LoginOrRegistration(string lang)
         {
             _lang = lang;
         }
         static IQueryBuilder queryBuilder = QueryBuilderServices.QueryBuilder();
-        private int _countAttemptsPswRegister = 0;
         public Services.Models.User _authentication;
         public LoginUserFrotEnd loginInterface;
         public string RegistrationNewAccount()
@@ -27,8 +25,6 @@ namespace Meteo.UI
             var idSelectedForQuestion = 0;
             var measureUnit = "";
             var languageNewAccunt = "";
-            var passwordRegistration = "";
-            var passwordComparisonNotEcrypted = "";
             var encryptedAnswer = "";
             var encryptedPwd = "";
             var registationUserInterface = new RegistrationUserFrontEnd(_lang);
@@ -39,8 +35,7 @@ namespace Meteo.UI
             surnameNewAccount = Console.ReadLine();
             for (var countAttempts = 0; countAttempts < 3; countAttempts++)
             {
-                registationUserInterface.InsertUser();
-                newUsername = Console.ReadLine();
+                newUsername = registationUserInterface.InsertUser();
                 _authentication = queryBuilder.GetUser(newUsername);
                 if (_authentication != null)
                 {
@@ -59,8 +54,8 @@ namespace Meteo.UI
             }
             for (var countAttempts = 0; countAttempts < 3; countAttempts++)
             {
-                registationUserInterface.InserPsw();
-                pswNewAccount = DataMaskManager.MaskData(passwordRegistration);
+                pswNewAccount = registationUserInterface.InserPsw();
+               
                 // Controlla se Accetta i criteri di sicurezza psw
                 if (Helper.RegexForPsw(pswNewAccount) == false)
                 {
@@ -79,10 +74,9 @@ namespace Meteo.UI
             }
             for (var countAttempts = 0; countAttempts < 3; countAttempts++)
             {
-                registationUserInterface.ComparisonReinsertPsw();
+                var pswComparison =   registationUserInterface.ComparisonReinsertPsw();
 
                 // maschera reinserimento psw
-                var pswComparison = DataMaskManager.MaskData(passwordComparisonNotEcrypted);
                 // confronto fra le due psw scritte. Se corrispondo l'utente deve selezionare una domanda di sicurezza per recupero psw 
                 if (pswNewAccount != pswComparison)
                 {
