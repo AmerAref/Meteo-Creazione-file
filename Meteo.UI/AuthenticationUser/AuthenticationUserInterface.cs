@@ -51,39 +51,22 @@ namespace Meteo.UI.AuthenticationUser
 
         }
 
-        public string MeteoChoice1Day(string searchingFor)
+        public string MeteoChoice(string searchingFor, string OneDayOr5DaysChoice)
         {
             var meteoChoiceForDB = "";
 
             if (_menuLang == "it")
             {
-                meteoChoiceForDB = $"Previsioni per un giorno ({searchingFor})";
+                meteoChoiceForDB = $"Previsioni {OneDayOr5DaysChoice} ({searchingFor})";
             }
             else
             {
-                meteoChoiceForDB = $"Forecast for one day ({searchingFor})";
+                meteoChoiceForDB = $"Forecast {OneDayOr5DaysChoice} ({searchingFor})";
             }
             return meteoChoiceForDB;
         }
 
-        public string MeteoChoice5Day(string searchingFor)
-        {
-            var meteoChoiceForDB = "";
-
-            if (_menuLang == "it")
-            {
-                meteoChoiceForDB = $"Previsioni per 5 giorni  ({searchingFor})";
-            }
-            else
-            {
-                meteoChoiceForDB = $"Forecast for 5 day ({searchingFor})";
-            }
-            return meteoChoiceForDB;
-        }
-
-
-
-
+       
 
         public void RequestSucces()
         {
@@ -187,7 +170,7 @@ namespace Meteo.UI.AuthenticationUser
         public void AuthenticationUserInterfaceSendEmail()
         {
 
-            dataForEmail = Program.InsertDataForEmail(_menuLang);
+            dataForEmail = GetDataForEmail.InsertDataForEmail(_menuLang);
             senderValue = dataForEmail["senderKey"];
             receiverValue = dataForEmail["receiverKey"];
             bodyValue = dataForEmail["bodyKey"];

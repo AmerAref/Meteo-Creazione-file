@@ -15,50 +15,6 @@ namespace Meteo.UI
 {
     public static class Program
     {
-        public static Dictionary<string, string> InsertDataForEmail(string lang)
-        {
-            string insertSender = "", insertReciver = "", insertBody = "", insertSubject = "";
-            var dictionaryForEmail = new Dictionary<string, string>();
-            if (lang == "it")
-            {
-                insertSender = "Inserisci email del mittente";
-                insertReciver = "Inserisci email del destinatario";
-                insertBody = "Iserisci il testo all'interno dell'email";
-                insertSubject = "Inserisci l'oggetto";
-            }
-            else
-            {
-                insertSender = "Insert sender's email";
-                insertReciver = "Insert recipient'semail";
-                insertBody = "Isert the body text of the email";
-                insertSubject = "Insert the object";
-            }
-            Console.WriteLine(insertSender);
-            var sender = Console.ReadLine();
-            dictionaryForEmail.Add("senderKey", sender);
-
-            Console.WriteLine();
-
-            Console.WriteLine(insertReciver);
-            var receiver = Console.ReadLine();
-            Console.WriteLine(insertBody);
-            var body = Console.ReadLine();
-            Console.WriteLine(insertSubject);
-            var subject = Console.ReadLine();
-
-            var user = sender.Split('@')[0];
-
-            dictionaryForEmail.Add("receiverKey", receiver);
-            dictionaryForEmail.Add("bodyKey", body);
-            dictionaryForEmail.Add("subjectKey", subject);
-            dictionaryForEmail.Add("userKey", user);
-            if (lang == "it")
-            { Console.WriteLine("Inserisci password"); }
-            else
-            { Console.WriteLine("Insert password"); }
-
-            return dictionaryForEmail;
-        }
 
         static void Main(string[] args)
         {
@@ -82,26 +38,23 @@ namespace Meteo.UI
             //scleta prima lingua nel menu
             menu.SelectLanguageStart();
             lang = Console.ReadLine();
-            var loginOrRegistration = new LoginOrRegistration(lang);
+            var loginOrRegistration = new LoginOrRegistration(lang, queryBuilder);
 
             menu.ChangeLangages(lang);
             //menu login o registrazione 
             menu.ShowMenuAuthentication();
             var choseCreateNewAccuoutOrLogin = Console.ReadLine();
 
-            // scelta effettuata 
 
 
 
             switch (choseCreateNewAccuoutOrLogin)
             {
                 case "1":
-                    // ritonro l'username utente loggato  
                     username = loginOrRegistration.Login();
                     break;
                 case "2":
 
-                    // ritonro l'username utente registrato  
                     username = loginOrRegistration.RegistrationNewAccount();
                     break;
                 case "3":
@@ -113,49 +66,40 @@ namespace Meteo.UI
             menuLang = user.Language;
             measureUnit = user.UnitOfMeasure;
             userRole = user.IdRole.ToString();
-
-
-            if (userRole == "1")
+            var exit = true;
+            while (exit)
             {
-                try
+                if (userRole == "1")
                 {
-                    menu.ShowFirtsMenuAdmin();
-                    var admin = new AuthenticatedAdmin(menuLang);
-                    choiceSelect = Console.ReadLine();
-                    admin.LoginAdmin(choiceSelect);
-                    if (choiceSelect == "3")
+                    try
                     {
-                        menu.ShowSecondMenuAdmin();
-                        var secondAdminChoice = Console.ReadLine();
-                        admin.ModifyUserTable(secondAdminChoice);
+                        menu.ShowFirtsMenuAdmin();
+                        var admin = new AuthenticatedAdmin(menuLang, queryBuilder);
+                        choiceSelect = Console.ReadLine();
+                        admin.LoginAdmin(choiceSelect);
 
-
-
+                     
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
                     }
                 }
-                catch (Exception e)
+
+
+
+
                 {
-                    Console.WriteLine(e.Message);
-                }
-            }
-            else
-            {
+                    menu.ShowFirst();
+                    choiceSelect = Console.ReadLine();
+                    var authenticationUserOrSecondMenuAdmin = new AuthenticatedUser();
 
-                menu.ShowFirst();
-                choiceSelect = Console.ReadLine();
-                var authenticationUserOrSecondMenuAdmin = new AuthenticatedUser();
-
-                authenticationUserOrSecondMenuAdmin.ForecastActions(username, choiceSelect, menuLang, measureUnit);
-                if (choiceSelect == "1")
-                {
-                    menu.ShowSecondMenu();
-
-
+                    authenticationUserOrSecondMenuAdmin.ForecastActions(username, choiceSelect, menuLang, measureUnit);
                 }
 
 
-
             }
+
         }
     }
 }

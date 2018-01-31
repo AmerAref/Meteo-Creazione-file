@@ -12,7 +12,7 @@ namespace Meteo.UI
             _queryBuilder = queryBuilder;
         }
         public void ChangeLangages(string lang)
-        {   
+        {
             _lang = lang;
 
         }
@@ -30,7 +30,7 @@ namespace Meteo.UI
         {
             switch (_lang)
             {
-                case "it":
+                case "1":
 
 
                     Console.WriteLine("*****************************************************************");
@@ -44,7 +44,7 @@ namespace Meteo.UI
 
                     break;
 
-                case "en":
+                case "2":
 
                     Console.WriteLine("*****************************************************************");
                     Console.WriteLine("*************       Digitare il valore del menu       ***********");
@@ -63,7 +63,7 @@ namespace Meteo.UI
         {
             switch (_lang)
             {
-                case "it":
+                case "1":
                     Console.WriteLine("*****************************************************************");
                     Console.WriteLine("****1 - Vuoi eliminare un utente?                               *");
                     Console.WriteLine("****2 - Vuoi modificare la password di un utente?               *");
@@ -73,7 +73,7 @@ namespace Meteo.UI
                     Console.WriteLine("*****************************************************************");
                     break;
 
-                case "en":
+                case "2":
 
                     Console.WriteLine("*****************************************************************");
                     Console.WriteLine("****1 - Do you want to delete an user?                          *");
@@ -182,18 +182,18 @@ namespace Meteo.UI
             }
         }
 
-        public void SelectLanguage()
+        public string SelectLanguage()
         {
             switch (_lang)
             {
-                case "it":
+                case "1":
                     Console.WriteLine("\n************************************************************");
                     Console.WriteLine("***** Digitare il valore del menu per scelta della lingua ****");
                     Console.WriteLine("****1 - Italiano                                             *");
                     Console.WriteLine("****2 - Inglese                                              *");
                     Console.WriteLine("**************************************************************");
                     break;
-                case "en":
+                case "2":
                     Console.WriteLine("\n*********************************************************");
                     Console.WriteLine("*************            Digit value            ***********");
                     Console.WriteLine("****1 - Italian                                           *");
@@ -201,7 +201,10 @@ namespace Meteo.UI
                     Console.WriteLine("***********************************************************");
                     break;
             }
+            var langToInsert = Console.ReadLine();
+            return langToInsert;
         }
+
         public void ShowFiltredMenu()
         {
             switch (_lang)
@@ -229,7 +232,7 @@ namespace Meteo.UI
         }
 
 
-        public void SelectQuestion()
+        public int SelectQuestion()
         {
             switch (_lang)
             {
@@ -257,42 +260,89 @@ namespace Meteo.UI
                     Console.WriteLine("************************************************************");
                     break;
             }
+            var idSelectedForQuestion = Convert.ToInt32(Console.ReadLine());
+            return idSelectedForQuestion;
         }
 
         public void SelectRole()
         {
 
-            switch (_lang)
+            if (_lang == "it" || _lang == "en")
             {
-                case "1":
+                switch (_lang)
+                {
+
+                    case "it":
 
 
-                    var allRoles = _queryBuilder.AllRoles();
-                    Console.WriteLine("\n**********************************************************");
-                    Console.WriteLine("Digitare il valore del menu per scelta del ruolo           *");
-                    foreach (var role in allRoles)
-                    {
-                        Console.WriteLine($"{role.IdRole} - {role.RoleType} *");
-                    }
-                    Console.WriteLine("************************************************************");
-                    break;
+                        var allRoles = _queryBuilder.AllRoles();
+                        Console.WriteLine("\n**********************************************************");
+                        Console.WriteLine("Digitare il valore del menu per scelta del ruolo           *");
+                        foreach (var role in allRoles)
+                        {
+                            Console.WriteLine($"{role.IdRole} - {role.RoleType} *");
+                        }
+                        Console.WriteLine("************************************************************");
+                        break;
 
-                case "2":
-
-
+                    case "en":
 
 
-                    allRoles = _queryBuilder.AllRoles();
-                    Console.WriteLine("\n**********************************************************");
-                    Console.WriteLine("*************            Digit value            ************");
-                    foreach (var role in allRoles)
-                    {
-                        Console.WriteLine($"{role.IdRole} - {role.RoleType} *");
-                    }
-                    Console.WriteLine("************************************************************");
-                    break;
+
+
+                        allRoles = _queryBuilder.AllRoles();
+                        Console.WriteLine("\n**********************************************************");
+                        Console.WriteLine("*************            Digit value            ************");
+                        foreach (var role in allRoles)
+                        {
+                            Console.WriteLine($"{role.IdRole} - {role.RoleType} *");
+                        }
+                        Console.WriteLine("************************************************************");
+                        break;
+                }
+            }
+
+
+            else
+            {
+                switch (_lang)
+                {
+                    case "1":
+
+
+                        var allRoles = _queryBuilder.AllRoles();
+                        Console.WriteLine("\n**********************************************************");
+                        Console.WriteLine("Digitare il valore del menu per scelta del ruolo           *");
+                        foreach (var role in allRoles)
+                        {
+                            Console.WriteLine($"{role.IdRole} - {role.RoleType} *");
+                        }
+                        Console.WriteLine("************************************************************");
+                        break;
+
+                    case "2":
+
+
+
+
+                        allRoles = _queryBuilder.AllRoles();
+                        Console.WriteLine("\n**********************************************************");
+                        Console.WriteLine("*************            Digit value            ************");
+                        foreach (var role in allRoles)
+                        {
+                            Console.WriteLine($"{role.IdRole} - {role.RoleType} *");
+                        }
+                        Console.WriteLine("************************************************************");
+                        break;
+
+
+                }
+
+
             }
         }
+
+
 
 
 
@@ -334,30 +384,67 @@ namespace Meteo.UI
             }
         }
 
-        public void Confirmation()
+        public string Confirmation()
         {
-            switch (_lang)
+            if (_lang == "it" || _lang == "en")
             {
-                case "it":
 
-                    Console.WriteLine("\n**********************************************************");
-                    Console.WriteLine("******** Digitare il valore del menu per conferma risposta *");
-                    Console.WriteLine("****1 - Conferma                                           *");
-                    Console.WriteLine("****2 - Reinserisci                                        *");
-                    Console.WriteLine("************************************************************");
+                switch (_lang)
+                {
 
-                    break;
 
-                case "en":
+                    case "it":
 
-                    Console.WriteLine("\n**********************************************************");
-                    Console.WriteLine("*************            Digit value            ************");
-                    Console.WriteLine("****1 - Confirm                                            *");
-                    Console.WriteLine("****2 - Reenter                                            *");
-                    Console.WriteLine("************************************************************");
-                    break;
+                        Console.WriteLine("\n**********************************************************");
+                        Console.WriteLine("******** Digitare il valore del menu per conferma risposta *");
+                        Console.WriteLine("****1 - Conferma                                           *");
+                        Console.WriteLine("****2 - Reinserisci                                        *");
+                        Console.WriteLine("************************************************************");
+
+                        break;
+
+                    case "en":
+
+                        Console.WriteLine("\n**********************************************************");
+                        Console.WriteLine("*************            Digit value            ************");
+                        Console.WriteLine("****1 - Confirm                                            *");
+                        Console.WriteLine("****2 - Reenter                                            *");
+                        Console.WriteLine("************************************************************");
+                        break;
+                }
             }
+            else
+            {
+                switch (_lang)
+                {
+
+
+                    case "1":
+
+                        Console.WriteLine("\n**********************************************************");
+                        Console.WriteLine("******** Digitare il valore del menu per conferma risposta *");
+                        Console.WriteLine("****1 - Conferma                                           *");
+                        Console.WriteLine("****2 - Reinserisci                                        *");
+                        Console.WriteLine("************************************************************");
+
+                        break;
+
+                    case "2":
+
+                        Console.WriteLine("\n**********************************************************");
+                        Console.WriteLine("*************            Digit value            ************");
+                        Console.WriteLine("****1 - Confirm                                            *");
+                        Console.WriteLine("****2 - Reenter                                            *");
+                        Console.WriteLine("************************************************************");
+                        break;
+                }
+            }
+            var confermation = Console.ReadLine();
+
+            return confermation;
         }
+
+
         public void Chioce()
         {
             switch (_lang)

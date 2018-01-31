@@ -77,8 +77,9 @@ namespace Meteo.Services
             var url = $"{_appUri}forecast?q={place}&appid={_appId}";
             var jsonStr = await Client.GetStringAsync(url);
             var jsonObj = JsonConvert.DeserializeObject<LastFiveDaysForecast>(jsonStr);
-            var dateTime = Console.ReadLine();
-            var dateTimeUserInput = new DateTimeUserInput(dateTime);
+            var dateTimeUserInput = new DateTimeUserInput(date);
+            var dateTime = $"{date}  {time}";
+
             var authenticationData = dateTimeUserInput.GetResponse();
             var dataReady = true;
             while (dataReady)

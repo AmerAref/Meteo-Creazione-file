@@ -5,35 +5,29 @@ using Meteo.Services.Infrastructure;
 namespace Meteo.UI.AdminActions
 {
 
-
-
-
-    //Prendo le credenziali e faccio la validazione sul db
-    // se errore lancio eccezione
-    // se risposta corretta ritorno valore admin
-
-
     public class AuthenticatedAdmin
 
 
 
     {
-        public Menu menu;
-        public string _lang;
-        public AuthenticatedAdmin(string menuLang)
+        public static AdminInterface adminInterface;
+        public static string _lang;
+        public static IQueryBuilder queryBuilder;
+        public static Menu menu;
+
+        public AuthenticatedAdmin(string menuLang, IQueryBuilder queryBuilderForCostr)
         {
             _lang = menuLang;
+            adminInterface = new AdminInterface(_lang);
+            queryBuilder = queryBuilderForCostr;
+            menu = new Menu(queryBuilder);
         }
-        public static IQueryBuilder queryBuilder = QueryBuilderServices.QueryBuilder();
-        public static AdminInterface adminInterface;
-
-
 
         public void LoginAdmin(string choiceSelect)
         {
             var print = new PrintData();
 
-            
+
             switch (choiceSelect)
             {
                 case "1":
@@ -47,26 +41,27 @@ namespace Meteo.UI.AdminActions
                     break;
 
                 case "3":
+                    menu.ShowSecondMenuAdmin();
+                    var secondAdminChoice = Console.ReadLine();
+                    ModifyUserTable(secondAdminChoice);
                     break;
                 case "4":
 
-                    break;
-                
+                    return;
                 case "5":
 
                     adminInterface.Exit();
                     Environment.Exit(0);
                     break;
-
-
             }
-            return;
+
         }
 
         public void ModifyUserTable(string secondAdminChoice)
         {
+            menu.ChangeLangages(_lang);
             {
-               
+
                 switch (secondAdminChoice)
                 {
                     case "1":
@@ -98,32 +93,37 @@ namespace Meteo.UI.AdminActions
             }
             return;
         }
-
-
         private void ModifyPsw()
         {
-            var pswModify = "";
-            var pswModifyCompare = "";
             var pswModifyCount = 0;
-            adminInterface.InsertNameUserToModfy();
-            var usernameModify = Console.ReadLine();
+            var usernameModify = adminInterface.InsertNameUserToModfy();
             for (pswModifyCount = 0; pswModifyCount != 3; pswModifyCount++)
             {
-                var pswModifyRegex = "";
-                adminInterface.InsertSecondPsw();
-                pswModifyRegex = DataMaskManager.MaskData(pswModify);
-                adminInterface.InsertSecondPsw();
-                var pswModifyCompareRegex = DataMaskManager.MaskData(pswModifyCompare);
-                if (pswModifyRegex == pswModifyCompareRegex)
+                var firstPsw = adminInterface.InsertFirstPsw();
+                var secondPsw = adminInterface.InsertSecondPsw();
+
+                if (secondPsw == firstPsw)
                 {
-                    var pswModifyCrypto = Register.EncryptPwd(pswModifyRegex);
-                    queryBuilder.QueryForUpdatePsw(pswModifyCrypto, usernameModify);
-                    pswModifyCount = 3;
+                    if (Helper.RegexForPsw(firstPsw) == true)
+                    {
+
+                        var pswModifyCrypto = Register.EncryptPwd(secondPsw);
+                        queryBuilder.QueryForUpdatePsw(pswModifyCrypto, usernameModify);
+                        pswModifyCount = 3;
+                        return;
+                    }
+                    else
+                    {
+
+                        adminInterface.AttemtsRegexPsw();
+
+                    }
                 }
                 else
                 {
                     pswModifyCount++;
                     adminInterface.AttemptsPsw(pswModifyCount);
+
 
                     if (pswModifyCount == 3)
                     {
@@ -132,7 +132,7 @@ namespace Meteo.UI.AdminActions
                     }
                 }
             }
-            
+
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Meteo.UI.AuthenticationUser
         public MeteoApi meteoApi = new MeteoApi();
         public PrintData printData = new PrintData();
         public static IQueryBuilder queryBuilder = QueryBuilderServices.QueryBuilder();
-        public static Menu menu = new Menu(queryBuilder) ;
+        public static Menu menu = new Menu(queryBuilder);
         public EmailManager emailManager = new EmailManager();
         public FileMenager filemenager = new FileMenager();
         public CreateXlsFile createXlsFile = new CreateXlsFile();
@@ -25,7 +25,7 @@ namespace Meteo.UI.AuthenticationUser
 
 
         public AuthenticationUserInterface aunthenticationUserInterface = new AuthenticationUserInterface(_menuLang, menu);
-       
+
 
 
 
@@ -37,7 +37,7 @@ namespace Meteo.UI.AuthenticationUser
 
         {
             aunthenticationUserInterface.GetMenuLang(menuLang);
-
+            var place = " ";
             _measureUnit = measureUnit;
             _menuLang = menuLang;
             var OneDayOr5Days = "";
@@ -55,13 +55,13 @@ namespace Meteo.UI.AuthenticationUser
                     switch (choseThisDay)
                     {
                         case "1":
-                            var place = aunthenticationUserInterface.InsertNamePlace();
-                           
-                                OneDayOr5Days = "1Day";
-                                searchingFor = "city";
-                                UserActions(place, null, null, searchingFor, OneDayOr5Days);
+                            place = aunthenticationUserInterface.InsertNamePlace();
 
-                          
+                            OneDayOr5Days = "1Day";
+                            searchingFor = "city";
+                            UserActions(place, null, null, searchingFor, OneDayOr5Days);
+
+
                             break;
 
                         case "2":
@@ -95,7 +95,7 @@ namespace Meteo.UI.AuthenticationUser
                     switch (choseLast5Day)
                     {
                         case "1":
-                            var place = aunthenticationUserInterface.InsertNamePlace();
+                            place = aunthenticationUserInterface.InsertNamePlace();
                             try
                             {
 
@@ -131,98 +131,99 @@ namespace Meteo.UI.AuthenticationUser
                                 Console.WriteLine(e.Message);
                             }
                             break;
-                        case "3":
-                            menu.ShowFiltredMenu();
 
-                            var choseFilter = Console.ReadLine();
-                            switch (choseFilter)
+                    }
+                    break;
+                case "3":
+                    menu.ShowFiltredMenu();
+
+                    var choseFilter = Console.ReadLine();
+                    switch (choseFilter)
+                    {
+                        case "1":
+                            place = aunthenticationUserInterface.InsertNamePlace();
+                            var humidity = aunthenticationUserInterface.ReadHumidityValue();
+
+                            try
                             {
-                                case "1":
-                                    place = aunthenticationUserInterface.InsertNamePlace();
-                                    var humidity = aunthenticationUserInterface.ReadHumidityValue();
+                                var objFilteredForHumidity = meteoApi.FiltredMeteoByHumidityLast5Day(humidity, place).Result;
+                                printData.PrintFilteredDataHumidity(objFilteredForHumidity, menuLang);
 
-                                    try
-                                    {
-                                        var objFilteredForHumidity = meteoApi.FiltredMeteoByHumidityLast5Day(humidity, place).Result;
-                                        printData.PrintFilteredDataHumidity(objFilteredForHumidity, menuLang);
-
-                                        aunthenticationUserInterface.RequestSucces();
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine(e.Message);
-                                    }
-                                    break;
-                                case "2":
-                                    place = aunthenticationUserInterface.InsertNamePlace();
-
-                                    place = Console.ReadLine();
-                                    string time;
-                                    DateTime printDate = DateTime.Now;
-
-                                    var dataPrinted = printDate.Date.ToString(formatDateForFile);
-                                    var date = Convert.ToString(aunthenticationUserInterface.ReadDataTime());
-
-                                    time = aunthenticationUserInterface.ReadTime();
-                                    var objFilteredForTimeDate = meteoApi.FiltredMeteoByDateTimeLast5Day(date, time, place).Result;
-                                    printData.PrintDataLast5Day(objFilteredForTimeDate, menuLang);
-                                    aunthenticationUserInterface.RequestSucces();
-                                    break;
-                                case "3":
-                                    place = aunthenticationUserInterface.InsertNamePlace();
-
-                                    var typeWeather = aunthenticationUserInterface.ReadQualitySky();
-                                    var jsonObj = meteoApi.FiltredMeteoByWeatherLast5Day(typeWeather, place);
-                                    aunthenticationUserInterface.RequestSucces();
-                                    break;
-                                case "4":
-                                    break;
+                                aunthenticationUserInterface.RequestSucces();
                             }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
+                            break;
+                        case "2":
+                            place = aunthenticationUserInterface.InsertNamePlace();
+
+                            string time;
+                            Console.WriteLine("Inserisci data");
+                            var readDate = Console.ReadLine();
+
+                            time = aunthenticationUserInterface.ReadTime();
+
+
+                            var objFilteredForTimeDate = meteoApi.FiltredMeteoByDateTimeLast5Day(readDate, time, place).Result;
+                            printData.PrintDataLast5Day(objFilteredForTimeDate, menuLang);
+                            aunthenticationUserInterface.RequestSucces();
+                            break;
+                        case "3":
+                            place = aunthenticationUserInterface.InsertNamePlace();
+
+                            var typeWeather = aunthenticationUserInterface.ReadQualitySky();
+                            var jsonObj = meteoApi.FiltredMeteoByWeatherLast5Day(typeWeather, place);
+                            aunthenticationUserInterface.RequestSucces();
                             break;
                         case "4":
-                            Console.WriteLine("Con estensione");
-                            _fileName = aunthenticationUserInterface.InsertNameFile(null, null, null);
-                            filemenager.DeleteFile(_fileName);
-                            break;
-                        case "5":
-                            _fileName = aunthenticationUserInterface.InsertNameFile(null, null, null);
-                            emailManager.AttempsPasswordAndSendEmail(_fileName, aunthenticationUserInterface.senderValue, aunthenticationUserInterface.receiverValue, aunthenticationUserInterface.bodyValue, aunthenticationUserInterface.subjectValue, aunthenticationUserInterface.userValue, aunthenticationUserInterface.password);
-                            break;
-                        case "6":
-                            menu.ShowMenuCreateXlsFile();
-                            var choiceXls = aunthenticationUserInterface.ChoiceDoFileXls();
-                            switch (choiceXls)
-                            {
-                                case "1":
-                                    var todaySourceFile = aunthenticationUserInterface.InsertNameFile(null, null, null);
-                                    var reciveDate = DateTime.Now;
-                                    var dateTimeForFile = reciveDate.Date.ToString(formatDateForFile);
-                                    var todayFilePath = Path.Combine(DataInterface.filePath, todaySourceFile);
-                                    var todayXlsFile = aunthenticationUserInterface.InsertNameFile(null, null, null);
-                                    createXlsFromFile.CreateXlsFromFileForToday(todayFilePath, todayXlsFile, dateTimeForFile);
-                                    break;
-                                case "2":
-                                    var fiveDaysSourceFile = aunthenticationUserInterface.InsertNameFile(null, null, null);
-                                    reciveDate = DateTime.Now;
-                                    dateTimeForFile = reciveDate.Date.ToString(formatDateForFile);
-                                    var fiveDaysFilePath = Path.Combine(DataInterface.filePath, fiveDaysSourceFile);
-                                    var fiveDaysXlsFile = aunthenticationUserInterface.InsertNameFile(null, null, null);
-                                    createXlsFromFile.CreateXlsFromFileFor5Days(fiveDaysFilePath, fiveDaysXlsFile, dateTimeForFile);
-                                    break;
-                                case "3":
-                                    menu.ShowSecondMenu();
-                                    break;
-                                case "4":
-                                    aunthenticationUserInterface.Exit();
-                                    break;
-                            }
-                            break;
-                        case "7":
-                            aunthenticationUserInterface.Exit();
-
                             break;
                     }
                     break;
+                case "4":
+                    Console.WriteLine("Con estensione");
+                    _fileName = aunthenticationUserInterface.InsertNameFile(null, null, null);
+                    filemenager.DeleteFile(_fileName);
+                    break;
+                case "5":
+                    _fileName = aunthenticationUserInterface.InsertNameFile(null, null, null);
+                    emailManager.AttempsPasswordAndSendEmail(_fileName, aunthenticationUserInterface.senderValue, aunthenticationUserInterface.receiverValue, aunthenticationUserInterface.bodyValue, aunthenticationUserInterface.subjectValue, aunthenticationUserInterface.userValue, aunthenticationUserInterface.password);
+                    break;
+                case "6":
+                    menu.ShowMenuCreateXlsFile();
+                    var choiceXls = aunthenticationUserInterface.ChoiceDoFileXls();
+                    switch (choiceXls)
+                    {
+                        case "1":
+                            var todaySourceFile = aunthenticationUserInterface.InsertNameFile(null, null, null);
+                            var reciveDate = DateTime.Now;
+                            var dateTimeForFile = reciveDate.Date.ToString(formatDateForFile);
+                            var todayFilePath = Path.Combine(DataInterface.filePath, todaySourceFile);
+                            var todayXlsFile = aunthenticationUserInterface.InsertNameFile(null, null, null);
+                            createXlsFromFile.CreateXlsFromFileForToday(todayFilePath, todayXlsFile, dateTimeForFile);
+                            break;
+                        case "2":
+                            var fiveDaysSourceFile = aunthenticationUserInterface.InsertNameFile(null, null, null);
+                            reciveDate = DateTime.Now;
+                            dateTimeForFile = reciveDate.Date.ToString(formatDateForFile);
+                            var fiveDaysFilePath = Path.Combine(DataInterface.filePath, fiveDaysSourceFile);
+                            var fiveDaysXlsFile = aunthenticationUserInterface.InsertNameFile(null, null, null);
+                            createXlsFromFile.CreateXlsFromFileFor5Days(fiveDaysFilePath, fiveDaysXlsFile, dateTimeForFile);
+                            break;
+                        case "3":
+                            menu.ShowSecondMenu();
+                            break;
+                        case "4":
+                            aunthenticationUserInterface.Exit();
+                            break;
+                    }
+                    break;
+                case "7":
+                    aunthenticationUserInterface.Exit();
+
+                    break;
+
             }
 
         }
@@ -236,9 +237,13 @@ namespace Meteo.UI.AuthenticationUser
             var dataPrinted = dateForFile.ToString("yyyy-MM-dd");
 
             var jsonObj = ReciveJsonObj(lat, lon, place, OneDayOr5DaysChoice);
-            printData.PrintForData(jsonObj, _menuLang);
-            queryBuilder.InsertOneDayForecast(jsonObj);
-            var insertChoiceSelected = aunthenticationUserInterface.MeteoChoice1Day(requestFor);
+            PrintData(jsonObj, OneDayOr5DaysChoice);
+
+
+            InsertData(jsonObj, OneDayOr5DaysChoice);
+
+
+            var insertChoiceSelected = aunthenticationUserInterface.MeteoChoice(requestFor, OneDayOr5DaysChoice);
             queryBuilder.InsertDataMaster(insertChoiceSelected, _idUserMaster);
             aunthenticationUserInterface.RequestSucces();
             choiceSelected = aunthenticationUserInterface.ChoiceDoFileJson();
@@ -259,7 +264,12 @@ namespace Meteo.UI.AuthenticationUser
                 {
                     extension = "xls";
                     var xlsFileName = aunthenticationUserInterface.InsertNameFile(dataPrinted, extension, OneDayOr5DaysChoice);
-                    createXlsFile.CreateXlsFileForToday(jsonObj, place, xlsFileName, dataPrinted);
+                    ChoiceCreateFileXlsOneDayOr5Days(lat, lon, place, OneDayOr5DaysChoice, xlsFileName, dataPrinted, jsonObj);
+                    aunthenticationUserInterface.RequestSucces();
+
+
+
+
                 }
                 else
                 {
@@ -295,20 +305,90 @@ namespace Meteo.UI.AuthenticationUser
             }
             else if (place != null && OneDayOr5Days == "5Days")
             {
-                var json = meteoApi.ProcessMeteoByPlaceLast5Day(place, _measureUnit);
+                var json = meteoApi.ProcessMeteoByPlaceLast5Day(place, _measureUnit).Result;
                 return json;
             }
             else if (lat != null && OneDayOr5Days == "5Days")
             {
-                var json = meteoApi.ProcessMeteoByCoordinatesLast5Day(lat, lon, _measureUnit);
+                var json = meteoApi.ProcessMeteoByCoordinatesLast5Day(lat, lon, _measureUnit).Result;
 
                 return json;
             }
             aunthenticationUserInterface.Exit();
             return null;
         }
+        private void PrintData(dynamic jsonObj, string OneDayOr5Days)
+        {
+
+            if (OneDayOr5Days == "1Day")
+            {
+
+                printData.PrintForData(jsonObj, _menuLang);
+
+
+            }
+
+
+
+            else if (OneDayOr5Days == "5Days")
+            {
+                printData.PrintDataLast5Day(jsonObj, _menuLang);
+
+            }
+
+        }
+
+        private void InsertData(dynamic jsonObj, string OneDayOr5Days)
+        {
+
+            if (OneDayOr5Days == "1Day")
+            {
+
+                queryBuilder.InsertOneDayForecast(jsonObj);
+
+
+            }
+
+
+
+            else if (OneDayOr5Days == "5Days")
+            {
+                queryBuilder.Insert5DaysForecast(jsonObj);
+
+            }
+
+        }
+        private void ChoiceCreateFileXlsOneDayOr5Days(string lat, string lon, string place, string OneDayOr5Days, string xlsFile, string dateTime, dynamic jsonObj)
+        {
+            if (lat != null && OneDayOr5Days == "1Day")
+            {
+
+                createXlsFile.CreateXlsFileForToday(jsonObj, place, xlsFile, dateTime);
+            }
+
+
+            else if (place != null && OneDayOr5Days == "1Day")
+            {
+                createXlsFile.CreateXlsFileForTodayByCoordinates(jsonObj, lat, lon, xlsFile, dateTime);
+
+
+            }
+            else if (place != null && OneDayOr5Days == "5Days")
+            {
+                createXlsFile.CreateXlsFileForLast5Days(jsonObj, place, xlsFile, dateTime);
+            }
+            else if (lat != null && OneDayOr5Days == "5Days")
+            {
+                createXlsFile.CreateXlsFileForLast5DaysByCoordinates(jsonObj, lat, lon, xlsFile, dateTime);
+
+            }
+
+        }
+
 
 
     }
+
 }
+
 

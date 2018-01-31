@@ -12,7 +12,7 @@ namespace Meteo.Services
             _lang = lang;
         }
 
-        public void InsertName()
+        public string ReadName()
         {
             if (_lang == "1")
             {
@@ -22,9 +22,11 @@ namespace Meteo.Services
             {
                 Console.WriteLine("Enter Name");
             }
-            return;
+            var nameNewAccount = Console.ReadLine();
+
+            return nameNewAccount;
         }
-        public void InsertSurname()
+        public string ReadSurname()
         {
             if (_lang == "1")
             {
@@ -34,9 +36,11 @@ namespace Meteo.Services
             {
                 Console.WriteLine("Enter Surname");
             }
-            return;
+            var surnameNewAccount = Console.ReadLine();
+
+            return surnameNewAccount;
         }
-        public string InsertUser()
+        public string ReadUser()
         {
             if (_lang == "1")
             {
@@ -65,7 +69,7 @@ namespace Meteo.Services
             }
         }
 
-        public string InserPsw()
+        public string ReadPsw()
         {
             var passwordRegistration = "";
             if (_lang == "1")
@@ -76,11 +80,11 @@ namespace Meteo.Services
             {
                 Console.WriteLine(DataInterface.insertPswEN);
             }
-          var  newpsw = DataMaskManager.MaskData(passwordRegistration);
+            var newpsw = DataMaskManager.MaskData(passwordRegistration);
             return newpsw;
 
         }
-        public void ReinsertPsw()
+        public void ReadPswSecondTime()
         {
             if (_lang == "1")
             {
@@ -93,7 +97,7 @@ namespace Meteo.Services
                 Console.WriteLine("\nReenter Password.");
             }
         }
-        public string ComparisonReinsertPsw()
+        public string ComparisonPsw()
         {
             var passwordComparisonNotEcrypted = "";
             if (_lang == "1")
@@ -121,7 +125,7 @@ namespace Meteo.Services
             }
 
         }
-       
+
         public void InsertAnswer()
         {
             if (_lang == "1")
