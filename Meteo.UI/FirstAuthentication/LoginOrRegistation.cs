@@ -18,10 +18,8 @@ namespace Meteo.UI
         {
             _lang = lang;
             _queryBuilder = queryBuilderCostr;
-            _menu = new Menu(_queryBuilder);
+            _menu = new Menu(_queryBuilder, _lang);
             _registationUserInterface = new RegistrationUserUI(_lang);
-
-
         }
 
         public string RegistrationNewAccount()
@@ -35,7 +33,6 @@ namespace Meteo.UI
             var languageNewAccunt = "";
             var encryptedAnswer = "";
             var encryptedPwd = "";
-            _menu.ChangeLangages(_lang);
 
             nameNewAccount = _registationUserInterface.ReadName();
             surnameNewAccount = _registationUserInterface.ReadSurname();

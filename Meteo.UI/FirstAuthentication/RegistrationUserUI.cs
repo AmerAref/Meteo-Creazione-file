@@ -14,7 +14,7 @@ namespace Meteo.Services
 
         public string ReadName()
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine("Inserisci Nome");
             }
@@ -28,7 +28,7 @@ namespace Meteo.Services
         }
         public string ReadSurname()
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine("Inserisci il Cognome");
             }
@@ -42,7 +42,7 @@ namespace Meteo.Services
         }
         public string ReadUser()
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine(DataInterface.insertUserIT);
             }
@@ -59,7 +59,7 @@ namespace Meteo.Services
 
         public void IfUsernameExist()
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine("Username già esistente. Provare con uno diverso!");
             }
@@ -72,7 +72,7 @@ namespace Meteo.Services
         public string ReadPsw()
         {
             var passwordRegistration = "";
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine(DataInterface.insertPswIT);
             }
@@ -86,7 +86,7 @@ namespace Meteo.Services
         }
         public void ReadPswSecondTime()
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire almeno 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
                 Console.WriteLine("\nReinserisci Password.");
@@ -100,7 +100,7 @@ namespace Meteo.Services
         public string ComparisonPsw()
         {
             var passwordComparisonNotEcrypted = "";
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine("\nReinserisci Password.");
             }
@@ -115,7 +115,7 @@ namespace Meteo.Services
 
         public void PswNotEquals()
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine($"\nLe due password inserite non corrispondono! {DataInterface.reinsertUserPswIT}");
             }
@@ -128,7 +128,7 @@ namespace Meteo.Services
 
         public void InsertAnswer()
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine("Inserisci risposta di sicurezza");
             }
@@ -140,7 +140,7 @@ namespace Meteo.Services
         }
         public void ConfirmationAnswer(string insertAnswer)
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine("La risposta richiesta è la seguente? ");
                 Console.WriteLine(insertAnswer);

@@ -18,7 +18,7 @@ namespace Meteo.UI.ForecastManager
         public EmailManager _emailManager;
         public FileMenager _filemenager;
         public CreateXlsFile _createXlsFile;
-        public static string _menuLang;
+        public string _menuLang;
         public string _measureUnit;
         public int _idUserMaster;
         public ForecastManagerUI _aunthenticationUserInterface;
@@ -27,33 +27,21 @@ namespace Meteo.UI.ForecastManager
         public ForecastAction(string lang, IQueryBuilder queryBuilder)
         {
             _menuLang = lang;
-
             _meteoApi = new MeteoApi();
             _printData = new PrintData();
-            _menu = new Menu(queryBuilder);
+            _menu = new Menu(queryBuilder, _menuLang);
             _aunthenticationUserInterface = new ForecastManagerUI(_menuLang, _menu);
             _filemenager = new FileMenager();
             _emailManager = new EmailManager();
             _createXlsFile = new CreateXlsFile();
             _createXlsFromFile = new CreateXlsFromFiles();
             _coordinate = new CoordinatesManager();
-
-
         }
-
-
-
-
-
-
-
-
-        public void Actions(string username, string choiceSelect, string menuLang, string measureUnit)
+        public void Actions(string username, string measureUnit)
         {
             //_aunthenticationUserInterface.GetMenuLang(menuLang); dovrebbe funzionare senza dato che la passo come proprieta 
             var place = " ";
             _measureUnit = measureUnit;
-            _menuLang = menuLang;
             var OneDayOr5Days = "";
             var formatDateForFile = "";
             var searchingFor = "";
@@ -63,11 +51,13 @@ namespace Meteo.UI.ForecastManager
             var choseLast5Day = "";
             _idUserMaster = queryBuilder.GetUser(username).IdUser;
 
+            _menu.ShowFirst();
+            var choiceSelect = Console.ReadLine();
             switch (choiceSelect)
             {
                 case "1":
                     _menu.ShowSecondMenu();
-                     choseThisDay = Console.ReadLine();
+                    choseThisDay = Console.ReadLine();
                     switch (choseThisDay)
                     {
                         case "1":
@@ -105,7 +95,7 @@ namespace Meteo.UI.ForecastManager
                     break;
                 case "2":
                     _menu.ShowSecondMenu();
-                     choseLast5Day = Console.ReadLine();
+                    choseLast5Day = Console.ReadLine();
                     switch (choseLast5Day)
                     {
                         case "1":
@@ -154,7 +144,7 @@ namespace Meteo.UI.ForecastManager
                             try
                             {
                                 var objFilteredForHumidity = _meteoApi.FiltredMeteoByHumidityLast5Day(humidity, place).Result;
-                                _printData.PrintFilteredDataHumidity(objFilteredForHumidity, menuLang);
+                                _printData.PrintFilteredDataHumidity(objFilteredForHumidity, _menuLang);
 
                                 _aunthenticationUserInterface.RequestSucces();
                             }
@@ -166,11 +156,11 @@ namespace Meteo.UI.ForecastManager
                         case "2":
                             place = _aunthenticationUserInterface.InsertNamePlace();
 
-                           
+
                             var time = _aunthenticationUserInterface.ReadTime();
                             var readDate = _aunthenticationUserInterface.ReadDate();
                             var objFilteredForTimeDate = _meteoApi.FiltredMeteoByDateTimeLast5Day(readDate, time, place).Result;
-                            _printData.PrintDataLast5Day(objFilteredForTimeDate, menuLang);
+                            _printData.PrintDataLast5Day(objFilteredForTimeDate, _menuLang);
                             _aunthenticationUserInterface.RequestSucces();
                             break;
                         case "3":
@@ -240,13 +230,7 @@ namespace Meteo.UI.ForecastManager
                     _aunthenticationUserInterface.Exit();
                     break;
             }
-
         }
-
-
-
-
-
         public void ProcessRequestsForecasts(string place, string lat, string lon, string requestFor, string OneDayOr5DaysChoice)
         {
             var extension = ".json";
@@ -299,30 +283,6 @@ namespace Meteo.UI.ForecastManager
                 _aunthenticationUserInterface.RequestSucces();
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         private dynamic ReciveJsonObj(string lat, string lon, string place, string OneDayOr5Days)
         {
@@ -392,7 +352,5 @@ namespace Meteo.UI.ForecastManager
                 _createXlsFile.CreateXlsFileForLast5DaysByCoordinates(jsonObj, lat, lon, xlsFile, dateTime);
             }
         }
-
-
     }
 }

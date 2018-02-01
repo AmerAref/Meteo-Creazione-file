@@ -4,11 +4,7 @@ using Meteo.Services.Infrastructure;
 
 namespace Meteo.UI.AdminActions
 {
-
     public class AdminActions
-
-
-
     {
         public static AdminManagerUI adminInterface;
         public static string _lang;
@@ -20,7 +16,7 @@ namespace Meteo.UI.AdminActions
             _lang = menuLang;
             adminInterface = new AdminManagerUI(_lang);
             queryBuilder = queryBuilderForCostr;
-            menu = new Menu(queryBuilder);
+            menu = new Menu(queryBuilder, _lang);
         }
 
         public void LoginAdmin(string choiceSelect)
@@ -34,35 +30,27 @@ namespace Meteo.UI.AdminActions
                     var allUsers = queryBuilder.GetAllUsers();
                     print.PrintAllUsers(allUsers);
                     break;
-
                 case "2":
                     var allMasterRecords = queryBuilder.GetAllMasterRecords();
                     print.PrintAllMasterRecords(allMasterRecords);
                     break;
-
                 case "3":
-                    menu.ChangeLangages(_lang);
                     menu.ShowSecondMenuAdmin();
                     var secondAdminChoice = Console.ReadLine();
                     ModifyUserTable(secondAdminChoice);
                     break;
                 case "4":
-
                     return;
                 case "5":
-
                     adminInterface.Exit();
                     Environment.Exit(0);
                     break;
             }
-
         }
 
         public void ModifyUserTable(string secondAdminChoice)
         {
-            menu.ChangeLangages(_lang);
             {
-
                 switch (secondAdminChoice)
                 {
                     case "1":
@@ -81,16 +69,12 @@ namespace Meteo.UI.AdminActions
                         queryBuilder.QueryForUpdateRole(usernameRoleModify, roleModify);
                         break;
                     case "4":
-
                         break;
                     case "5":
-
                         adminInterface.Exit();
                         Environment.Exit(0);
-
                         break;
                 }
-
             }
             return;
         }
@@ -107,7 +91,6 @@ namespace Meteo.UI.AdminActions
                 {
                     if (Helper.RegexForPsw(firstPsw) == true)
                     {
-
                         var pswModifyCrypto = Register.EncryptPwd(secondPsw);
                         queryBuilder.QueryForUpdatePsw(pswModifyCrypto, usernameModify);
                         pswModifyCount = 3;
@@ -115,9 +98,7 @@ namespace Meteo.UI.AdminActions
                     }
                     else
                     {
-
                         adminInterface.AttemtsRegexPsw();
-
                     }
                 }
                 else
@@ -125,15 +106,12 @@ namespace Meteo.UI.AdminActions
                     pswModifyCount++;
                     adminInterface.AttemptsPsw(pswModifyCount);
 
-
                     if (pswModifyCount == 3)
                     {
                         Environment.Exit(0);
-
                     }
                 }
             }
-
         }
     }
 }

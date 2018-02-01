@@ -13,7 +13,7 @@ namespace Meteo.UI.Authentication
         }
         public string ReadUsername()
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine(DataInterface.insertUserIT);
             }
@@ -28,7 +28,7 @@ namespace Meteo.UI.Authentication
         }
         public string ReadPassword()
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine(DataInterface.insertPswIT);
             }
@@ -46,7 +46,7 @@ namespace Meteo.UI.Authentication
         public void WelcomeUser(string username)
         {
             Console.WriteLine("\n");
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine("Benvenuto" + " " + $"{username}");
             }
@@ -58,7 +58,7 @@ namespace Meteo.UI.Authentication
 
         public void WrongPassword(int countAttempts)
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine($"\n{DataInterface.reinsertUserPswIT}");
                 Console.WriteLine($"{DataInterface.remainingAttemptsIT} {countAttempts}");
@@ -72,7 +72,7 @@ namespace Meteo.UI.Authentication
 
         public string SecureQuestion()
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine($"\n{DataInterface.secureQuestionIT}");
             }
@@ -86,7 +86,7 @@ namespace Meteo.UI.Authentication
 
         public void ReadNewPassword()
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine($"\n{DataInterface.newPswIT}");
             }
@@ -98,7 +98,7 @@ namespace Meteo.UI.Authentication
 
         public void WrongRegexNewPassowrd()
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire almeno 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
                 Console.WriteLine("\nReinserisci Password!");
@@ -112,7 +112,7 @@ namespace Meteo.UI.Authentication
 
         public void FinishedAttempts()
         {
-            if (_lang == "1")
+            if (_lang == "it")
             {
                 Console.WriteLine("Mi dispiace, ma hai esaurito i tentativi!");
             }
