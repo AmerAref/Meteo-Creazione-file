@@ -1,15 +1,17 @@
 ﻿using System;
+using Meteo.Services;
+
 namespace Meteo.UI.Authentication
 {
 
-   public class LoginUserFrotEnd
+   public class LoginUserUI
     {
         private string _lang;
-        public LoginUserFrotEnd(string lang)
+        public LoginUserUI(string lang)
         {
             _lang = lang;
         }
-        public void InsertUsername()
+        public string ReadUsername()
         {
             if (_lang == "1")
             {
@@ -20,9 +22,11 @@ namespace Meteo.UI.Authentication
                 Console.WriteLine(DataInterface.insertUserEN);
 
             }
-            return;
+            var usernameAuthentication = Console.ReadLine();
+
+            return usernameAuthentication;
         }
-        public void InsertPassword()
+        public string ReadPassword()
         {
             if (_lang == "1")
             {
@@ -32,7 +36,10 @@ namespace Meteo.UI.Authentication
             {
                 Console.WriteLine(DataInterface.insertPswEN);
             }
-            return;
+            var passwordLogin = "";
+            var passwordAuthentication = DataMaskManager.MaskData(passwordLogin);
+            var authPwd = Register.EncryptPwd(passwordAuthentication);
+            return authPwd;
         }
 
 
@@ -77,7 +84,7 @@ namespace Meteo.UI.Authentication
             return secureAnswer;
         }
 
-        public void InsertNewPassword()
+        public void ReadNewPassword()
         {
             if (_lang == "1")
             {

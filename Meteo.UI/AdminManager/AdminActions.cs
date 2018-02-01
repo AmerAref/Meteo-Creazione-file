@@ -5,20 +5,20 @@ using Meteo.Services.Infrastructure;
 namespace Meteo.UI.AdminActions
 {
 
-    public class AuthenticatedAdmin
+    public class AdminActions
 
 
 
     {
-        public static AdminInterface adminInterface;
+        public static AdminManagerUI adminInterface;
         public static string _lang;
         public static IQueryBuilder queryBuilder;
         public static Menu menu;
 
-        public AuthenticatedAdmin(string menuLang, IQueryBuilder queryBuilderForCostr)
+        public AdminActions(string menuLang, IQueryBuilder queryBuilderForCostr)
         {
             _lang = menuLang;
-            adminInterface = new AdminInterface(_lang);
+            adminInterface = new AdminManagerUI(_lang);
             queryBuilder = queryBuilderForCostr;
             menu = new Menu(queryBuilder);
         }
@@ -41,6 +41,7 @@ namespace Meteo.UI.AdminActions
                     break;
 
                 case "3":
+                    menu.ChangeLangages(_lang);
                     menu.ShowSecondMenuAdmin();
                     var secondAdminChoice = Console.ReadLine();
                     ModifyUserTable(secondAdminChoice);

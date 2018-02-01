@@ -9,7 +9,6 @@ using System.Reflection;
 using Meteo.Services.Models;
 using Ninject;
 using Meteo.UI.AdminActions;
-using Meteo.UI.AuthenticationUser;
 
 namespace Meteo.UI
 {
@@ -31,6 +30,7 @@ namespace Meteo.UI
             var user = new User();
             var username = "";
             var queryBuilder = QueryBuilderServices.QueryBuilder();
+            var exit = true;
 
             var lang = "";
 
@@ -66,39 +66,50 @@ namespace Meteo.UI
             menuLang = user.Language;
             measureUnit = user.UnitOfMeasure;
             userRole = user.IdRole.ToString();
-            var exit = true;
-            while (exit)
+
+
+            if (userRole == "1")
             {
-                if (userRole == "1")
+                try
                 {
-                    try
+
+
+                    var admin = new AdminActions.AdminActions(menuLang, queryBuilder);
+
+                    while (exit)
                     {
                         menu.ShowFirtsMenuAdmin();
-                        var admin = new AuthenticatedAdmin(menuLang, queryBuilder);
                         choiceSelect = Console.ReadLine();
                         admin.LoginAdmin(choiceSelect);
+                        if (choiceSelect == "4")
+                        {
+                            exit = false;
+                        }
+                    }
 
-                     
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
+
+
                 }
-
-
-
-
+                catch (Exception e)
                 {
-                    menu.ShowFirst();
-                    choiceSelect = Console.ReadLine();
-                    var authenticationUserOrSecondMenuAdmin = new AuthenticatedUser();
-
-                    authenticationUserOrSecondMenuAdmin.ForecastActions(username, choiceSelect, menuLang, measureUnit);
+                    Console.WriteLine(e.Message);
                 }
+            }
 
+            exit = true;
+            while (exit)
+
+
+            {
+                menu.ShowFirst();
+                choiceSelect = Console.ReadLine();
+                var forecastManager = new ForecastManager.ForecastAction(lang, queryBuilder);
+                forecastManager.Actions(username, choiceSelect, menuLang, measureUnit);
 
             }
+
+
+
 
         }
     }

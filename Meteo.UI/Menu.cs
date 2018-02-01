@@ -176,7 +176,7 @@ namespace Meteo.UI
         {
             switch (_lang)
             {
-                case "1":
+                case "it":
                     Console.WriteLine("*****************************************************************");
                     Console.WriteLine("****1 - Vuoi eliminare un utente?                               *");
                     Console.WriteLine("****2 - Vuoi modificare la password di un utente?               *");
@@ -185,7 +185,7 @@ namespace Meteo.UI
                     Console.WriteLine("****5 - Termina sessione                                        *");
                     Console.WriteLine("*****************************************************************");
                     break;
-                case "2":
+                case "en":
 
                     Console.WriteLine("*****************************************************************");
                     Console.WriteLine("****1 - Do you want to delete an user?                          *");

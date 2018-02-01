@@ -5,7 +5,7 @@ using Meteo.Services;
 
 namespace Meteo.UI.AuthenticationUser
 {
-    public class AuthenticationUserInterface
+    public class ForecastManagerUI
     {
         public string _menuLang;
         public Menu _menu;
@@ -24,7 +24,7 @@ namespace Meteo.UI.AuthenticationUser
 
 
 
-        public AuthenticationUserInterface(string menuLang, Menu menu)
+        public ForecastManagerUI(string menuLang, Menu menu)
         {
             _menuLang = menuLang;
             _menu = menu;
@@ -253,68 +253,21 @@ namespace Meteo.UI.AuthenticationUser
 
             Environment.Exit(0);
         }
-       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public class Coordinate
+        public string ReadDate()
         {
-            public string Lat { get; set; }
-            public string Lon { get; set; }
-            public string _menuLang;
-
-            public Coordinate ReadCoordinate()
+            if (_menuLang == "it")
             {
-                var lat = "";
-                var lon = "";
-                if (_menuLang == "it")
-                {
-                    Console.WriteLine(DataInterface.insertLatIT);
-                    lat = Console.ReadLine();
-                    Console.WriteLine(DataInterface.insertLonIT);
-                    lon = Console.ReadLine();
-                }
-                else
-                {
-                    Console.WriteLine(DataInterface.insertLatEN);
-                    lat = Console.ReadLine();
-                    Console.WriteLine(DataInterface.insertLonEN);
-                    lon = Console.ReadLine();
-                }
-                var c = new Coordinate();
-                c.Lat = lat;
-                c.Lon = lon;
-
-
-
-                return c;
-
+                Console.WriteLine("Inserisci Data");
             }
+            else
+            {
+                Console.WriteLine("Read Data");
+            }
+            var readDate = Console.ReadLine();
+            return readDate;
+
+
         }
-
-
-
-
-
-
-
-
+       
     }
 }

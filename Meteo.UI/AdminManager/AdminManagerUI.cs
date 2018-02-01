@@ -3,11 +3,11 @@ using Meteo.Services;
 
 namespace Meteo.UI.AdminActions
 {
-    public class AdminInterface
+    public class AdminManagerUI
     {
         public string _lang;
 
-        public AdminInterface(string lang)
+        public AdminManagerUI(string lang)
         {
             _lang = lang;
         }
