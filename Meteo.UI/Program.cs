@@ -36,15 +36,10 @@ namespace Meteo.UI
             var menu = new Menu(queryBuilder, lang);
 
             //scleta prima lingua nel menu
-            while (exit)
-            {
-                menu.SelectLanguageStart();
-                lang = Console.ReadLine();
-                if (lang != "it" && lang != "en")
-                { Console.WriteLine("Lingua errata! Reinserisci la lingua! / Wrong language! Reenter the language!"); }
-                else
-                { exit = false; }
-            }
+
+            lang = menu.SelectLanguageStart();
+
+
             menu = new Menu(queryBuilder, lang);
             var loginOrRegistration = new LoginOrRegistration(lang, queryBuilder);
             //menu login o registrazione 
@@ -67,7 +62,7 @@ namespace Meteo.UI
             measureUnit = user.UnitOfMeasure;
             userRole = user.IdRole.ToString();
             Console.WriteLine("La lingua è:" + menuLang);
-
+            exit = true;
             if (userRole == "1")
             {
                 try

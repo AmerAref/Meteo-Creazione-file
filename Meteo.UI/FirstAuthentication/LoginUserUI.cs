@@ -84,7 +84,7 @@ namespace Meteo.UI.Authentication
             return secureAnswer;
         }
 
-        public void ReadNewPassword()
+        public string ReadNewPassword()
         {
             if (_lang == "it")
             {
@@ -94,6 +94,10 @@ namespace Meteo.UI.Authentication
             {
                 Console.WriteLine($"\n{DataInterface.newPswEN}");
             }
+
+            var newPswMask = "";
+            var pswMask = DataMaskManager.MaskData(newPswMask);
+            return pswMask;
         }
 
         public void WrongRegexNewPassowrd()

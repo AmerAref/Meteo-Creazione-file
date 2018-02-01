@@ -38,7 +38,7 @@ namespace Meteo.UI
             surnameNewAccount = _registationUserInterface.ReadSurname();
 
             newUsername = ReadUserAndAuthenication();
-            pswNewAccount = RegexControl();
+            pswNewAccount = ReadNewPsw();
             encryptedPwd = ComparisonPswAndEcrypted(pswNewAccount);
             idSelectedForQuestion = _menu.SelectQuestion();
             var questionselect = _queryBuilder.GetQuestion(idSelectedForQuestion);
@@ -63,7 +63,7 @@ namespace Meteo.UI
 
         private string ReadUserAndAuthenication()
         {
-            
+
             var newUsername = "";
             for (var countAttempts = 0; countAttempts < 3; countAttempts++)
             {
@@ -86,9 +86,9 @@ namespace Meteo.UI
             return newUsername;
         }
 
-        private string RegexControl()
+        private string ReadNewPsw()
         {
-            
+
 
             var pswNewAccount = "";
             for (var countAttempts = 0; countAttempts < 3; countAttempts++)
@@ -117,7 +117,7 @@ namespace Meteo.UI
 
         private string ComparisonPswAndEcrypted(string pswNewAccount)
         {
-            
+
 
             for (var countAttempts = 0; countAttempts < 3; countAttempts++)
             {
@@ -218,129 +218,105 @@ namespace Meteo.UI
         public string Login()
         {
 
-            var countAttempts = 2;
             var forAnswerReadUsername = "";
-            var attemptsAnswerForQuestion = 0;
-            var newPswClear = "";
 
             var loginInterface = new LoginUserUI(_lang);
-            for (var countPsw = 0; countPsw < 5; countPsw++)
+
+
+            _authentication = AuthenicationWithUsernameAndPsw();
+            if (_authentication != null)
             {
-                _authentication = AuthenicationWithUsernameAndPsw();
+                loginInterface.WelcomeUser(_authentication.Username);
+                return _authentication.Username;
+            }
+            _authentication = GetUserIfExist();
+            var questionPrinted = _queryBuilder.GetQuestion(_authentication.IdQuestion).DefaultQuestion;
+            _authentication = AuthenticationWithAnswer(_authentication.Username, questionPrinted);
+            var pswNewAccount = ReadNewPsw();
+            _authentication = AuthenicationWithUsernameAndPsw();
+            if (_authentication != null)
+            {
+                loginInterface.WelcomeUser(_authentication.Username);
+                return _authentication.Username;
+            }
+            Environment.Exit(0);
+            return null; 
+        }
 
-                if (_authentication != null)
+
+
+
+
+
+
+
+        private Services.Models.User GetUserIfExist()
+
+        {
+            var loginInterface = new LoginUserUI(_lang);
+
+            for (var c = 0; c < 3; c++)
+            {
+                var forAnswerReadUsername = loginInterface.SecureQuestion();
+                var userIfExist = _queryBuilder.GetUser(forAnswerReadUsername);
+                if (userIfExist != null)
                 {
-                    loginInterface.WelcomeUser(_authentication.Username);
-                    countPsw = 5;
-                    return _authentication.Username;
-                }
-                else
-                {
-                    // Reinserimento Psw (massimo altri 2 tentativi)
-                    if (countPsw < 2)
-                    {
-                        loginInterface.WrongPassword(countAttempts);
-                    }
-                    countAttempts--;
-
-                    // al terzo tentativo da la possibilà di recuperare e modificare psw tramite domanda sicurezza precedentemente impostata
-                    if (countPsw == 2)
-                    {
-                        for (var countUserExists = 0; countUserExists < 4; countUserExists++)
-                        {
-                            if (countUserExists == 3)
-                            {
-                                //termina sessione in caso in cui sbaglia tre volte a digitare psw e/o username
-                                Environment.Exit(0);
-                                return null;
-                            }
-                            forAnswerReadUsername = loginInterface.SecureQuestion();
-                            var userIfExist = _queryBuilder.GetUser(forAnswerReadUsername);
-                            if (userIfExist != null)
-                            {
-                                var IdQuestionInTableUser = _queryBuilder.GetUser(forAnswerReadUsername).IdQuestion;
-                                var questionPrinted = _queryBuilder.GetQuestion(IdQuestionInTableUser).DefaultQuestion;
-                                if (questionPrinted != null)
-                                {
-                                    countUserExists = 4;
-                                    for (var countAnswerWrong = 0; countAnswerWrong < 4; countAnswerWrong++, attemptsAnswerForQuestion++)
-                                    {
-                                        _authentication = AuthenticationWithAnswer(questionPrinted, forAnswerReadUsername);
-
-                                        if (_authentication != null)
-                                        {
-                                            loginInterface.ReadNewPassword();
-                                            // Dopo 3 volte che non vengono rispettati i criteri di sicurezza della psw termina la sessione
-                                            countAnswerWrong = 4;
-                                        }
-                                        if (attemptsAnswerForQuestion == 2)
-                                        {
-                                            Environment.Exit(0);
-                                            return null;
-                                        }
-                                    }
-
-                                    for (var countAttemptsPswRegister = 0; countAttemptsPswRegister < 3; countAttemptsPswRegister++)
-                                    {
-                                        // maschera nuova psw 
-                                        var newPswMask = DataMaskManager.MaskData(newPswClear);
-                                        // controlo su vincoli di sicurezza psw
-                                        if (Helper.RegexForPsw(newPswMask) == false)
-                                        {
-                                            loginInterface.WrongRegexNewPassowrd();
-                                            // uscita in caso di 3 errori
-                                            if (countAttemptsPswRegister == 3)
-                                            {
-                                                loginInterface.FinishedAttempts();
-                                                Environment.Exit(0);
-                                                return null;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            // criptaggio nuova psw 
-                                            var newPswEncrypted = Register.EncryptPwd(newPswMask);
-                                            // Aggiornamento psw in DB
-                                            _queryBuilder.QueryForUpdatePsw(newPswEncrypted, forAnswerReadUsername);
-                                            countPsw = 5;
-                                            _authentication.Username = forAnswerReadUsername;
-                                            return _authentication.Username;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    return userIfExist;
                 }
             }
+            Environment.Exit(0);
             return null;
+
         }
+
+
+
+
+
 
         private Services.Models.User AuthenicationWithUsernameAndPsw()
         {
             var loginInterface = new LoginUserUI(_lang);
 
+            for (var c = 0; c < 3; c++)
+            {
+                // Inserimento User
+                var usernameAuthentication = loginInterface.ReadUsername();
+                var authPwd = loginInterface.ReadPassword();
 
-            // Inserimento User
-            var usernameAuthentication = loginInterface.ReadUsername();
-            var authPwd = loginInterface.ReadPassword();
+                // confronto se esiste psw (Massimo 3 volte )
+                _authentication = _queryBuilder.GetUserIfExist(usernameAuthentication, authPwd);
+                if (_authentication!= null)
+                {
+                    return _authentication;
+                }
 
-            // confronto se esiste psw (Massimo 3 volte )
-            _authentication = _queryBuilder.GetUserIfExist(usernameAuthentication, authPwd);
+            }
             return _authentication;
-            // se esiste utente ritorna diverso da null 
+
+
         }
 
-        private Services.Models.User AuthenticationWithAnswer(string question, string forAnswerInsertUsername)
+        private Services.Models.User AuthenticationWithAnswer(string forAnswerInsertUsername,string questionPrinted)
         {
-            var answerToLogin = "";
-            Console.WriteLine(question);
-            var insertAnswerMaskered = DataMaskManager.MaskData(answerToLogin);
-            Console.WriteLine();
-            // criptaggio della Risposta inserita 
-            var insertAnswerForAccessEcrypted = Register.EncryptPwd(insertAnswerMaskered);
-            _authentication = _queryBuilder.AutentiationWithAnswer(insertAnswerForAccessEcrypted, forAnswerInsertUsername);
-            return _authentication;
+            for (var c = 0; c < 3; c++)
+            {
+                Console.WriteLine(questionPrinted);
+
+                var answerToLogin = "";
+                var insertAnswerMaskered = DataMaskManager.MaskData(answerToLogin);
+                // criptaggio della Risposta inserita 
+                var insertAnswerForAccessEcrypted = Register.EncryptPwd(insertAnswerMaskered);
+                _authentication = _queryBuilder.AutentiationWithAnswer(insertAnswerForAccessEcrypted, forAnswerInsertUsername);
+                if (_authentication != null)
+                {
+                    return _authentication;
+
+                }
+            }
+            Environment.Exit(0);
+            return null;
+
 
         }
     }

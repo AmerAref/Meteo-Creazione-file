@@ -17,7 +17,7 @@ namespace Meteo.UI
         public static string successCreateFileIT = "File creato con successo", successCreateFileEN = "File successfully created";
         public static string choiceCreateXlsFileIT = "Vuoi creare un file XLS con i dati precedenti? ";
         public static string choiceCreateXlsFileEN = "Do you want to create an XLS file with the previous data? ";
-        public static string insertUserIT = "Inserisci Username", insertUserEN = "Enter Username";
+        public static string insertUserIT = "\nInserisci Username", insertUserEN = "\nEnter Username";
         public static string insertPswIT = "Inserisci Password", insertPswEN = "Enter Password";
         public static string newPswIT = "Inserisci la nuova password", newPswEN = "Enter the new password";
         public static string reinsertUserPswIT = "Reinsersci Username e password", reinsertUserPswEN = "Reenter Username and Password";

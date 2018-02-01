@@ -13,13 +13,31 @@ namespace Meteo.UI
             _lang = lang;
         }
 
-        public void SelectLanguageStart()
+        public string SelectLanguageStart()
         {
-            Console.WriteLine("\n************************************************************");
-            Console.WriteLine("*****        Scegli la lingua/Select the language         ****");
-            Console.WriteLine("****1 - Italiano/Italian (it)                                *");
-            Console.WriteLine("****2 - Inglese/English  (en)                                *");
-            Console.WriteLine("**************************************************************");
+            var exit = true;
+            while (exit)
+            {
+                Console.WriteLine("\n************************************************************");
+                Console.WriteLine("*****        Scegli la lingua/Select the language         ****");
+                Console.WriteLine("****1 - Italiano/Italian (it)                                *");
+                Console.WriteLine("****2 - Inglese/English  (en)                                *");
+                Console.WriteLine("**************************************************************");
+                var lang = Console.ReadLine();
+                if (lang != "it" && lang != "en")
+                {
+                    Console.WriteLine("Lingua errata! Reinserisci la lingua! / Wrong language! Reenter the language!");
+                }
+                else
+                {
+                    return lang;
+                }
+
+
+            }
+
+            return null;
+
         }
         public void ShowMenuAuthentication()
         {
