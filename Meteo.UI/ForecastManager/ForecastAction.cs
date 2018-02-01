@@ -244,12 +244,13 @@ namespace Meteo.UI.ForecastManager
 
             var jsonObj = ReciveJsonObj(lat, lon, place, OneDayOr5DaysChoice);
             var idCity = queryBuilder.GetCityData(lat, lon, place).Id;
+            var cityName = queryBuilder.GetCityData(lat, lon, place).Name;
             PrintData(jsonObj, OneDayOr5DaysChoice);
 
             var insertChoiceSelected = _aunthenticationUserInterface.MeteoChoice(requestFor, OneDayOr5DaysChoice);
             queryBuilder.InsertDataMaster(insertChoiceSelected, _idUserMaster, dateOfRequist, idCity);
             var masterData = queryBuilder.GetMasterData(_idUserMaster, dateOfRequist);
-            queryBuilder.InsertDataIntoForecastTable(jsonObj, place, masterData.IdMaster, dateOfRequist, idCity);
+            queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, masterData.IdMaster, dateOfRequist, idCity);
             var idForecast = queryBuilder.GetForecastData(dateOfRequist).IdForecast;
             InsertData(jsonObj, OneDayOr5DaysChoice, idForecast);
 
