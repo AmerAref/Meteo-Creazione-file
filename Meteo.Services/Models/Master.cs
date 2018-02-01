@@ -12,10 +12,8 @@ namespace Meteo.Services.Models
 
         [ForeignKey("Users")]
         public int IdUser { get; set; }
-        /* public User User { get; set; }
 
         [ForeignKey("Cities")]
         public int IdCity { get; set; }
-        public City Cities { get; set; } */
     }
 }

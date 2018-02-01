@@ -12,9 +12,5 @@ namespace Meteo.Services.Models
 
         [ForeignKey("Master")]
         int IdMaster { get; set; }
-        public Master Master { get; set; }
-
- 
-
     }
 }

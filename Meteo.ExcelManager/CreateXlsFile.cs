@@ -4,6 +4,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Drawing;
 using Meteo.Services.OpenWeatherMap.Models;
+using System.Collections.Generic;
 
 namespace Meteo.ExcelManager
 {
@@ -131,6 +132,40 @@ namespace Meteo.ExcelManager
                     worksheet.Cells[_j, 3].Value = measure.Parameters.Humidity;
                     worksheet.Cells[_j, 4].Value = measure.Parameters.TempMin;
                     worksheet.Cells[_j, 5].Value = measure.Parameters.TempMax;
+                    _j++;
+                }
+                pkg.Save();
+            }
+        }
+        public void CreateXlsFileWithExportedOneDayData(List<Services.Models.OneDayForecast> oneDayResearch, List<Services.Models.Forecast> forecastResearch, string xlsFile, string dateTime)
+        {
+            var newFile = new FileInfo(_path + $@"{xlsFile}" + "1DayExported" + dateTime + ".xls");
+
+            using (var pkg = new ExcelPackage(newFile))
+            {
+                var worksheet = pkg.Workbook.Worksheets.Add("Exported data");
+                worksheet.Cells[1, 1].Value = "Pressure";
+                worksheet.Cells[1, 2].Value = "Humidity";
+                worksheet.Cells[1, 3].Value = "Temperature";
+                worksheet.Cells[1, 4].Value = "Temp Min";
+                worksheet.Cells[1, 5].Value = "Temp Max";
+                worksheet.Cells[1, 6].Value = "City Name";
+                worksheet.Cells[1, 7].Value = "Date Of Research";
+
+                foreach (var oneDay in oneDayResearch)
+                {
+                    worksheet.Cells[_j, 1].Value = oneDay.Pressure;
+                    worksheet.Cells[_j, 2].Value = oneDay.Humidity;
+                    worksheet.Cells[_j, 3].Value = oneDay.Temp;
+                    worksheet.Cells[_j, 4].Value = oneDay.TempMin;
+                    worksheet.Cells[_j, 5].Value = oneDay.TempMax;
+                    _j++;
+                }
+                _j = 2;
+                foreach (var forecast in forecastResearch)
+                {
+                    worksheet.Cells[_j, 6].Value = forecast.CityName;
+                    worksheet.Cells[_j, 7].Value = forecast.TimeStamp.ToString();
                     _j++;
                 }
                 pkg.Save();

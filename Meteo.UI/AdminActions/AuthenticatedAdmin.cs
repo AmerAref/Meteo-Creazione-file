@@ -4,7 +4,6 @@ using Meteo.Services.Infrastructure;
 namespace Meteo.UI.AdminActions
 {
     public class FirstActions
-
     {
         public  Menu menu;
         public string _lang;
@@ -18,7 +17,7 @@ namespace Meteo.UI.AdminActions
         {
             var adminInterface = new AdminInterface(_lang);
             var print = new PrintData();
-            var secondActions = new SecondActions();
+            // var secondActions = new SecondActions();
             menu.ShowFirtsMenuAdmin();
             var roleChoiceSelect = Console.ReadLine();
             switch (roleChoiceSelect)
@@ -27,28 +26,18 @@ namespace Meteo.UI.AdminActions
                     var allUsers = queryBuilder.GetAllUsers();
                     print.PrintAllUsers(allUsers);
                     break;
-
                 case "2":
                     var allMasterRecords = queryBuilder.GetAllMasterRecords();
                     print.PrintAllMasterRecords(allMasterRecords);
                     break;
-
                 case "3":
-
-                    secondActions.
-
-
-
-
-
+                    // secondActions.
                     break;
                 case "4":
 
                     adminInterface.Exit();
                     Environment.Exit(0);
                     break;
-
-
             }
         }
     }

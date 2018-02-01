@@ -7,14 +7,13 @@ namespace Meteo.Services.Models
         [Key]
         public int IdOneDayForecast { get; set; }
 
-        public float Pressure { get; set; }
-        public float Temp { get; set; }
-        public int Humidity { get; set; }
-        public float TempMin { get; set; }
-        public float TempMax { get; set; }
+        public double Pressure { get; set; }
+        public double Temp { get; set; }
+        public double Humidity { get; set; }
+        public double TempMin { get; set; }
+        public double TempMax { get; set; }
 
         [ForeignKey("Forecast")]
         int IdForecast { get; set; }
-        public Forecast Forecast { get; set; }
     }
 }

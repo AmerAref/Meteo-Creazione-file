@@ -15,6 +15,5 @@ namespace Meteo.Services.Models
 
         [ForeignKey("Forecast")]
         int IdForecast { get; set; }
-        public Forecast Forecast { get; set; }
     }
 }

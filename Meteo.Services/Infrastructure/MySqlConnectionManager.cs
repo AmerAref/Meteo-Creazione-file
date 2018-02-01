@@ -57,7 +57,8 @@ namespace Meteo.Services.Infrastructure
             }
         }
 
-        public MySqlCommand GetCommand(string query){
+        public MySqlCommand GetCommand(string query)
+        {
             return new MySqlCommand(query, _connection);
         }
     }
@@ -74,23 +75,21 @@ namespace Meteo.Services.Infrastructure
         User AutentiationWithAnswer(string answer, string username);
         void QueryForUpdatePsw(string psw, string username);
         List<Role> AllRoles();
-        void InsertOneDayForecast(OpenWeatherMap.Models.OneDayForecast jsonObj);
+        void InsertOneDayForecast(OpenWeatherMap.Models.OneDayForecast jsonObj, int idForecast);
         List<Question> AllQuestionsEN();
         List<Question> AllQuestionsIT();
-        void InsertDataMaster(string meteoChoiceDb, int idUserMaster);
+        void InsertDataMaster(string meteoChoiceDb, int idUserMaster, string dateOfRequist, int idCity);
         List<User> GetAllUsers();
         List<Master> GetAllMasterRecords();
         void DeleteUser(string username);
         void QueryForUpdateRole(string username, int role);
         void Insert5DaysForecast(OpenWeatherMap.Models.LastFiveDaysForecast jsonobj);
-
-
-
-
-
-
-
-
-
+        City GetCityData(string lat, string lon, string place);
+        void InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, string dateOfRequist, int idCity);
+        Models.Forecast GetForecastData(string dateOfRequist);
+        List<Models.OneDayForecast> GetOneDayUserResearch(string username);
+        List<Models.Forecast> GetForecastUserResearch(string username);
+        List<Models.LastFiveDaysForecast> GetNextFiveDaysForecastUserResearch(string username);
+        Master GetMasterData(int idUser, string dateOfRequist);
     }
 }
