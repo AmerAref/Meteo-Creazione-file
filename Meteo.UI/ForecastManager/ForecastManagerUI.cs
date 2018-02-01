@@ -32,7 +32,7 @@ namespace Meteo.UI.AuthenticationUser
         public void GetMenuLang(string menuLang)
         {
             _menuLang = menuLang;
-            
+
         }
 
 
@@ -66,7 +66,7 @@ namespace Meteo.UI.AuthenticationUser
             return meteoChoiceForDB;
         }
 
-       
+
 
         public void RequestSucces()
         {
@@ -128,12 +128,14 @@ namespace Meteo.UI.AuthenticationUser
             }
             if (extension == ".json")
             {
-                
-                var fileName = string.Concat(Console.ReadLine() + OneDayOr5Days + dataPrinted + extension );
-                    return fileName;
 
-             
-
+                var fileName = string.Concat(Console.ReadLine() + OneDayOr5Days + dataPrinted + extension);
+                return fileName;
+            }
+            else if (extension == "xls")
+            {
+                var fileName = string.Concat(Console.ReadLine() + OneDayOr5Days + dataPrinted + extension);
+                return fileName;
             }
             else
             {
@@ -141,11 +143,6 @@ namespace Meteo.UI.AuthenticationUser
 
                 return fileName;
             }
-
-
-
-
-
         }
         public string ChoceSendEmail()
         {
@@ -162,10 +159,7 @@ namespace Meteo.UI.AuthenticationUser
             choiceSelected = Console.ReadLine();
 
             return choiceSelected;
-
-
         }
-
 
         public void AuthenticationUserInterfaceSendEmail()
         {
@@ -268,6 +262,6 @@ namespace Meteo.UI.AuthenticationUser
 
 
         }
-       
+
     }
 }

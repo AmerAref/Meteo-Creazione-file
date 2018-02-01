@@ -25,14 +25,12 @@ namespace Meteo.UI
             var print = new PrintData();
             var meteoApi = new MeteoApi();
             var choiceSelect = "";
-            string userRole = "";
+            var userRole = "";
             var user = new User();
             var username = "";
             var queryBuilder = QueryBuilderServices.QueryBuilder();
             var exit = true;
-
             var lang = "";
-
             var menu = new Menu(queryBuilder, lang);
 
             //scleta prima lingua nel menu
@@ -42,6 +40,7 @@ namespace Meteo.UI
 
             menu = new Menu(queryBuilder, lang);
             var loginOrRegistration = new LoginOrRegistration(lang, queryBuilder);
+
             //menu login o registrazione 
             menu.ShowMenuAuthentication();
             var choseCreateNewAccuoutOrLogin = Console.ReadLine();
@@ -86,10 +85,9 @@ namespace Meteo.UI
                 }
             }
 
-            exit = true;
             while (exit)
             {
-                var forecastManager = new ForecastManager.ForecastAction(menuLang, queryBuilder);
+                var forecastManager = new ForecastManager.ForecastAction(menuLang);
                 forecastManager.Actions(username, measureUnit);
             }
         }
