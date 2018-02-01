@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Meteo.Services.Models;
@@ -231,13 +231,13 @@ namespace Meteo.Services.Infrastructure
             _manager.Close();
             return;
         }
-        public void Insert5DaysForecast(OpenWeatherMap.Models.LastFiveDaysForecast jsonObj)
+        public void Insert5DaysForecast(OpenWeatherMap.Models.LastFiveDaysForecast jsonObj, int idForecast)
         {
             var query = "";
             _manager.Open();
             foreach (var parameters in jsonObj.List)
             {
-                query = $"INSERT INTO `Last5DaysForecast`(`Pressure`, `Temp`, `Humidity`, `TempMin`, `TempMax`) VALUES ('{parameters.Parameters.Pressure}', '{parameters.Parameters.Temp}', '{parameters.Parameters.Humidity}', '{parameters.Parameters.TempMin}', '{parameters.Parameters.TempMax}');";
+                query = $"INSERT INTO `Last5DaysForecast`(`Pressure`, `Temp`, `Humidity`, `TempMin`, `TempMax`, `IdForecast`) VALUES ('{parameters.Parameters.Pressure}', '{parameters.Parameters.Temp}', '{parameters.Parameters.Humidity}', '{parameters.Parameters.TempMin}', '{parameters.Parameters.TempMax}', '{idForecast}');";
                 var cmd = _manager.GetCommand(query);
                 cmd.ExecuteNonQuery();
             }
@@ -254,18 +254,25 @@ namespace Meteo.Services.Infrastructure
             _manager.Close();
             return researchData;
         }
-
-        public List<Models.Forecast> GetForecastUserResearch(string username)
+        public List<Models.Forecast> GetForecastUserOneDayResearch(string username)
         {
             _manager.Open();
-            var query = $"SELECT * FROM `Forecast`, `User` WHERE User.Username = '{username}'";
+            var query = $"SELECT * FROM `Forecast`, `User`, `Master` WHERE User.Username = '{username}' AND Master.Choice5DayOrNow IN ('Forecast 1Day (city)', 'Forecast 1Day (coordinates)') AND Forecast.IdMaster = Master.IdMaster";
             var cmd = _manager.GetCommand(query);
             var researchData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
             _manager.Close();
             return researchData;
         }
-
-        public List<Models.LastFiveDaysForecast> GetNextFiveDaysForecastUserResearch(string username)
+        public List<Models.Forecast> GetForecastUserNext5DaysResearch(string username)
+        {
+            _manager.Open();
+            var query = $"SELECT * FROM `Forecast`, `User`, `Master` WHERE User.Username = '{username}' AND Master.Choice5DayOrNow IN ('Forecast 5Days (city)', 'Forecast 5Days (coordinates)') AND Forecast.IdMaster = Master.IdMaster";
+            var cmd = _manager.GetCommand(query);
+            var researchData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
+            _manager.Close();
+            return researchData;
+        }
+        public List<Models.LastFiveDaysForecast> GetNextFiveDaysUserResearch(string username)
         {
             _manager.Open();
             var query = $"SELECT * FROM `Last5DaysForecast`, `User` WHERE User.Username = '{username}'";

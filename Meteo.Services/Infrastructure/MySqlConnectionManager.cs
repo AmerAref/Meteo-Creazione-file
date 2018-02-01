@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Data;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
@@ -83,13 +83,14 @@ namespace Meteo.Services.Infrastructure
         List<Master> GetAllMasterRecords();
         void DeleteUser(string username);
         void QueryForUpdateRole(string username, int role);
-        void Insert5DaysForecast(OpenWeatherMap.Models.LastFiveDaysForecast jsonobj);
+        void Insert5DaysForecast(OpenWeatherMap.Models.LastFiveDaysForecast jsonobj, int idForecast);
         City GetCityData(string lat, string lon, string place);
         void InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, string dateOfRequist, int idCity);
         Models.Forecast GetForecastData(string dateOfRequist);
         List<Models.OneDayForecast> GetOneDayUserResearch(string username);
-        List<Models.Forecast> GetForecastUserResearch(string username);
-        List<Models.LastFiveDaysForecast> GetNextFiveDaysForecastUserResearch(string username);
+        List<Models.Forecast> GetForecastUserOneDayResearch(string username);
+        List<Models.Forecast> GetForecastUserNext5DaysResearch(string username);
+        List<Models.LastFiveDaysForecast> GetNextFiveDaysUserResearch(string username);
         Master GetMasterData(int idUser, string dateOfRequist);
     }
 }

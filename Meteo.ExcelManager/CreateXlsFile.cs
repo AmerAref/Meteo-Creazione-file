@@ -11,7 +11,7 @@ namespace Meteo.ExcelManager
     public class CreateXlsFile
     {
         private readonly string _path = Directory.GetCurrentDirectory() + "/";
-        int _i, _j = 2, _c = 1;
+        int _i, _j = 2, _x = 2, _c = 1;
         public void CreateXlsFileForToday(OneDayForecast jsonObjForExcel, string place, string xlsFile, string dateTime)
         {
             var newFile = new FileInfo(_path + $@"{xlsFile}" + "1Day" + dateTime + ".xls");
@@ -167,6 +167,39 @@ namespace Meteo.ExcelManager
                     worksheet.Cells[_j, 6].Value = forecast.CityName;
                     worksheet.Cells[_j, 7].Value = forecast.TimeStamp.ToString();
                     _j++;
+                }
+                pkg.Save();
+            }
+        }
+        public void CreateXlsFileWithExportedNext5DaysData(List<Services.Models.LastFiveDaysForecast> nextFiveDaysResearch, List<Services.Models.Forecast> forecastResearch, string xlsFile, string dateTime)
+        {
+            var newFile = new FileInfo(_path + $@"{xlsFile}" + "5DaysExported" + dateTime + ".xls");
+
+            using (var pkg = new ExcelPackage(newFile))
+            {
+                var worksheet = pkg.Workbook.Worksheets.Add("Exported data");
+                worksheet.Cells[1, 1].Value = "Pressure";
+                worksheet.Cells[1, 2].Value = "Humidity";
+                worksheet.Cells[1, 3].Value = "Temperature";
+                worksheet.Cells[1, 4].Value = "Temp Min";
+                worksheet.Cells[1, 5].Value = "Temp Max";
+                worksheet.Cells[1, 6].Value = "City Name";
+                worksheet.Cells[1, 7].Value = "Date Of Research";
+
+                foreach (var nextFiveDays in nextFiveDaysResearch)
+                {
+                    worksheet.Cells[_j, 1].Value = nextFiveDays.Pressure;
+                    worksheet.Cells[_j, 2].Value = nextFiveDays.Humidity;
+                    worksheet.Cells[_j, 3].Value = nextFiveDays.Temp;
+                    worksheet.Cells[_j, 4].Value = nextFiveDays.TempMin;
+                    worksheet.Cells[_j, 5].Value = nextFiveDays.TempMax;
+                    _j++;
+                }
+                foreach (var forecast in forecastResearch)
+                {
+                    worksheet.Cells[_x, 6].Value = forecast.CityName;
+                    worksheet.Cells[_x, 7].Value = forecast.TimeStamp.ToString();
+                    _x = _x + 40;
                 }
                 pkg.Save();
             }

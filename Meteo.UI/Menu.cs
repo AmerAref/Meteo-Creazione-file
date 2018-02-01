@@ -251,6 +251,7 @@ namespace Meteo.UI
                     Console.WriteLine("****2 - Search for data about coordinates                 *");
                     Console.WriteLine("****3 - Go back to the main menu                          *");
                     Console.WriteLine("****4 - End session                                       *");
+                    Console.WriteLine("****5 - Termina sessione                                  *");
                     Console.WriteLine("***********************************************************");
                     break;
             }
@@ -275,6 +276,7 @@ namespace Meteo.UI
                     Console.WriteLine("****2 - Filter data by date and / or time                 *");
                     Console.WriteLine("****3 - Filter by sky quality                             *");
                     Console.WriteLine("****4 - Go back to the main menu                          *");
+                    Console.WriteLine("****5 - End session                                       *");
                     Console.WriteLine("***********************************************************");
                     break;
             }

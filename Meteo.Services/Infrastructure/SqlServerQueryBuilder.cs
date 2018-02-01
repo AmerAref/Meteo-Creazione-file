@@ -86,9 +86,8 @@ namespace Meteo.Services.Infrastructure
         public void QueryForUpdateRole(string username, int role)
         {
             return;
-
         }
-        public void Insert5DaysForecast(OpenWeatherMap.Models.LastFiveDaysForecast jsonObj)
+        public void Insert5DaysForecast(OpenWeatherMap.Models.LastFiveDaysForecast jsonObj, int idForecast)
         {
             return;
         }
@@ -108,15 +107,19 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
-        public List<Models.Forecast> GetForecastUserResearch(string username)
+        public List<Models.Forecast> GetForecastUserOneDayResearch(string username)
         {
             return null;
         }
-        public List<Models.LastFiveDaysForecast> GetNextFiveDaysForecastUserResearch(string username)
+        public List<Models.LastFiveDaysForecast> GetNextFiveDaysUserResearch(string username)
         {
             return null;
         }
         public Master GetMasterData(int idUser, string dateOfRequist)
+        {
+            return null;
+        }
+        public List<Models.Forecast> GetForecastUserNext5DaysResearch(string username)
         {
             return null;
         }

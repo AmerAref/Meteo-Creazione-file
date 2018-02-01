@@ -24,7 +24,10 @@ namespace Meteo.UI.ForecastManager
         public ForecastManagerUI _aunthenticationUserInterface;
         public CreateXlsFromFiles _createXlsFromFile;
         public CoordinatesManager _coordinate;
-        public ForecastAction(string lang, IQueryBuilder queryBuilder)
+        public static DateTime _reciveDate = DateTime.Now;
+        public string _dateTimeForFile = _reciveDate.Date.ToString("yyyy-MM-dd");
+        public string _extensionJson = ".json", _extensionXls = "xls";
+        public ForecastAction(string lang)
         {
             _menuLang = lang;
             _meteoApi = new MeteoApi();
@@ -40,10 +43,10 @@ namespace Meteo.UI.ForecastManager
         public void Actions(string username, string measureUnit)
         {
             //_aunthenticationUserInterface.GetMenuLang(menuLang); dovrebbe funzionare senza dato che la passo come proprieta 
-            var place = " ";
+            var place = "";
             _measureUnit = measureUnit;
             var OneDayOr5Days = "";
-            var formatDateForFile = "";
+            var fileName = "";
             var searchingFor = "";
             var lat = "";
             var lon = "";
@@ -78,7 +81,6 @@ namespace Meteo.UI.ForecastManager
                             lon = readCoordiate.Lon;
                             try
                             {
-
                                 ProcessRequestsForecasts(null, lat, lon, searchingFor, OneDayOr5Days);
                             }
                             catch (Exception e)
@@ -103,7 +105,7 @@ namespace Meteo.UI.ForecastManager
                             try
                             {
                                 OneDayOr5Days = "5Days";
-                                searchingFor = "place";
+                                searchingFor = "city";
 
                                 ProcessRequestsForecasts(place, null, null, searchingFor, OneDayOr5Days);
                                 break;
@@ -121,7 +123,6 @@ namespace Meteo.UI.ForecastManager
                             lon = readCoordiate.Lon;
                             try
                             {
-
                                 ProcessRequestsForecasts(null, lat, lon, searchingFor, OneDayOr5Days);
                             }
                             catch (Exception e)
@@ -133,7 +134,6 @@ namespace Meteo.UI.ForecastManager
                     break;
                 case "3":
                     _menu.ShowFiltredMenu();
-
                     var choseFilter = Console.ReadLine();
                     switch (choseFilter)
                     {
@@ -156,7 +156,6 @@ namespace Meteo.UI.ForecastManager
                         case "2":
                             place = _aunthenticationUserInterface.InsertNamePlace();
 
-
                             var time = _aunthenticationUserInterface.ReadTime();
                             var readDate = _aunthenticationUserInterface.ReadDate();
                             var objFilteredForTimeDate = _meteoApi.FiltredMeteoByDateTimeLast5Day(readDate, time, place).Result;
@@ -171,6 +170,10 @@ namespace Meteo.UI.ForecastManager
                             _aunthenticationUserInterface.RequestSucces();
                             break;
                         case "4":
+                            _menu.ShowFirst();
+                            break;
+                        case "5":
+                            _aunthenticationUserInterface.Exit();
                             break;
                     }
                     break;
@@ -188,20 +191,10 @@ namespace Meteo.UI.ForecastManager
                     switch (choiceXls)
                     {
                         case "1":
-                            var todaySourceFile = _aunthenticationUserInterface.InsertNameFile(null, null, null);
-                            var reciveDate = DateTime.Now;
-                            var dateTimeForFile = reciveDate.Date.ToString(formatDateForFile);
-                            var todayFilePath = Path.Combine(DataInterface.filePath, todaySourceFile);
-                            var todayXlsFile = _aunthenticationUserInterface.InsertNameFile(null, null, null);
-                            _createXlsFromFile.CreateXlsFromFileForToday(todayFilePath, todayXlsFile, dateTimeForFile);
+                            CreateXlsFromFileUserAction(choiceXls);
                             break;
                         case "2":
-                            var fiveDaysSourceFile = _aunthenticationUserInterface.InsertNameFile(null, null, null);
-                            reciveDate = DateTime.Now;
-                            dateTimeForFile = reciveDate.Date.ToString(formatDateForFile);
-                            var fiveDaysFilePath = Path.Combine(DataInterface.filePath, fiveDaysSourceFile);
-                            var fiveDaysXlsFile = _aunthenticationUserInterface.InsertNameFile(null, null, null);
-                            _createXlsFromFile.CreateXlsFromFileFor5Days(fiveDaysFilePath, fiveDaysXlsFile, dateTimeForFile);
+                            CreateXlsFromFileUserAction(choiceXls);
                             break;
                         case "3":
                             _menu.ShowSecondMenu();
@@ -212,17 +205,29 @@ namespace Meteo.UI.ForecastManager
                     }
                     break;
                 case "7":
-                    string extension = ".xls", fileName = "";
-                    DateTime dateForFile = DateTime.Now;
-                    var dataPrintedForExport = dateForFile.ToString("yyyy-MM-dd");
-                    var forecastResearch = queryBuilder.GetForecastUserResearch(username);
+                    fileName = "";
+                    var forecastResearchOneDay = queryBuilder.GetForecastUserOneDayResearch(username);
+                    var forecastResearchNext5Days = queryBuilder.GetForecastUserNext5DaysResearch(username);
                     var exportChoice = _menu.ShowExportMenu();
                     switch (exportChoice)
                     {
                         case "1":
                             var researchOneDay = queryBuilder.GetOneDayUserResearch(username);
-                            fileName = _aunthenticationUserInterface.InsertNameFile(dataPrintedForExport, extension, null);
-                            _createXlsFile.CreateXlsFileWithExportedOneDayData(researchOneDay, forecastResearch, fileName, dataPrintedForExport);
+                            fileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionXls, null);
+                            _createXlsFile.CreateXlsFileWithExportedOneDayData(researchOneDay, forecastResearchOneDay, fileName, _dateTimeForFile);
+                            break;
+                        case "2":
+                            var researchNextFiveDays = queryBuilder.GetNextFiveDaysUserResearch(username);
+                            fileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionXls, null);
+                            _createXlsFile.CreateXlsFileWithExportedNext5DaysData(researchNextFiveDays, forecastResearchNext5Days, fileName, _dateTimeForFile);
+                            break;
+                        case "3":
+                            break;
+                        case "4":
+                            _menu.ShowFirst();
+                            break;
+                        case "5":
+                            _aunthenticationUserInterface.Exit();
                             break;
                     }
                     break;
@@ -233,12 +238,9 @@ namespace Meteo.UI.ForecastManager
         }
         public void ProcessRequestsForecasts(string place, string lat, string lon, string requestFor, string OneDayOr5DaysChoice)
         {
-            var extension = ".json";
             var choiceSelected = "";
 
-            DateTime dateForFile = DateTime.Now;
-            var dataPrinted = dateForFile.ToString("yyyy-MM-dd");
-            var dateOfRequist = dateForFile.ToString("yyyy-MM-dd HH:mm:ss");
+            var dateOfRequist = _reciveDate.ToString("yyyy-MM-dd HH:mm:ss");
 
             var jsonObj = ReciveJsonObj(lat, lon, place, OneDayOr5DaysChoice);
             var idCity = queryBuilder.GetCityData(lat, lon, place).Id;
@@ -255,7 +257,7 @@ namespace Meteo.UI.ForecastManager
             choiceSelected = _aunthenticationUserInterface.ChoiceDoFileJson();
             if (choiceSelected == "1")
             {
-                _fileName = _aunthenticationUserInterface.InsertNameFile(dataPrinted, extension, OneDayOr5DaysChoice);
+                _fileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionJson, OneDayOr5DaysChoice);
                 var jsonStr = JsonConvert.SerializeObject(jsonObj);
                 var file = _filemenager.CreateNewFile(_fileName, jsonStr);
                 _aunthenticationUserInterface.RequestSucces();
@@ -268,9 +270,8 @@ namespace Meteo.UI.ForecastManager
                 choiceSelected = _aunthenticationUserInterface.ChoiceDoFileXls();
                 if (choiceSelected == "1")
                 {
-                    extension = "xls";
-                    var xlsFileName = _aunthenticationUserInterface.InsertNameFile(dataPrinted, extension, OneDayOr5DaysChoice);
-                    ChoiceCreateFileXlsOneDayOr5Days(lat, lon, place, OneDayOr5DaysChoice, xlsFileName, dataPrinted, jsonObj);
+                    var xlsFileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionXls, OneDayOr5DaysChoice);
+                    ChoiceCreateFileXlsOneDayOr5Days(lat, lon, place, OneDayOr5DaysChoice, xlsFileName, _dateTimeForFile, jsonObj);
                     _aunthenticationUserInterface.RequestSucces();
                 }
                 else
@@ -330,7 +331,7 @@ namespace Meteo.UI.ForecastManager
             }
             else if (OneDayOr5Days == "5Days")
             {
-                queryBuilder.Insert5DaysForecast(jsonObj);
+                queryBuilder.Insert5DaysForecast(jsonObj, idForecast);
             }
         }
         private void ChoiceCreateFileXlsOneDayOr5Days(string lat, string lon, string place, string OneDayOr5Days, string xlsFile, string dateTime, dynamic jsonObj)
@@ -350,6 +351,20 @@ namespace Meteo.UI.ForecastManager
             else if (lat != null && OneDayOr5Days == "5Days")
             {
                 _createXlsFile.CreateXlsFileForLast5DaysByCoordinates(jsonObj, lat, lon, xlsFile, dateTime);
+            }
+        }
+        public void CreateXlsFromFileUserAction(string choiceXls)
+        {
+            var sourceFileName = _aunthenticationUserInterface.InsertNameFile(null, _extensionJson, null);
+            var sourceFilePath = Path.Combine(DataInterface.filePath, sourceFileName);
+            var xlsFileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionXls, null);
+            if (choiceXls == "1")
+            {
+                _createXlsFromFile.CreateXlsFromFileForToday(sourceFilePath, xlsFileName, _dateTimeForFile);
+            }
+            else
+            {
+                _createXlsFromFile.CreateXlsFromFileFor5Days(sourceFilePath, xlsFileName, _dateTimeForFile);
             }
         }
     }
