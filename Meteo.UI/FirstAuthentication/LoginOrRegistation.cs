@@ -26,7 +26,7 @@ namespace Meteo.UI
 
         }
 
-        public string RegistrationNewAccount()
+        public Services.Models.User RegistrationNewAccount()
         {
             var nameNewAccount = "";
             var surnameNewAccount = "";
@@ -61,7 +61,8 @@ namespace Meteo.UI
             }
             var roleNewAccount = 2;
             _queryBuilder.InsertNewUser(encryptedPwd, newUsername, surnameNewAccount, nameNewAccount, idSelectedForQuestion, encryptedAnswer, languageNewAccunt, measureUnit, roleNewAccount);
-            return newUsername;
+             var user = _queryBuilder.GetUser(newUsername);
+            return user;
         }
 
 
@@ -176,7 +177,7 @@ namespace Meteo.UI
             return null;
 
         }
-        public string Login()
+        public Meteo.Services.Models.User Login()
         {
 
 
@@ -184,7 +185,7 @@ namespace Meteo.UI
             if (_authentication != null)
             {
                 _loginUserUI.WelcomeUser(_authentication.Username);
-                return _authentication.Username;
+                return _authentication;
             }
             _authentication = GetUserIfExist();
             var questionPrinted = _queryBuilder.GetQuestion(_authentication.IdQuestion).DefaultQuestion;
@@ -194,7 +195,7 @@ namespace Meteo.UI
             if (_authentication != null)
             {
                 _loginUserUI.WelcomeUser(_authentication.Username);
-                return _authentication.Username;
+                return _authentication;
             }
             Environment.Exit(0);
             return null;

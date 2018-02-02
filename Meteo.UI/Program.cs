@@ -42,21 +42,20 @@ namespace Meteo.UI
             var loginOrRegistration = new LoginOrRegistration(lang, queryBuilder);
 
             //menu login o registrazione 
-            menu.ShowMenuAuthentication();
-            var choseCreateNewAccuoutOrLogin = Console.ReadLine();
+            var choseCreateNewAccuoutOrLogin = menu.ShowMenuAuthentication();
+
 
             switch (choseCreateNewAccuoutOrLogin)
             {
                 case "1":
-                    username = loginOrRegistration.Login();
+                    user = loginOrRegistration.Login();
                     break;
                 case "2":
-                    username = loginOrRegistration.RegistrationNewAccount();
+                    user = loginOrRegistration.RegistrationNewAccount();
                     break;
                 case "3":
                     return;
             }
-            user = queryBuilder.GetUser(username);
             menuLang = user.Language;
             measureUnit = user.UnitOfMeasure;
             userRole = user.IdRole.ToString();
@@ -70,8 +69,7 @@ namespace Meteo.UI
 
                     while (exit)
                     {
-                        menu.ShowFirtsMenuAdmin();
-                        choiceSelect = Console.ReadLine();
+                        choiceSelect = menu.ShowFirtsMenuAdmin();
                         admin.LoginAdmin(choiceSelect);
                         if (choiceSelect == "4")
                         {

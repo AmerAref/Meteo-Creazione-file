@@ -35,8 +35,7 @@ namespace Meteo.UI.AdminActions
                     print.PrintAllMasterRecords(allMasterRecords);
                     break;
                 case "3":
-                    menu.ShowSecondMenuAdmin();
-                    var secondAdminChoice = Console.ReadLine();
+                    var secondAdminChoice = menu.ShowSecondMenuAdmin();
                     ModifyUserTable(secondAdminChoice);
                     break;
                 case "4":
@@ -64,8 +63,7 @@ namespace Meteo.UI.AdminActions
                     case "3":
                         adminInterface.InsertNameUserToModfy();
                         var usernameRoleModify = Console.ReadLine();
-                        menu.SelectRole();
-                        var roleModify = Convert.ToInt32(Console.ReadLine());
+                        var roleModify = Convert.ToInt32(menu.SelectRole());
                         queryBuilder.QueryForUpdateRole(usernameRoleModify, roleModify);
                         break;
                     case "4":

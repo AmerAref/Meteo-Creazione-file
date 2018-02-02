@@ -39,7 +39,7 @@ namespace Meteo.UI
             return null;
 
         }
-        public void ShowMenuAuthentication()
+        public string ShowMenuAuthentication()
         {
             switch (_lang)
             {
@@ -60,6 +60,8 @@ namespace Meteo.UI
                     Console.WriteLine("***********************************************************");
                     break;
             }
+            var choiceSelected = Console.ReadLine();
+            return choiceSelected;
         }
         public int SelectQuestion()
         {
@@ -138,7 +140,7 @@ namespace Meteo.UI
         }
 
 
-        public void ShowFirtsMenuAdmin()
+        public string ShowFirtsMenuAdmin()
         {
             switch (_lang)
             {
@@ -163,8 +165,10 @@ namespace Meteo.UI
                     Console.WriteLine("*****************************************************************");
                     break;
             }
+            var choiceSelected = Console.ReadLine();
+            return choiceSelected;
         }
-        public void ShowSecondMenuAdmin()
+        public string ShowSecondMenuAdmin()
         {
             switch (_lang)
             {
@@ -188,8 +192,11 @@ namespace Meteo.UI
                     Console.WriteLine("*****************************************************************");
                     break;
             }
+            var choiceSelected = Console.ReadLine();
+            return choiceSelected;
+
         }
-        public void SelectRole()
+        public string SelectRole()
         {
             switch (_lang)
             {
@@ -214,10 +221,12 @@ namespace Meteo.UI
                     Console.WriteLine("************************************************************");
                     break;
             }
+            var roleSelected = Console.ReadLine();
+            return roleSelected;
         }
 
 
-        public void ShowFirst()
+        public string ShowFirst()
         {
             switch (_lang)
             {
@@ -248,33 +257,37 @@ namespace Meteo.UI
                     Console.WriteLine("***********************************************************");
                     break;
             }
+            var choiceSelect = Console.ReadLine();
+            return choiceSelect;
+
         }
-        public void ShowSecondMenu()
+        public string ShowSecondMenu()
         {
             switch (_lang)
             {
                 case "it":
                     Console.WriteLine("***********************************************************");
-                    Console.WriteLine("*************    Digitare il valore del menu    ***********");
-                    Console.WriteLine("****1 - Cerca dati relativi a Città                       *");
-                    Console.WriteLine("****2 - Cerca dati relativi a Coordinate                  *");
-                    Console.WriteLine("****3 - Torna al menu pricipale                           *");
-                    Console.WriteLine("****4 - Termina sessione                                  *");
+                    Console.WriteLine("****       Inserisci parametri di ricerca                 *");
                     Console.WriteLine("***********************************************************");
                     break;
                 case "en":
                     Console.WriteLine("***********************************************************");
-                    Console.WriteLine("*************            Digit value            ***********");
-                    Console.WriteLine("****1 - Search for data about city                        *");
-                    Console.WriteLine("****2 - Search for data about coordinates                 *");
-                    Console.WriteLine("****3 - Go back to the main menu                          *");
-                    Console.WriteLine("****4 - End session                                       *");
-                    Console.WriteLine("****5 - Termina sessione                                  *");
+                    Console.WriteLine("*************   Enter parameters to search     * **********");
                     Console.WriteLine("***********************************************************");
                     break;
+
+
             }
+            var parameters = Console.ReadLine();
+            if (parameters == "exit")
+            {
+                Environment.Exit(0);
+            }
+
+            return parameters;
+
         }
-        public void ShowFiltredMenu()
+        public string ShowFiltredMenu()
         {
             switch (_lang)
             {
@@ -298,8 +311,16 @@ namespace Meteo.UI
                     Console.WriteLine("***********************************************************");
                     break;
             }
+            var choseSelected = Console.ReadLine();
+            if (choseSelected == "exit")
+            {
+                Environment.Exit(0);
+            }
+
+            return choseSelected;
+
         }
-        public void ShowMenuCreateXlsFile()
+        public string ShowMenuCreateXlsFile()
         {
             switch (_lang)
             {
@@ -322,6 +343,14 @@ namespace Meteo.UI
                     Console.WriteLine("***********************************************************");
                     break;
             }
+            var choseSelected = Console.ReadLine();
+            if (choseSelected == "exit")
+            {
+                Environment.Exit(0);
+            }
+
+            return choseSelected;
+
         }
         public string ShowExportMenu()
         {
@@ -353,7 +382,7 @@ namespace Meteo.UI
         }
 
 
-        public void Chioce()
+        public string Chioce()
         {
             switch (_lang)
             {
@@ -372,6 +401,13 @@ namespace Meteo.UI
                     Console.WriteLine("************************************************************");
                     break;
             }
+            var choseSelected = Console.ReadLine();
+            if (choseSelected == "exit")
+            {
+                Environment.Exit(0);
+            }
+
+            return choseSelected;
         }
     }
 }
