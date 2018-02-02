@@ -230,16 +230,15 @@ namespace Meteo.UI.ForecastManager
 
             if (substrings[0] == "place")
             {
-                _place = substrings[0];
+                _place = substrings[1];
                 ChoseSelected = "1";
             }
+
             if (substrings[0] == "lat" || substrings[0] == "lon")
             {
-                var latAndLon = parameters.Split("&");
-                string[] lav = latAndLon[0].Split("=");
-                _lat = lav[1];
-                string[] latt = latAndLon[1].Split("=");
-                _lat = latt[1];
+                _lon = substrings[2];
+                var latt = substrings[1].Split("&");
+                _lat = latt[0];
 
                 ChoseSelected = "2";
             }
