@@ -111,7 +111,7 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
-        public List<Models.LastFiveDaysForecast> GetNextFiveDaysUserResearch(string username)
+        public List<Models.FiveDaysForecast> GetNextFiveDaysUserResearch(string username)
         {
             return null;
         }

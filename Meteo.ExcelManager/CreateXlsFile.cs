@@ -171,7 +171,7 @@ namespace Meteo.ExcelManager
                 pkg.Save();
             }
         }
-        public void CreateXlsFileWithExportedNext5DaysData(List<Services.Models.LastFiveDaysForecast> nextFiveDaysResearch, List<Services.Models.Forecast> forecastResearch, string xlsFile, string dateTime)
+        public void CreateXlsFileWithExportedNext5DaysData(List<Services.Models.FiveDaysForecast> nextFiveDaysResearch, List<Services.Models.Forecast> forecastResearch, string xlsFile, string dateTime)
         {
             var newFile = new FileInfo(_path + $@"{xlsFile}" + "5DaysExported" + dateTime + ".xls");
 

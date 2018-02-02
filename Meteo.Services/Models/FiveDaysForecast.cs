@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Meteo.Services.Models
 {
-    public class LastFiveDaysForecast
+    public class FiveDaysForecast
     {
         [Key]
         public int IdLastFiveDaysForecast { get; set; }

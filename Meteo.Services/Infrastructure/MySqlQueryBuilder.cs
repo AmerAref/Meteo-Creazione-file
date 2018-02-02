@@ -272,12 +272,12 @@ namespace Meteo.Services.Infrastructure
             _manager.Close();
             return researchData;
         }
-        public List<Models.LastFiveDaysForecast> GetNextFiveDaysUserResearch(string username)
+        public List<Models.FiveDaysForecast> GetNextFiveDaysUserResearch(string username)
         {
             _manager.Open();
             var query = $"SELECT * FROM `Last5DaysForecast`, `User` WHERE User.Username = '{username}'";
             var cmd = _manager.GetCommand(query);
-            var researchData = cmd.ExecuteReader().DataReaderMapToList<Models.LastFiveDaysForecast>();
+            var researchData = cmd.ExecuteReader().DataReaderMapToList<Models.FiveDaysForecast>();
             _manager.Close();
             return researchData;
         }
