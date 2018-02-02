@@ -281,5 +281,15 @@ namespace Meteo.Services.Infrastructure
             _manager.Close();
             return researchData;
         }
+
+        public List<Models.Forecast> GetForecastFilteredByDate(string username, string dataInizio, string dataFine)
+        {
+            _manager.Open();
+            var query = $"SELECT * FROM `Forecast`, `User` WHERE (Forecast.TimeStamp  BETWEEN '{dataInizio}' AND '{dataFine}') AND User.Username = '{username}'";
+            var cmd = _manager.GetCommand(query);
+            var filteredData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
+            _manager.Close();
+            return filteredData;
+        }
     }
 }

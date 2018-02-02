@@ -10,7 +10,6 @@ namespace Meteo.UI.ForecastManager
 {
     public class ForecastAction
     {
-        public string _fileName;
         public MeteoApi _meteoApi;
         public PrintData _printData;
         public static IQueryBuilder queryBuilder = QueryBuilderServices.QueryBuilder();
@@ -18,15 +17,13 @@ namespace Meteo.UI.ForecastManager
         public EmailManager _emailManager;
         public FileMenager _filemenager;
         public CreateXlsFile _createXlsFile;
-        public string _menuLang;
-        public string _measureUnit;
+        public string _fileName, _menuLang, _measureUnit, _extensionJson = ".json", _extensionXls = "xls";
         public int _idUserMaster;
         public ForecastManagerUI _aunthenticationUserInterface;
         public CreateXlsFromFiles _createXlsFromFile;
         public CoordinatesManager _coordinate;
         public static DateTime _reciveDate = DateTime.Now;
         public string _dateTimeForFile = _reciveDate.Date.ToString("yyyy-MM-dd");
-        public string _extensionJson = ".json", _extensionXls = "xls";
         public ForecastAction(string lang)
         {
             _menuLang = lang;
@@ -46,7 +43,6 @@ namespace Meteo.UI.ForecastManager
             var place = "";
             _measureUnit = measureUnit;
             var OneDayOr5Days = "";
-            var fileName = "";
             var searchingFor = "";
             var lat = "";
             var lon = "";
@@ -79,8 +75,10 @@ namespace Meteo.UI.ForecastManager
                             var readCoordiate = _coordinate.ReadCoordinate();
                             lat = readCoordiate.Lat;
                             lon = readCoordiate.Lon;
+
                             try
                             {
+                                ControlCoordinates(lat, lon);
                                 ProcessRequestsForecasts(null, lat, lon, searchingFor, OneDayOr5Days);
                             }
                             catch (Exception e)
@@ -121,6 +119,7 @@ namespace Meteo.UI.ForecastManager
                             var readCoordiate = _coordinate.ReadCoordinate();
                             lat = readCoordiate.Lat;
                             lon = readCoordiate.Lon;
+                            ControlCoordinates(lat, lon);
                             try
                             {
                                 ProcessRequestsForecasts(null, lat, lon, searchingFor, OneDayOr5Days);
@@ -205,23 +204,17 @@ namespace Meteo.UI.ForecastManager
                     }
                     break;
                 case "7":
-                    fileName = "";
-                    var forecastResearchOneDay = queryBuilder.GetForecastUserOneDayResearch(username);
-                    var forecastResearchNext5Days = queryBuilder.GetForecastUserNext5DaysResearch(username);
                     var exportChoice = _menu.ShowExportMenu();
                     switch (exportChoice)
                     {
                         case "1":
-                            var researchOneDay = queryBuilder.GetOneDayUserResearch(username);
-                            fileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionXls, null);
-                            _createXlsFile.CreateXlsFileWithExportedOneDayData(researchOneDay, forecastResearchOneDay, fileName, _dateTimeForFile);
+                            CreateXlsWithExportedData(exportChoice, username);
                             break;
                         case "2":
-                            var researchNextFiveDays = queryBuilder.GetNextFiveDaysUserResearch(username);
-                            fileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionXls, null);
-                            _createXlsFile.CreateXlsFileWithExportedNext5DaysData(researchNextFiveDays, forecastResearchNext5Days, fileName, _dateTimeForFile);
+                            CreateXlsWithExportedData(exportChoice, username);
                             break;
                         case "3":
+                            CreateXlsWithExportedData(exportChoice, username);
                             break;
                         case "4":
                             _menu.ShowFirst();
@@ -239,7 +232,6 @@ namespace Meteo.UI.ForecastManager
         public void ProcessRequestsForecasts(string place, string lat, string lon, string requestFor, string OneDayOr5DaysChoice)
         {
             var choiceSelected = "";
-
             var dateOfRequist = _reciveDate.ToString("yyyy-MM-dd HH:mm:ss");
 
             var jsonObj = ReciveJsonObj(lat, lon, place, OneDayOr5DaysChoice);
@@ -366,6 +358,61 @@ namespace Meteo.UI.ForecastManager
             else
             {
                 _createXlsFromFile.CreateXlsFromFileFor5Days(sourceFilePath, xlsFileName, _dateTimeForFile);
+            }
+        }
+
+        public void CreateXlsWithExportedData(string exportChoice, string username)
+        {
+            dynamic forecastResearch, userResearch;
+            if (exportChoice == "1")
+            {
+                forecastResearch = queryBuilder.GetForecastUserOneDayResearch(username);
+                userResearch = queryBuilder.GetOneDayUserResearch(username);
+                _fileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionXls, null);
+                _createXlsFile.CreateXlsFileWithExportedOneDayData(userResearch, forecastResearch, _fileName, _dateTimeForFile);
+            }
+            else if (exportChoice == "2")
+            {
+                forecastResearch = queryBuilder.GetForecastUserNext5DaysResearch(username);
+                userResearch = queryBuilder.GetNextFiveDaysUserResearch(username);
+                _fileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionXls, null);
+                _createXlsFile.CreateXlsFileWithExportedNext5DaysData(userResearch, forecastResearch, _fileName, _dateTimeForFile);
+            }
+            else if (exportChoice == "3")
+            {
+                var startDate = _aunthenticationUserInterface.InsertStartDate();
+                var endDate = _aunthenticationUserInterface.InsertEndDate();
+                forecastResearch = queryBuilder.GetForecastFilteredByDate(username, startDate, endDate);
+                _fileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionXls, null);
+                _createXlsFile.CreateXlsWithFilteredForecast(forecastResearch, _fileName, _dateTimeForFile);
+            }
+        }
+
+        public void ControlCoordinates(string lat, string lon)
+        {
+            var latUserInput = new CoordinatesUserInput(lat);
+            var lonUserInput = new CoordinatesUserInput(lon);
+            var authenticateLat = latUserInput.GetResponse();
+            var authenticateLon = lonUserInput.GetResponse();
+            var coordsReady = true;
+            while (coordsReady)
+            {
+                try
+                {
+                    if (authenticateLat != null && authenticateLon != null)
+                    {
+                        coordsReady = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Coordinate sbagliate");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    coordsReady = false;
+                }
             }
         }
     }

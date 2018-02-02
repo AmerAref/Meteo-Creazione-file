@@ -123,5 +123,9 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
+        public List<Models.Forecast> GetForecastFilteredByDate(string username, string dataInizio, string dataFine)
+        {
+            return null;
+        }
     }
 }
