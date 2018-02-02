@@ -69,9 +69,7 @@ namespace Meteo.UI.ForecastManager
 
                         case "2":
                             OneDayOr5Days = "1Day";
-
                             searchingFor = "coordinates";
-
 
                             try
                             {
@@ -234,7 +232,6 @@ namespace Meteo.UI.ForecastManager
             {
                 _place = substrings[0];
                 ChoseSelected = "1";
-
             }
             if (substrings[0] == "lat" || substrings[0] == "lon")
             {
@@ -244,45 +241,21 @@ namespace Meteo.UI.ForecastManager
                 string[] latt = latAndLon[1].Split("=");
                 _lat = latt[1];
 
-
-
                 ChoseSelected = "2";
             }
-
-
-
-
             return ChoseSelected;
-
-
-
         }
-
-
-
-
-
-
-
-
-
 
         public void ProcessRequestsForecasts(string place, string lat, string lon, string requestFor, string OneDayOr5DaysChoice)
         {
             var choiceSelected = "";
-            var dateOfRequist = _reciveDate.ToString("yyyy-MM-dd HH:mm:ss");
 
             var jsonObj = ReciveJsonObj(lat, lon, place, OneDayOr5DaysChoice);
-            var idCity = queryBuilder.GetCityData(lat, lon, place).Id;
-            var cityName = queryBuilder.GetCityData(lat, lon, place).Name;
+            var insertChoiceSelected = _aunthenticationUserInterface.MeteoChoice(requestFor, OneDayOr5DaysChoice);
+
             PrintData(jsonObj, OneDayOr5DaysChoice);
 
-            var insertChoiceSelected = _aunthenticationUserInterface.MeteoChoice(requestFor, OneDayOr5DaysChoice);
-            queryBuilder.InsertDataMaster(insertChoiceSelected, _idUserMaster, dateOfRequist, idCity);
-            var masterData = queryBuilder.GetMasterData(_idUserMaster, dateOfRequist);
-            queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, masterData.IdMaster, dateOfRequist, idCity);
-            var idForecast = queryBuilder.GetForecastData(dateOfRequist).IdForecast;
-            InsertData(jsonObj, OneDayOr5DaysChoice, idForecast);
+            InsertData(jsonObj, OneDayOr5DaysChoice, place, lat, lon, insertChoiceSelected);
 
             _aunthenticationUserInterface.RequestSucces();
             choiceSelected = _aunthenticationUserInterface.ChoiceDoFileJson();
@@ -354,15 +327,21 @@ namespace Meteo.UI.ForecastManager
             }
         }
 
-        private void InsertData(dynamic jsonObj, string OneDayOr5Days, int idForecast)
+        private void InsertData(dynamic jsonObj, string OneDayOr5Days, string place, string lat, string lon, string insertChoiceSelected)
         {
+            var dateOfRequist = _reciveDate.ToString("yyyy-MM-dd HH:mm:ss");
+            var idCity = queryBuilder.GetCityData(lat, lon, place).Id;
+            var cityName = queryBuilder.GetCityData(lat, lon, place).Name;
+            queryBuilder.InsertDataMaster(insertChoiceSelected, _idUserMaster, dateOfRequist, idCity);
+            var masterId = queryBuilder.GetMasterData(_idUserMaster, dateOfRequist).IdMaster;
+
             if (OneDayOr5Days == "1Day")
             {
-                queryBuilder.InsertOneDayForecast(jsonObj, idForecast);
+            queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, masterId, idCity, OneDayOr5Days, dateOfRequist);
             }
             else if (OneDayOr5Days == "5Days")
             {
-                queryBuilder.Insert5DaysForecast(jsonObj, idForecast);
+            queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, masterId, idCity, OneDayOr5Days, dateOfRequist);
             }
         }
         private void ChoiceCreateFileXlsOneDayOr5Days(string lat, string lon, string place, string OneDayOr5Days, string xlsFile, string dateTime, dynamic jsonObj)

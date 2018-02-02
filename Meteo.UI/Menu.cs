@@ -32,12 +32,8 @@ namespace Meteo.UI
                 {
                     return lang;
                 }
-
-
             }
-
             return null;
-
         }
         public string ShowMenuAuthentication()
         {
@@ -233,8 +229,8 @@ namespace Meteo.UI
                 case "it":
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************    Digitare il valore del menu    ***********");
-                    Console.WriteLine("****1 - Cerca dati relativi ad oggi                       *");
-                    Console.WriteLine("****2 - Cerca dati riferiti agli ultimi 5 giorni          *");
+                    Console.WriteLine("****1 - Leggi dati relativi ad oggi                       *");
+                    Console.WriteLine("****2 - Leggi dati riferiti agli ultimi 5 giorni          *");
                     Console.WriteLine("****3 - Accedi al menu filtraggio dati per città          *");
                     Console.WriteLine("****4 - Vuoi eliminare file nella cartella ?              *");
                     Console.WriteLine("****5 - Invia file tramite email                          *");
@@ -246,8 +242,8 @@ namespace Meteo.UI
                 case "en":
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************            Digit value            ***********");
-                    Console.WriteLine("****1 - Search for data related to today                  *");
-                    Console.WriteLine("****2 - Search for data related to the last 5 days        *");
+                    Console.WriteLine("****1 - Read for data related to today                    *");
+                    Console.WriteLine("****2 - Read for data related to the last 5 days          *");
                     Console.WriteLine("****3 - Access the data filtering menu by city            *");
                     Console.WriteLine("****4 - Do you want to delete files in the folder?        *");
                     Console.WriteLine("****5 - Send files via email                              *");
