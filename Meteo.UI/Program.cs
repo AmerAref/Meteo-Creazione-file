@@ -60,7 +60,7 @@ namespace Meteo.UI
             menuLang = user.Language;
             measureUnit = user.UnitOfMeasure;
             userRole = user.IdRole.ToString();
-            Console.WriteLine("La lingua è:" + menuLang);
+
             exit = true;
             if (userRole == "1")
             {

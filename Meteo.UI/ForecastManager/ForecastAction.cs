@@ -78,7 +78,6 @@ namespace Meteo.UI.ForecastManager
 
                             try
                             {
-                                ControlCoordinates(lat, lon);
                                 ProcessRequestsForecasts(null, lat, lon, searchingFor, OneDayOr5Days);
                             }
                             catch (Exception e)
@@ -119,7 +118,6 @@ namespace Meteo.UI.ForecastManager
                             var readCoordiate = _coordinate.ReadCoordinate();
                             lat = readCoordiate.Lat;
                             lon = readCoordiate.Lon;
-                            ControlCoordinates(lat, lon);
                             try
                             {
                                 ProcessRequestsForecasts(null, lat, lon, searchingFor, OneDayOr5Days);
