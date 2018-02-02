@@ -84,14 +84,13 @@ namespace Meteo.UI
                     Console.WriteLine(e.Message);
                 }
             }
-            else
+
+
+            exit = true;
+            while (exit)
             {
-                exit = true;
-                while (exit)
-                {
-                    var forecastManager = new ForecastManager.ForecastAction(menuLang);
-                    forecastManager.Actions(username, measureUnit);
-                }
+                var forecastManager = new ForecastManager.ForecastAction(menuLang);
+                forecastManager.Actions(username, measureUnit);
             }
         }
     }
