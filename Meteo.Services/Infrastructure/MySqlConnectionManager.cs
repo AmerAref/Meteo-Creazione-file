@@ -92,5 +92,6 @@ namespace Meteo.Services.Infrastructure
         List<Models.Forecast> GetForecastUserNext5DaysResearch(string username);
         List<Models.LastFiveDaysForecast> GetNextFiveDaysUserResearch(string username);
         Master GetMasterData(int idUser, string dateOfRequist);
+        List<Models.Forecast> GetForecastFilteredByDate(string username, string dataInizio, string dataFine);
     }
 }

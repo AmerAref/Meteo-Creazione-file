@@ -342,9 +342,9 @@ namespace Meteo.UI
                     Console.WriteLine("*************            Digit value            ***********");
                     Console.WriteLine("****1 - Export one day research data                      *");
                     Console.WriteLine("****2 - Export 5 days research data                       *");
-                    Console.WriteLine("****2 - Export data giving a date range                   *");
-                    Console.WriteLine("****3 - Return to the main menu                           *");
-                    Console.WriteLine("****4 - End session                                       *");
+                    Console.WriteLine("****4 - Export data giving a date range                   *");
+                    Console.WriteLine("****4 - Return to the main menu                           *");
+                    Console.WriteLine("****5 - End session                                       *");
                     Console.WriteLine("***********************************************************");
                     break;
             }

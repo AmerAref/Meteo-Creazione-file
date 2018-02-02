@@ -96,9 +96,6 @@ namespace Meteo.Services
                 }
             }
             return null;
-
-
-
         }
 
         public async Task FiltredMeteoByWeatherLast5Day(string typeWeather, string place)

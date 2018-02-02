@@ -165,7 +165,7 @@ namespace Meteo.ExcelManager
                 foreach (var forecast in forecastResearch)
                 {
                     worksheet.Cells[_j, 6].Value = forecast.CityName;
-                    worksheet.Cells[_j, 7].Value = forecast.TimeStamp.ToString();
+                    worksheet.Cells[_j, 7].Value = forecast.TimeStamp.ToString("yyyy-MM-dd hh:mm:ss");
                     _j++;
                 }
                 pkg.Save();
@@ -181,10 +181,10 @@ namespace Meteo.ExcelManager
                 worksheet.Cells[1, 1].Value = "Pressure";
                 worksheet.Cells[1, 2].Value = "Humidity";
                 worksheet.Cells[1, 3].Value = "Temperature";
-                worksheet.Cells[1, 4].Value = "Temp Min";
-                worksheet.Cells[1, 5].Value = "Temp Max";
-                worksheet.Cells[1, 6].Value = "City Name";
-                worksheet.Cells[1, 7].Value = "Date Of Research";
+                worksheet.Cells[1, 4].Value = "Temp min";
+                worksheet.Cells[1, 5].Value = "Temp max";
+                worksheet.Cells[1, 6].Value = "City name";
+                worksheet.Cells[1, 7].Value = "Date of research";
 
                 foreach (var nextFiveDays in nextFiveDaysResearch)
                 {
@@ -198,8 +198,34 @@ namespace Meteo.ExcelManager
                 foreach (var forecast in forecastResearch)
                 {
                     worksheet.Cells[_x, 6].Value = forecast.CityName;
-                    worksheet.Cells[_x, 7].Value = forecast.TimeStamp.ToString();
+                    worksheet.Cells[_x, 7].Value = forecast.TimeStamp.ToString("yyyy-MM-dd hh:mm:ss");
                     _x = _x + 40;
+                }
+                pkg.Save();
+            }
+        }
+
+        public void CreateXlsWithFilteredForecast(List<Services.Models.Forecast> filteredForecast, string xlsFile, string dateTime)
+        {
+            var newFile = new FileInfo(_path + $@"{xlsFile}" + "FilteredForecast" + dateTime + ".xls");
+
+            using (var pkg = new ExcelPackage(newFile))
+            {
+                var worksheet = pkg.Workbook.Worksheets.Add("Filtered forecast data");
+                worksheet.Cells[1, 1].Value = "IdForecast";
+                worksheet.Cells[1, 2].Value = "Date of research";
+                worksheet.Cells[1, 3].Value = "City name";
+                worksheet.Cells[1, 4].Value = "IdMaster";
+                worksheet.Cells[1, 5].Value = "IdCity";
+
+                foreach (var forecast in filteredForecast)
+                {
+                    worksheet.Cells[_x, 1].Value = forecast.IdForecast;
+                    worksheet.Cells[_x, 2].Value = forecast.TimeStamp.ToString("yyyy-MM-dd hh:mm:ss");
+                    worksheet.Cells[_x, 3].Value = forecast.CityName;
+                    worksheet.Cells[_x, 4].Value = forecast.IdMaster;
+                    worksheet.Cells[_x, 5].Value = forecast.IdCity;
+                    _x++;
                 }
                 pkg.Save();
             }

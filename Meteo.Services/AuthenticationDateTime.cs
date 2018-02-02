@@ -1,10 +1,8 @@
-﻿using System;
+﻿﻿using System;
 namespace Meteo.Services
 {
     public interface IUserInput<T>
     {
-        
-
         bool Validate();
         T Parse();
     }
@@ -15,8 +13,6 @@ namespace Meteo.Services
         {
             Value = obj;
         }
-
-
     }
 
     public abstract class UserInput<T, TResponse> : IUserInput<T> where TResponse : UserResponse<T>
@@ -27,7 +23,7 @@ namespace Meteo.Services
             _input = input;
         }
 
-        public abstract bool Validate(DateTime date);
+        public abstract bool Validate(T userInput);
         public bool CheckSpecialCharacter()
         {
             if (_input.Contains("%"))
@@ -52,13 +48,11 @@ namespace Meteo.Services
             _input = input;
         }
 
-
         public override DateTime Parse()
         {
             DateTime result;
             var check = DateTime.TryParse(_input, out result);
             return result;
-
         }
 
         public override bool Validate(DateTime date)
@@ -76,12 +70,8 @@ namespace Meteo.Services
             if (validate)
             {
                 return new UserResponse<DateTime>(date);
-
             }
-
             return null;
-
-
         }
 
         public override bool Validate()
@@ -90,4 +80,43 @@ namespace Meteo.Services
         }
     }
 
+    public class CoordinatesUserInput : UserInput<double, UserResponse<double>>
+    {
+        private string _input;
+
+        public CoordinatesUserInput(string input) : base(input)
+        {
+            _input = input;
+        }
+        public override double Parse()
+        {
+            double result;
+            var check = double.TryParse(_input.Replace(',', '.'), out result);
+            return result;
+        }
+
+        public override bool Validate(double coordinate)
+        {
+            if(coordinate >=-180 && coordinate<=180)
+            {
+                return false;
+            }
+            return true;
+        }
+        public override UserResponse<double> GetResponse()
+        {
+            var coordinate = Parse();
+            var validate = Validate(coordinate);
+            if (validate)
+            {
+                return new UserResponse<double>(coordinate);
+            }
+            return null;
+        }
+
+        public override bool Validate()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

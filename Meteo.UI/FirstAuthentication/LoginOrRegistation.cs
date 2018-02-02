@@ -217,9 +217,6 @@ namespace Meteo.UI
 
         public string Login()
         {
-
-            var forAnswerReadUsername = "";
-
             var loginInterface = new LoginUserUI(_lang);
 
 

@@ -26,6 +26,5 @@ namespace Meteo.UI
         public static string insertNameFileXlsIT = "Inserisci nome file";
         public static string insertNameFileXlsEN = "Insert file name";
         public static string filePath = Directory.GetCurrentDirectory();
-
     }
 }

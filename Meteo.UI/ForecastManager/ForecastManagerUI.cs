@@ -233,6 +233,33 @@ namespace Meteo.UI.AuthenticationUser
             return typeWeather;
         }
 
+        public string InsertStartDate()
+        {
+            if (_menuLang == "it")
+            {
+                Console.WriteLine("Iserisci la data di inizio");
+            }
+            else
+            {
+                Console.WriteLine("Enter the start date");
+            }
+            var startDate = Console.ReadLine();
+            return startDate;
+        }
+        public string InsertEndDate()
+        {
+            if (_menuLang == "it")
+            {
+                Console.WriteLine("Iserisci la data di fine");
+            }
+            else
+            {
+                Console.WriteLine("Enter the end date");
+            }
+            var endDate = Console.ReadLine();
+            return endDate;
+        }
+
 
         public void Exit()
         {
