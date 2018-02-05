@@ -75,7 +75,6 @@ namespace Meteo.Services.Infrastructure
         User AutentiationWithAnswer(string answer, string username);
         void QueryForUpdatePsw(string psw, string username);
         List<Role> AllRoles();
-        void InsertOneDayForecast(OpenWeatherMap.Models.OneDayForecast jsonObj, int idForecast);
         List<Question> AllQuestionsEN();
         List<Question> AllQuestionsIT();
         void InsertDataMaster(string meteoChoiceDb, int idUserMaster, string dateOfRequist, int idCity);
@@ -83,10 +82,8 @@ namespace Meteo.Services.Infrastructure
         List<Master> GetAllMasterRecords();
         void DeleteUser(string username);
         void QueryForUpdateRole(string username, int role);
-        void Insert5DaysForecast(OpenWeatherMap.Models.LastFiveDaysForecast jsonobj, int idForecast);
         City GetCityData(string lat, string lon, string place);
-        void InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, string dateOfRequist, int idCity);
-        Models.Forecast GetForecastData(string dateOfRequist);
+        void InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest);
         List<Models.OneDayForecast> GetOneDayUserResearch(string username);
         List<Models.Forecast> GetForecastUserOneDayResearch(string username);
         List<Models.Forecast> GetForecastUserNext5DaysResearch(string username);

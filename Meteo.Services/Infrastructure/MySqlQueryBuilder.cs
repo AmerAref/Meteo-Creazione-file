@@ -25,11 +25,11 @@ namespace Meteo.Services.Infrastructure
         {
             throw new NotImplementedException();
         }
-
         public void CreateInsert<T>(T obj)
         {
             throw new NotImplementedException();
         }
+
         public User GetUser(string username)
         {
             _manager.Open();
@@ -46,7 +46,6 @@ namespace Meteo.Services.Infrastructure
                 return null;
             }
         }
-
         public Question GetQuestion(int IdQuestion)
         {
             _manager.Open();
@@ -62,7 +61,6 @@ namespace Meteo.Services.Infrastructure
             { return null; }
 
         }
-
         public void InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit, int role)
         {
             _manager.Open();
@@ -119,15 +117,6 @@ namespace Meteo.Services.Infrastructure
             _manager.Close();
             return role;
         }
-        public void InsertOneDayForecast(OpenWeatherMap.Models.OneDayForecast jsonObj, int idForecast)
-        {
-            _manager.Open();
-            var parameters = jsonObj.Parameters;
-            var query = $"INSERT INTO `OneDayForecast`(`Pressure`, `Temp`, `Humidity`, `TempMin`, `TempMax`, `IdForecast`) VALUES ('{parameters.Pressure}', '{parameters.Temp}', '{parameters.Humidity}', '{parameters.TempMin}', '{parameters.TempMax}', '{idForecast}');";
-            var cmd = _manager.GetCommand(query);
-            cmd.ExecuteReader().DataReaderMapToList<Models.OneDayForecast>();
-            _manager.Close();
-        }
         public List<Question> AllQuestionsEN()
         {
             _manager.Open();
@@ -165,13 +154,31 @@ namespace Meteo.Services.Infrastructure
             _manager.Close();
             return city[0];
         }
-        public void InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, string dateOfRequist, int idCity)
+        public void InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
         {
-            _manager.Open();
-            var query = $"INSERT INTO `Forecast`(`Timestamp`, `CityName`, `IdMaster`, `IdCity`) VALUES ('{dateOfRequist}', '{place}', '{idMaster}', '{idCity}')";
-            var cmd = _manager.GetCommand(query);
-            cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
-            _manager.Close();
+            if (oneDayOrFiveDays == "1Day")
+            {
+                var oneDay = jsonObj.Parameters;
+
+                _manager.Open();
+                var query = $"INSERT INTO `Forecast`(`CityName`, `IdCity`, `Pressure`, `Humidity`, `Temperature`, `TemperatureMin`, `TemperatureMax`, `WeatherDate`, `IdMaster`) VALUES ('{place}', '{idCity}', '{oneDay.Pressure}', '{oneDay.Humidity}', '{oneDay.Temp}', '{oneDay.TempMin}', '{oneDay.TempMax}', '{dateOfRequest}', '{idMaster}')";
+                var cmd = _manager.GetCommand(query);
+                cmd.ExecuteNonQuery();
+                _manager.Close();
+            }
+            else if (oneDayOrFiveDays == "5Days")
+            {
+                var fiveDays = jsonObj.List;
+
+                _manager.Open();
+                foreach (var data in fiveDays)
+                {
+                    var query = $"INSERT INTO `Forecast`(`CityName`, `IdCity`, `Pressure`, `Humidity`, `Temperature`, `TemperatureMin`, `TemperatureMax`, `WeatherDate`, `IdMaster`) VALUES ('{place}', '{idCity}', '{data.Parameters.Pressure}', '{data.Parameters.Humidity}', '{data.Parameters.Temp}', '{data.Parameters.TempMin}', '{data.Parameters.TempMax}', '{data.TimeStamp}', '{idMaster}')";
+                    var cmd = _manager.GetCommand(query);
+                    cmd.ExecuteNonQuery();
+                }
+                _manager.Close();
+            }
         }
         public Master GetMasterData(int idUser, string dateOfRequist)
         {
@@ -181,15 +188,6 @@ namespace Meteo.Services.Infrastructure
             var master = cmd.ExecuteReader().DataReaderMapToList<Master>();
             _manager.Close();
             return master[0];
-        }
-        public Models.Forecast GetForecastData(string dateOfRequist)
-        {
-            _manager.Open();
-            var query = $"SELECT * FROM `Forecast` WHERE `TimeStamp` = '{dateOfRequist}'";
-            var cmd = _manager.GetCommand(query);
-            var forecastData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
-            _manager.Close();
-            return forecastData[0];
         }
 
         //Query per eseguite da utente con ruolo Admin
@@ -230,18 +228,6 @@ namespace Meteo.Services.Infrastructure
             cmd.ExecuteReader().DataReaderMapToList<User>();
             _manager.Close();
             return;
-        }
-        public void Insert5DaysForecast(OpenWeatherMap.Models.LastFiveDaysForecast jsonObj, int idForecast)
-        {
-            var query = "";
-            _manager.Open();
-            foreach (var parameters in jsonObj.List)
-            {
-                query = $"INSERT INTO `Last5DaysForecast`(`Pressure`, `Temp`, `Humidity`, `TempMin`, `TempMax`, `IdForecast`) VALUES ('{parameters.Parameters.Pressure}', '{parameters.Parameters.Temp}', '{parameters.Parameters.Humidity}', '{parameters.Parameters.TempMin}', '{parameters.Parameters.TempMax}', '{idForecast}');";
-                var cmd = _manager.GetCommand(query);
-                cmd.ExecuteNonQuery();
-            }
-            _manager.Close();
         }
 
         //Query per l'export dei dati
@@ -285,7 +271,7 @@ namespace Meteo.Services.Infrastructure
         public List<Models.Forecast> GetForecastFilteredByDate(string username, string dataInizio, string dataFine)
         {
             _manager.Open();
-            var query = $"SELECT * FROM `Forecast`, `User` WHERE (Forecast.TimeStamp  BETWEEN '{dataInizio}' AND '{dataFine}') AND User.Username = '{username}'";
+            var query = $"SELECT * FROM `Forecast`, `User` WHERE (Forecast.WeatherDate  BETWEEN '{dataInizio}' AND '{dataFine}') AND User.Username = '{username}'";
             var cmd = _manager.GetCommand(query);
             var filteredData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
             _manager.Close();

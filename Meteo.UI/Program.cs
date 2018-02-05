@@ -27,7 +27,6 @@ namespace Meteo.UI
             var choiceSelect = "";
             var userRole = "";
             var user = new User();
-            var username = "";
             var queryBuilder = QueryBuilderServices.QueryBuilder();
             var exit = true;
             var lang = "";
@@ -36,7 +35,6 @@ namespace Meteo.UI
             //scleta prima lingua nel menu
 
             lang = menu.SelectLanguageStart();
-
 
             menu = new Menu(queryBuilder, lang);
             var loginOrRegistration = new LoginOrRegistration(lang, queryBuilder);
@@ -84,12 +82,11 @@ namespace Meteo.UI
                 }
             }
 
-
             exit = true;
             while (exit)
             {
                 var forecastManager = new ForecastManager.ForecastAction(menuLang);
-                forecastManager.Actions(username, measureUnit);
+                forecastManager.Actions(user.Username, measureUnit);
             }
         }
     }

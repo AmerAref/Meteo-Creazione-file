@@ -55,10 +55,6 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
-        public void InsertOneDayForecast(OpenWeatherMap.Models.OneDayForecast jsonObj, int idForecast)
-        {
-            return;
-        }
         public List<Question> AllQuestionsEN()
         {
             return null;
@@ -87,21 +83,13 @@ namespace Meteo.Services.Infrastructure
         {
             return;
         }
-        public void Insert5DaysForecast(OpenWeatherMap.Models.LastFiveDaysForecast jsonObj, int idForecast)
-        {
-            return;
-        }
         public City GetCityData(string lat, string lon, string place)
         {
             return null;
         }
-        public void InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, string dateOfRequist, int idCity)
+        public void InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
         {
             return;
-        }
-        public Models.Forecast GetForecastData(string dateOfRequist)
-        {
-            return null;
         }
         public List<Models.OneDayForecast> GetOneDayUserResearch(string username)
         {

@@ -30,6 +30,8 @@ namespace Meteo.ExcelManager
                     var valueForColoumn = jsonObjForExcel.Parameters.GetType().GetProperty(valueForHeader).GetValue(jsonObjForExcel.Parameters, null);
                     worksheet.Cells[1, _c].Value = valueForHeader;
                     worksheet.Cells[2, _c].Value = valueForColoumn;
+                    worksheet.Cells[2, 6].Value = jsonObjForExcel.TimeStamp;
+                    worksheet.Cells[2, 7].Value = place;
                     worksheet.Cells[1, _c].Style.Fill.PatternType = ExcelFillStyle.Solid;
                     worksheet.Cells[1, _c].Style.Fill.BackgroundColor.SetColor(Color.LawnGreen);
                 }

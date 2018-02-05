@@ -13,9 +13,5 @@ namespace Meteo.Services.OpenWeatherMap.Models
 
         [JsonProperty("dt_txt")]
         public string TimeStamp { get; set; }
-
-        [JsonProperty("id")]
-
-        public int Id { get; set; }
     }
 }
