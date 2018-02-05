@@ -77,18 +77,19 @@ namespace Meteo.Services.Infrastructure
         List<Role> AllRoles();
         List<Question> AllQuestionsEN();
         List<Question> AllQuestionsIT();
-        void InsertDataMaster(string meteoChoiceDb, int idUserMaster, string dateOfRequist, int idCity);
+        long InsertDataMaster(string meteoChoiceDb, int idUserMaster, string dateOfRequist, int idCity);
         List<User> GetAllUsers();
         List<Master> GetAllMasterRecords();
         void DeleteUser(string username);
         void QueryForUpdateRole(string username, int role);
         City GetCityData(string lat, string lon, string place);
-        long InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest);
+        void InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest);
         List<Models.OneDayForecast> GetOneDayUserResearch(string username);
         List<Models.Forecast> GetForecastUserOneDayResearch(string username);
         List<Models.Forecast> GetForecastUserNext5DaysResearch(string username);
         List<Models.FiveDaysForecast> GetNextFiveDaysUserResearch(string username);
         Master GetMasterData(int idUser, string dateOfRequist);
         List<Models.Forecast> GetForecastFilteredByDate(string username, string dataInizio, string dataFine);
+        List<Forecast> GetForecastDataByLastInsertedId(long lastInsertedForecastId);
     }
 }

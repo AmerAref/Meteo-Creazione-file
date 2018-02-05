@@ -12,35 +12,39 @@ namespace Meteo.ExcelManager
     {
         private readonly string _path = Directory.GetCurrentDirectory() + "/";
         int _i, _j = 2, _x = 2, _c = 1;
-        public void CreateXlsFileForToday(OneDayForecast jsonObjForExcel, string place, string lat, string lon, string xlsFile, string dateTime)
+        public void CreateXlsFileWithForecastData(List<Meteo.Services.Models.Forecast> forecastData, string place, string lat, string lon, string xlsFile, string dateTime, string OneOrFiveDays)
         {
-            var newFile = new FileInfo(_path + $@"{xlsFile}" + "1Day" + dateTime + ".xls");
-            var firstValueHeader = jsonObjForExcel.Parameters.GetType().GetProperties();
+            var newFile = new FileInfo(_path + $@"{xlsFile}" + OneOrFiveDays + dateTime + ".xls");
             ExcelWorksheet worksheet;
 
             using (var pkg = new ExcelPackage(newFile))
             {
                 if (place != null)
                 {
-                    worksheet = pkg.Workbook.Worksheets.Add($"Last five days meteo for {place}");
+                    worksheet = pkg.Workbook.Worksheets.Add($"{OneOrFiveDays} meteo for {place}");
                 }
                 else
                 {
-                    worksheet = pkg.Workbook.Worksheets.Add($"Last five days meteo for Latitude: {lat} & Longitude: {lon}");
+                    worksheet = pkg.Workbook.Worksheets.Add($"{OneOrFiveDays} meteo for Latitude: {lat} & Longitude: {lon}");
                 }
-                for (_i = 0; _i < firstValueHeader.Length; _i++, _c++)
+                worksheet.Cells[1, 1].Value = "Pressure";
+                worksheet.Cells[1, 2].Value = "Humidity";
+                worksheet.Cells[1, 3].Value = "Temparature";
+                worksheet.Cells[1, 4].Value = "Temperature Min";
+                worksheet.Cells[1, 5].Value = "Temperature Max";
+                worksheet.Cells[1, 6].Value = "City name";
+                worksheet.Cells[1, 7].Value = "Weather date";
+
+                foreach (var forecastResearch in forecastData)
                 {
-                    var valueWithoutSplit = firstValueHeader.GetValue(_i);
-                    var valueForHeader = Convert.ToString(valueWithoutSplit).Split(' ')[1];
-
-                    var valueForColoumn = jsonObjForExcel.Parameters.GetType().GetProperty(valueForHeader).GetValue(jsonObjForExcel.Parameters, null);
-                    worksheet.Cells[1, _c].Value = valueForHeader;
-                    worksheet.Cells[2, _c].Value = valueForColoumn;
-                    worksheet.Cells[2, 6].Value = jsonObjForExcel.TimeStamp;
-                    worksheet.Cells[2, 7].Value = place;
-
-                    worksheet.Cells[1, _c].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[1, _c].Style.Fill.BackgroundColor.SetColor(Color.LawnGreen);
+                    worksheet.Cells[_j, 1].Value = forecastResearch.Pressure;
+                    worksheet.Cells[_j, 2].Value = forecastResearch.Humidity;
+                    worksheet.Cells[_j, 3].Value = forecastResearch.Temperature;
+                    worksheet.Cells[_j, 4].Value = forecastResearch.TemperatureMin;
+                    worksheet.Cells[_j, 5].Value = forecastResearch.TemperatureMax;
+                    worksheet.Cells[_j, 6].Value = forecastResearch.CityName;
+                    worksheet.Cells[_j, 7].Value = forecastResearch.WeatherDate.ToString("yyyy-MM-dd HH:mm:ss");
+                    _j++;
                 }
                 pkg.Save();
             }

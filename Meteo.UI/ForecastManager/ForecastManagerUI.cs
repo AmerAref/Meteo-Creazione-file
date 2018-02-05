@@ -66,8 +66,6 @@ namespace Meteo.UI.AuthenticationUser
             return meteoChoiceForDB;
         }
 
-
-
         public void RequestSucces()
         {
             if (_menuLang == "it")
@@ -78,9 +76,7 @@ namespace Meteo.UI.AuthenticationUser
             {
                 Console.WriteLine(DataInterface.successEN);
             }
-
         }
-
 
         public string ChoiceDoFileJson()
         {
@@ -92,13 +88,9 @@ namespace Meteo.UI.AuthenticationUser
             {
                 Console.WriteLine(DataInterface.choiceDoFileEN);
             }
-            _menu.Chioce();
-
-            var choiceSelected = Console.ReadLine();
+            var choiceSelected = _menu.Chioce();
 
             return choiceSelected;
-
-
         }
         public string ChoiceDoFileXls()
         {
@@ -110,11 +102,8 @@ namespace Meteo.UI.AuthenticationUser
             {
                 Console.WriteLine(DataInterface.choiceCreateXlsFileEN);
             }
-            _menu.Chioce();
-
-            var choiceSelected = Console.ReadLine();
+            var choiceSelected = _menu.Chioce();
             return choiceSelected;
-
         }
         public string InsertNameFile(string dataPrinted, string extension, string OneDayOr5Days)
         {
@@ -132,9 +121,9 @@ namespace Meteo.UI.AuthenticationUser
                 var fileName = string.Concat(Console.ReadLine() + OneDayOr5Days + dataPrinted + extension);
                 return fileName;
             }
-            else if (extension == "xls")
+            else if (extension == ".xls")
             {
-                var fileName = string.Concat(Console.ReadLine() + OneDayOr5Days + dataPrinted + extension);
+                var fileName = Console.ReadLine();
                 return fileName;
             }
             else
@@ -146,7 +135,6 @@ namespace Meteo.UI.AuthenticationUser
         }
         public string ChoceSendEmail()
         {
-            var choiceSelected = "";
             if (_menuLang == "it")
             {
                 Console.WriteLine(DataInterface.choiceSendEmailIT);
@@ -155,15 +143,12 @@ namespace Meteo.UI.AuthenticationUser
             {
                 Console.WriteLine(DataInterface.choiceSendEmailEN);
             }
-            _menu.Chioce();
-            choiceSelected = Console.ReadLine();
-
+            var choiceSelected = _menu.Chioce();
             return choiceSelected;
         }
 
         public void AuthenticationUserInterfaceSendEmail()
         {
-
             dataForEmail = GetDataForEmail.InsertDataForEmail(_menuLang);
             senderValue = dataForEmail["senderKey"];
             receiverValue = dataForEmail["receiverKey"];
