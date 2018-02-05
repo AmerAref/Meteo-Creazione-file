@@ -55,7 +55,7 @@ namespace Meteo.UI.ForecastManager
             switch (choiceSelect)
             {
                 case "1":
-                    choseThisDay = GetDecisionAndParam(); 
+                    choseThisDay = GetDecisionAndParam();
 
                     switch (choseThisDay)
                     {
@@ -64,7 +64,7 @@ namespace Meteo.UI.ForecastManager
                             OneDayOr5Days = "1Day";
                             searchingFor = "city";
 
-                            ProcessRequestsForecasts(_place, null, null, searchingFor, OneDayOr5Days);
+                            ProcessRequestsForecasts(_place, null, null, searchingFor, OneDayOr5Days, username);
                             break;
 
                         case "2":
@@ -73,7 +73,7 @@ namespace Meteo.UI.ForecastManager
 
                             try
                             {
-                                ProcessRequestsForecasts(null, _lat, _lon, searchingFor, OneDayOr5Days);
+                                ProcessRequestsForecasts(null, _lat, _lon, searchingFor, OneDayOr5Days, username);
                             }
                             catch (Exception e)
                             {
@@ -88,7 +88,7 @@ namespace Meteo.UI.ForecastManager
                     }
                     break;
                 case "2":
-                    choseLast5Day = GetDecisionAndParam(); 
+                    choseLast5Day = GetDecisionAndParam();
 
                     switch (choseLast5Day)
                     {
@@ -99,7 +99,7 @@ namespace Meteo.UI.ForecastManager
                                 OneDayOr5Days = "5Days";
                                 searchingFor = "city";
 
-                                ProcessRequestsForecasts(_place, null, null, searchingFor, OneDayOr5Days);
+                                ProcessRequestsForecasts(_place, null, null, searchingFor, OneDayOr5Days, username);
                                 break;
                             }
                             catch (Exception e)
@@ -115,7 +115,7 @@ namespace Meteo.UI.ForecastManager
                             _lon = readCoordiate.Lon;
                             try
                             {
-                                ProcessRequestsForecasts(null, _lat, _lon, searchingFor, OneDayOr5Days);
+                                ProcessRequestsForecasts(null, _lat, _lon, searchingFor, OneDayOr5Days, username);
                             }
                             catch (Exception e)
                             {
@@ -245,7 +245,7 @@ namespace Meteo.UI.ForecastManager
             return ChoseSelected;
         }
 
-        public void ProcessRequestsForecasts(string place, string lat, string lon, string requestFor, string OneDayOr5DaysChoice)
+        public void ProcessRequestsForecasts(string place, string lat, string lon, string requestFor, string OneDayOr5DaysChoice, string username)
         {
             var choiceSelected = "";
 
@@ -254,7 +254,7 @@ namespace Meteo.UI.ForecastManager
 
             PrintData(jsonObj, OneDayOr5DaysChoice);
 
-            InsertData(jsonObj, OneDayOr5DaysChoice, place, lat, lon, insertChoiceSelected);
+            InsertData(jsonObj, OneDayOr5DaysChoice, place, lat, lon, insertChoiceSelected, username);
 
             _aunthenticationUserInterface.RequestSucces();
             choiceSelected = _aunthenticationUserInterface.ChoiceDoFileJson();
@@ -326,22 +326,22 @@ namespace Meteo.UI.ForecastManager
             }
         }
 
-        private void InsertData(dynamic jsonObj, string OneDayOr5Days, string place, string lat, string lon, string insertChoiceSelected)
+        private void InsertData(dynamic jsonObj, string OneDayOr5Days, string place, string lat, string lon, string insertChoiceSelected, string username)
         {
             var dateOfRequist = _reciveDate.ToString("yyyy-MM-dd HH:mm:ss");
-            var idCity = queryBuilder.GetCityData(lat, lon, place).Id;
             var cityName = queryBuilder.GetCityData(lat, lon, place).Name;
+            var idCity = queryBuilder.GetCityData(lat, lon, place).Id;
             queryBuilder.InsertDataMaster(insertChoiceSelected, _idUserMaster, dateOfRequist, idCity);
             var masterId = queryBuilder.GetMasterData(_idUserMaster, dateOfRequist).IdMaster;
 
             if (OneDayOr5Days == "1Day")
             {
-            var lastInsertedId = queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, masterId, idCity, OneDayOr5Days, dateOfRequist);
-            Console.WriteLine("Ultimo id inserito: " + lastInsertedId);
+                var lastInsertedForecastId = queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, masterId, idCity, OneDayOr5Days, dateOfRequist);
+                Console.WriteLine(lastInsertedForecastId);
             }
             else if (OneDayOr5Days == "5Days")
             {
-            queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, masterId, idCity, OneDayOr5Days, dateOfRequist);
+                queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, masterId, idCity, OneDayOr5Days, dateOfRequist);
             }
         }
         private void ChoiceCreateFileXlsOneDayOr5Days(string lat, string lon, string place, string OneDayOr5Days, string xlsFile, string dateTime, dynamic jsonObj)

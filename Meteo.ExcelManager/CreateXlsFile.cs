@@ -117,7 +117,7 @@ namespace Meteo.ExcelManager
                 foreach (var forecast in forecastResearch)
                 {
                     worksheet.Cells[_j, 6].Value = forecast.CityName;
-                    worksheet.Cells[_j, 7].Value = forecast.TimeStamp.ToString("yyyy-MM-dd hh:mm:ss");
+                    worksheet.Cells[_j, 7].Value = forecast.WeatherDate.ToString("yyyy-MM-dd hh:mm:ss");
                     _j++;
                 }
                 pkg.Save();
@@ -150,7 +150,7 @@ namespace Meteo.ExcelManager
                 foreach (var forecast in forecastResearch)
                 {
                     worksheet.Cells[_x, 6].Value = forecast.CityName;
-                    worksheet.Cells[_x, 7].Value = forecast.TimeStamp.ToString("yyyy-MM-dd hh:mm:ss");
+                    worksheet.Cells[_x, 7].Value = forecast.WeatherDate.ToString("yyyy-MM-dd hh:mm:ss");
                     _x = _x + 40;
                 }
                 pkg.Save();
@@ -173,7 +173,7 @@ namespace Meteo.ExcelManager
                 foreach (var forecast in filteredForecast)
                 {
                     worksheet.Cells[_x, 1].Value = forecast.IdForecast;
-                    worksheet.Cells[_x, 2].Value = forecast.TimeStamp.ToString("yyyy-MM-dd hh:mm:ss");
+                    worksheet.Cells[_x, 2].Value = forecast.WeatherDate.ToString("yyyy-MM-dd hh:mm:ss");
                     worksheet.Cells[_x, 3].Value = forecast.CityName;
                     worksheet.Cells[_x, 4].Value = forecast.IdMaster;
                     worksheet.Cells[_x, 5].Value = forecast.IdCity;

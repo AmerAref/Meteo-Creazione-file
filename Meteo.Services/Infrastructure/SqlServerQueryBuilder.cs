@@ -87,10 +87,9 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
-        public int InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
+        public long InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
         {
-            var lastInsertedId = 0;
-            return lastInsertedId;
+            return 0;
         }
         public List<Models.OneDayForecast> GetOneDayUserResearch(string username)
         {
