@@ -57,6 +57,7 @@ namespace Meteo.UI
             menuLang = user.Language;
             measureUnit = user.UnitOfMeasure;
             userRole = user.IdRole.ToString();
+            username = user.Username;
 
             exit = true;
             if (userRole == "1")
