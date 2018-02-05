@@ -12,16 +12,22 @@ namespace Meteo.ExcelManager
     {
         private readonly string _path = Directory.GetCurrentDirectory() + "/";
         int _i, _j = 2, _x = 2, _c = 1;
-        public void CreateXlsFileForToday(OneDayForecast jsonObjForExcel, string place, string xlsFile, string dateTime)
+        public void CreateXlsFileForToday(OneDayForecast jsonObjForExcel, string place, string lat, string lon, string xlsFile, string dateTime)
         {
             var newFile = new FileInfo(_path + $@"{xlsFile}" + "1Day" + dateTime + ".xls");
-
             var firstValueHeader = jsonObjForExcel.Parameters.GetType().GetProperties();
+            ExcelWorksheet worksheet;
 
             using (var pkg = new ExcelPackage(newFile))
             {
-                var worksheet = pkg.Workbook.Worksheets.Add($"Today's meteo for {place}");
-
+                if (place != null)
+                {
+                    worksheet = pkg.Workbook.Worksheets.Add($"Last five days meteo for {place}");
+                }
+                else
+                {
+                    worksheet = pkg.Workbook.Worksheets.Add($"Last five days meteo for Latitude: {lat} & Longitude: {lon}");
+                }
                 for (_i = 0; _i < firstValueHeader.Length; _i++, _c++)
                 {
                     var valueWithoutSplit = firstValueHeader.GetValue(_i);
@@ -32,6 +38,7 @@ namespace Meteo.ExcelManager
                     worksheet.Cells[2, _c].Value = valueForColoumn;
                     worksheet.Cells[2, 6].Value = jsonObjForExcel.TimeStamp;
                     worksheet.Cells[2, 7].Value = place;
+
                     worksheet.Cells[1, _c].Style.Fill.PatternType = ExcelFillStyle.Solid;
                     worksheet.Cells[1, _c].Style.Fill.BackgroundColor.SetColor(Color.LawnGreen);
                 }
@@ -39,78 +46,21 @@ namespace Meteo.ExcelManager
             }
         }
 
-        public void CreateXlsFileForTodayByCoordinates(OneDayForecast jsonObjForExcel, string lat, string lon, string xlsFile, string dateTime)
+        public void CreateXlsFileForLast5Days(LastFiveDaysForecast jsonObjForExcel, string place, string lat, string lon, string xlsFile, string dateTime)
         {
-            var newFile = new FileInfo(_path + $@"{xlsFile}" + "1Day" + dateTime + ".xls");
-
-            var firstValueHeader = jsonObjForExcel.Parameters.GetType().GetProperties();
-
-            using (var pkg = new ExcelPackage(newFile))
-            {
-                var worksheet = pkg.Workbook.Worksheets.Add($"Today's meteo for Latitude: {lat} & Longitude: {lon}");
-
-                for (_i = 0; _i < firstValueHeader.Length; _i++, _c++)
-                {
-                    var valueWithoutSplit = firstValueHeader.GetValue(_i);
-                    var valueForHeader = Convert.ToString(valueWithoutSplit).Split(' ')[1];
-
-                    var valueForColoumn = jsonObjForExcel.Parameters.GetType().GetProperty(valueForHeader).GetValue(jsonObjForExcel.Parameters, null);
-                    worksheet.Cells[1, _c].Value = valueForHeader;
-                    worksheet.Cells[2, _c].Value = valueForColoumn;
-                    worksheet.Cells[1, _c].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[1, _c].Style.Fill.BackgroundColor.SetColor(Color.LawnGreen);
-                }
-                pkg.Save();
-            }
-        }
-
-        public void CreateXlsFileForLast5Days(LastFiveDaysForecast jsonObjForExcel, string place, string xlsFile, string dateTime)
-        {
-
             var newFile = new FileInfo(_path + $@"{xlsFile}" + "5Days" + dateTime + ".xls");
+            ExcelWorksheet worksheet;
 
             using (var pkg = new ExcelPackage(newFile))
             {
-                var worksheet = pkg.Workbook.Worksheets.Add($"Last five days meteo for {place}");
-
-                foreach (var forecast in jsonObjForExcel.List)
+                if (place != null)
                 {
-                    var firstValueHeader = forecast.Parameters.GetType().GetProperties();
-                    for (_i = 0; _i < firstValueHeader.Length; _i++, _c++)
-                    {
-                        var valueWithoutSplit = firstValueHeader.GetValue(_i);
-                        var valueForHeader = Convert.ToString(valueWithoutSplit).Split(' ')[1];
-                        if (_c <= 5)
-                        {
-                            worksheet.Cells[1, _c].Value = valueForHeader;
-                            worksheet.Cells[1, _c].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            worksheet.Cells[1, _c].Style.Fill.BackgroundColor.SetColor(Color.LawnGreen);
-                        }
-                    }
+                    worksheet = pkg.Workbook.Worksheets.Add($"Last five days meteo for {place}");
                 }
-
-                foreach (var forecast in jsonObjForExcel.List)
+                else
                 {
-                    var parameters = forecast.Parameters;
-                    worksheet.Cells[_j, 1].Value = parameters.Pressure;
-                    worksheet.Cells[_j, 2].Value = parameters.Temp;
-                    worksheet.Cells[_j, 3].Value = parameters.Humidity;
-                    worksheet.Cells[_j, 4].Value = parameters.TempMin;
-                    worksheet.Cells[_j, 5].Value = parameters.TempMax;
-                    _j++;
+                    worksheet = pkg.Workbook.Worksheets.Add($"Last five days meteo for Latitude: {lat} & Longitude: {lon}");
                 }
-                pkg.Save();
-            }
-        }
-
-        public void CreateXlsFileForLast5DaysByCoordinates(LastFiveDaysForecast jsonObjForExcel, string lat, string lon, string xlsFile, string dateTime)
-        {
-
-            var newFile = new FileInfo(_path + $@"{xlsFile}" + "5Days" + dateTime + ".xls");
-
-            using (var pkg = new ExcelPackage(newFile))
-            {
-                var worksheet = pkg.Workbook.Worksheets.Add($"Last five days meteo for Latitude: {lat} & Longitude: {lon}");
                 foreach (var measure in jsonObjForExcel.List)
                 {
                     var firstValueHeader = measure.Parameters.GetType().GetProperties();

@@ -154,17 +154,20 @@ namespace Meteo.Services.Infrastructure
             _manager.Close();
             return city[0];
         }
-        public void InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
+        public int InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
         {
+            var lastInsertedId = 0;
             if (oneDayOrFiveDays == "1Day")
             {
                 var oneDay = jsonObj.Parameters;
 
                 _manager.Open();
-                var query = $"INSERT INTO `Forecast`(`CityName`, `IdCity`, `Pressure`, `Humidity`, `Temperature`, `TemperatureMin`, `TemperatureMax`, `WeatherDate`, `IdMaster`) VALUES ('{place}', '{idCity}', '{oneDay.Pressure}', '{oneDay.Humidity}', '{oneDay.Temp}', '{oneDay.TempMin}', '{oneDay.TempMax}', '{dateOfRequest}', '{idMaster}')";
+                var query = $"INSERT INTO `Forecast`(`CityName`, `IdCity`, `Pressure`, `Humidity`, `Temperature`, `TemperatureMin`, `TemperatureMax`, `WeatherDate`, `IdMaster`) VALUES ('{place}', '{idCity}', '{oneDay.Pressure}', '{oneDay.Humidity}', '{oneDay.Temp}', '{oneDay.TempMin}', '{oneDay.TempMax}', '{dateOfRequest}', '{idMaster}'); SELECT LAST_INSERT_ID();";
                 var cmd = _manager.GetCommand(query);
-                cmd.ExecuteNonQuery();
+                lastInsertedId = cmd.ExecuteNonQuery();
                 _manager.Close();
+                Console.WriteLine("ID insetred:" + lastInsertedId);
+                return lastInsertedId;
             }
             else if (oneDayOrFiveDays == "5Days")
             {
@@ -175,10 +178,12 @@ namespace Meteo.Services.Infrastructure
                 {
                     var query = $"INSERT INTO `Forecast`(`CityName`, `IdCity`, `Pressure`, `Humidity`, `Temperature`, `TemperatureMin`, `TemperatureMax`, `WeatherDate`, `IdMaster`) VALUES ('{place}', '{idCity}', '{data.Parameters.Pressure}', '{data.Parameters.Humidity}', '{data.Parameters.Temp}', '{data.Parameters.TempMin}', '{data.Parameters.TempMax}', '{data.TimeStamp}', '{idMaster}')";
                     var cmd = _manager.GetCommand(query);
-                    cmd.ExecuteNonQuery();
+                    lastInsertedId = cmd.ExecuteNonQuery();
                 }
                 _manager.Close();
+                return lastInsertedId;
             }
+            return lastInsertedId;
         }
         public Master GetMasterData(int idUser, string dateOfRequist)
         {
