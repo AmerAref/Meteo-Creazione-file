@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Meteo.Services;
 
 
-namespace Meteo.UI.AuthenticationUser
+namespace Meteo.UI.ForecastManager
 {
     public class ForecastManagerUI
     {

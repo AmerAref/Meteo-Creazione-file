@@ -3,7 +3,7 @@ using Meteo.Services;
 using Meteo.Services.Infrastructure;
 
 
-namespace Meteo.UI
+namespace Meteo.UI.FirstAuthentication
 {
     public class LoginOrRegistration
     {
@@ -12,12 +12,14 @@ namespace Meteo.UI
         private Menu _menu;
         private readonly AuthenticationUI _authenticationUI;
         public Services.Models.User _authentication;
+        private IService _exit;
 
-        public LoginOrRegistration(string lang, IQueryBuilder queryBuilderCostr)
+        public LoginOrRegistration(string lang, IQueryBuilder queryBuilderCostr, IService exit)
         {
+            _exit = exit;
             _lang = lang;
             _queryBuilder = queryBuilderCostr;
-            _menu = new Menu(_queryBuilder, _lang);
+            _menu = new Menu(_queryBuilder, _lang, _exit);
             _authenticationUI = new AuthenticationUI(_lang);
         }
 

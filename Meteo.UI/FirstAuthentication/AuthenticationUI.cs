@@ -1,7 +1,7 @@
 ﻿using System;
-using Meteo.UI;
+using Meteo.Services;
 
-namespace Meteo.Services
+namespace Meteo.UI.FirstAuthentication
 {
     public class AuthenticationUI : ExitService
     {

@@ -1,20 +1,23 @@
 ﻿using System;
 using Meteo.Services;
 
-namespace Meteo.UI.AdminActions
+namespace Meteo.UI.AdminManager
 {
-    public class AdminManagerUI : ExitService
+    public class AdminManagerUI
     {
         public string _lang;
+        public IService _exit;
 
-        public AdminManagerUI(string lang)
+        public AdminManagerUI(string lang, IService exit)
         {
             _lang = lang;
+            _exit = exit;
+
         }
 
         public void Exit()
         {
-            
+
             if (_lang == "it")
             {
                 Console.WriteLine("Sessione terminata");
@@ -28,33 +31,33 @@ namespace Meteo.UI.AdminActions
         {
             if (_lang == "it")
             {
-               
+
                 Console.WriteLine("Inserisci l'username dell'utente da eliminare");
             }
             else
             {
-               
+
                 Console.WriteLine("Insert the username of the user to delete");
             }
 
             var usernameToDelete = Console.ReadLine();
 
-            Exit(usernameToDelete);
+            _exit.Exit(usernameToDelete);
             return usernameToDelete;
         }
-        public string InsertNameUserToModfy ()
+        public string InsertNameUserToModfy()
         {
-            
+
             if (_lang == "it")
-            { 
+            {
                 Console.WriteLine("Inserisci l'username dell'utente da modificare");
             }
             else
-            { 
-                Console.WriteLine("Insert the username of the user to modify"); 
+            {
+                Console.WriteLine("Insert the username of the user to modify");
             }
             var usernameModify = Console.ReadLine();
-            Exit(usernameModify);
+            _exit.Exit(usernameModify);
 
             return usernameModify;
         }
@@ -70,10 +73,10 @@ namespace Meteo.UI.AdminActions
                 Console.WriteLine("\nInsert the new password of the user");
             }
             var pswModifyRegex = DataMaskManager.MaskData(pswModify);
-            Exit(pswModifyRegex);
+            _exit.Exit(pswModifyRegex);
             return pswModifyRegex;
 
-            
+
         }
         public string InsertSecondPsw()
         {
@@ -88,18 +91,18 @@ namespace Meteo.UI.AdminActions
                 Console.WriteLine("\nReenter the new password of the users");
             }
             var pswModifyRegex = DataMaskManager.MaskData(pswModify);
-            Exit(pswModifyRegex);
+            _exit.Exit(pswModifyRegex);
             return pswModifyRegex;
 
         }
         public void AttemptsPsw(int pswModifyCount)
         {
             if (_lang == "it")
-            { 
-                Console.WriteLine($"\nLe due password non combaciano! Hai ancora {pswModifyCount} tentativi."); 
+            {
+                Console.WriteLine($"\nLe due password non combaciano! Hai ancora {pswModifyCount} tentativi.");
             }
             else
-            { 
+            {
                 Console.WriteLine($"\nThe two passwords do not match! You still have {pswModifyCount} attempts.");
             }
 

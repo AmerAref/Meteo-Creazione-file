@@ -4,8 +4,6 @@ using Meteo.Services.Infrastructure;
 using Meteo.Services.Models;
 using Newtonsoft.Json;
 using Meteo.ExcelManager;
-using System.IO;
-using Meteo.UI.AuthenticationUser;
 using System.Collections.Generic;
 
 namespace Meteo.UI.ForecastManager
@@ -23,17 +21,19 @@ namespace Meteo.UI.ForecastManager
         public int _idUserMaster;
         public ForecastManagerUI _aunthenticationUserInterface;
         public static DateTime _reciveDate = DateTime.Now;
+        private IService _exit;
         public string _dateTimeForFile = _reciveDate.Date.ToString("yyyy-MM-dd");
         public string _lat;
         public string _lon;
         public string _place;
 
-        public ForecastAction(string lang)
+        public ForecastAction(string lang, IService exit)
         {
+            _exit = exit;
             _menuLang = lang;
             _meteoApi = new MeteoApi();
             _printData = new PrintData();
-            _menu = new Menu(queryBuilder, _menuLang);
+            _menu = new Menu(queryBuilder, _menuLang, _exit);
             _aunthenticationUserInterface = new ForecastManagerUI(_menuLang, _menu);
             _filemenager = new FileMenager();
             _emailManager = new EmailManager();

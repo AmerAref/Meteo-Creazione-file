@@ -2,24 +2,27 @@
 using Meteo.Services;
 using Meteo.Services.Infrastructure;
 
-namespace Meteo.UI.AdminActions
+namespace Meteo.UI.AdminManager
 {
     public class AdminActions
     {
-        public static AdminManagerUI adminInterface;
+        public static AdminManagerUI _adminInteractions;
         public static string _lang;
-        public static IQueryBuilder queryBuilder;
-        public static Menu menu;
+        public static IQueryBuilder _queryBuilder;
+        public static Menu _menu;
+        public IService _exit;
 
-        public AdminActions(string menuLang, IQueryBuilder queryBuilderForCostr)
+
+        public AdminActions(string menuLang, IQueryBuilder queryBuilderForCostr, IService exit)
         {
+            _exit = exit;
             _lang = menuLang;
-            adminInterface = new AdminManagerUI(_lang);
-            queryBuilder = queryBuilderForCostr;
-            menu = new Menu(queryBuilder, _lang);
+            _adminInteractions = new AdminManagerUI(_lang, _exit);
+            _queryBuilder = queryBuilderForCostr;
+            _menu = new Menu(_queryBuilder, _lang, _exit);
         }
 
-        public void LoginAdmin(string choiceSelect)
+        public void AdminLogic(string choiceSelect)
         {
             var updateCity = new UpdateCity();
 
@@ -29,15 +32,15 @@ namespace Meteo.UI.AdminActions
             switch (choiceSelect)
             {
                 case "1":
-                    var allUsers = queryBuilder.GetAllUsers();
+                    var allUsers = _queryBuilder.GetAllUsers();
                     print.PrintAllUsers(allUsers);
                     break;
                 case "2":
-                    var allMasterRecords = queryBuilder.GetAllMasterRecords();
+                    var allMasterRecords = _queryBuilder.GetAllMasterRecords();
                     print.PrintAllMasterRecords(allMasterRecords);
                     break;
                 case "3":
-                    var secondAdminChoice = menu.ShowSecondMenuAdmin();
+                    var secondAdminChoice = _menu.ShowSecondMenuAdmin();
                     ModifyUserTable(secondAdminChoice);
                     break;
                 case "4":
@@ -45,11 +48,11 @@ namespace Meteo.UI.AdminActions
                 case "5":
                     updateCity.DownloadJsonCity();
                     var allCity = updateCity.DataReadyToInsert();
-                    queryBuilder.UpdateCities(allCity);
+                    _queryBuilder.UpdateCities(allCity);
 
                     break;
                 case "6":
-                    adminInterface.Exit();
+                    _adminInteractions.Exit();
                     Environment.Exit(0);
                     break;
             }
@@ -61,23 +64,23 @@ namespace Meteo.UI.AdminActions
                 switch (secondAdminChoice)
                 {
                     case "1":
-                        adminInterface.InsertUsernameToDelete();
+                        _adminInteractions.InsertUsernameToDelete();
                         var usernameDelete = Console.ReadLine();
-                        queryBuilder.DeleteUser(usernameDelete);
+                        _queryBuilder.DeleteUser(usernameDelete);
                         break;
                     case "2":
                         ModifyPsw();
                         break;
                     case "3":
-                        adminInterface.InsertNameUserToModfy();
+                        _adminInteractions.InsertNameUserToModfy();
                         var usernameRoleModify = Console.ReadLine();
-                        var roleModify = Convert.ToInt32(menu.SelectRole());
-                        queryBuilder.QueryForUpdateRole(usernameRoleModify, roleModify);
+                        var roleModify = Convert.ToInt32(_menu.SelectRole());
+                        _queryBuilder.QueryForUpdateRole(usernameRoleModify, roleModify);
                         break;
                     case "4":
                         break;
                     case "5":
-                        adminInterface.Exit();
+                        _adminInteractions.Exit();
                         Environment.Exit(0);
                         break;
                 }
@@ -87,30 +90,30 @@ namespace Meteo.UI.AdminActions
         private void ModifyPsw()
         {
             var pswModifyCount = 0;
-            var usernameModify = adminInterface.InsertNameUserToModfy();
+            var usernameModify = _adminInteractions.InsertNameUserToModfy();
             for (pswModifyCount = 0; pswModifyCount != 3; pswModifyCount++)
             {
-                var firstPsw = adminInterface.InsertFirstPsw();
-                var secondPsw = adminInterface.InsertSecondPsw();
+                var firstPsw = _adminInteractions.InsertFirstPsw();
+                var secondPsw = _adminInteractions.InsertSecondPsw();
 
                 if (secondPsw == firstPsw)
                 {
                     if (Helper.RegexForPsw(firstPsw) == true)
                     {
                         var pswModifyCrypto = Register.EncryptPwd(secondPsw);
-                        queryBuilder.QueryForUpdatePsw(pswModifyCrypto, usernameModify);
+                        _queryBuilder.QueryForUpdatePsw(pswModifyCrypto, usernameModify);
                         pswModifyCount = 3;
                         return;
                     }
                     else
                     {
-                        adminInterface.AttemtsRegexPsw();
+                        _adminInteractions.AttemtsRegexPsw();
                     }
                 }
                 else
                 {
                     pswModifyCount++;
-                    adminInterface.AttemptsPsw(pswModifyCount);
+                    _adminInteractions.AttemptsPsw(pswModifyCount);
 
                     if (pswModifyCount == 3)
                     {

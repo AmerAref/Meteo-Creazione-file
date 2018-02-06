@@ -5,14 +5,17 @@ using Meteo.Services.Infrastructure;
 
 namespace Meteo.UI
 {
-    public class Menu : ExitService
+    public class Menu 
     {
+        private IService _exit;
         private IQueryBuilder _queryBuilder { get; set; }
         private string _lang;
-        public Menu(IQueryBuilder queryBuilder, string lang)
+        public Menu(IQueryBuilder queryBuilder, string lang, IService exit)
+
         {
             _queryBuilder = queryBuilder;
             _lang = lang;
+            _exit = exit;
         }
 
         public string SelectLanguageStart()
@@ -59,7 +62,7 @@ namespace Meteo.UI
                     break;
             }
             var choiceSelected = Console.ReadLine();
-            Exit(choiceSelected);
+            _exit.Exit(choiceSelected);
             return choiceSelected;
         }
         public int SelectQuestion()
@@ -89,6 +92,7 @@ namespace Meteo.UI
                     break;
             }
             var idSelectedForQuestion = Convert.ToInt32(Console.ReadLine());
+
             return idSelectedForQuestion;
         }
         public string Confirmation()
@@ -112,7 +116,7 @@ namespace Meteo.UI
             }
 
             var confermation = Console.ReadLine();
-            Exit(confermation);
+            _exit.Exit(confermation);
 
             return confermation;
         }
@@ -136,7 +140,7 @@ namespace Meteo.UI
                     break;
             }
             var langToInsert = Console.ReadLine();
-            Exit(langToInsert);
+                _exit.Exit(langToInsert);
 
             return langToInsert;
         }
@@ -170,7 +174,7 @@ namespace Meteo.UI
                     break;
             }
             var choiceSelected = Console.ReadLine();
-            Exit(choiceSelected);
+            _exit.Exit(choiceSelected);
 
             return choiceSelected;
         }
@@ -199,7 +203,7 @@ namespace Meteo.UI
                     break;
             }
             var choiceSelected = Console.ReadLine();
-            Exit(choiceSelected);
+            _exit.Exit(choiceSelected);
 
             return choiceSelected;
 
@@ -230,7 +234,7 @@ namespace Meteo.UI
                     break;
             }
             var roleSelected = Console.ReadLine();
-            Exit(roleSelected);
+            _exit.Exit(roleSelected);
 
             return roleSelected;
         }
@@ -266,7 +270,7 @@ namespace Meteo.UI
                     break;
             }
             var choiceSelect = Console.ReadLine();
-            Exit(choiceSelect);
+            _exit.Exit(choiceSelect);
 
             return choiceSelect;
         }
@@ -288,7 +292,7 @@ namespace Meteo.UI
 
             }
             var parameters = Console.ReadLine();
-            Exit(parameters);
+            _exit.Exit(parameters);
             return parameters;
 
         }
@@ -317,7 +321,7 @@ namespace Meteo.UI
                     break;
             }
             var choseSelected = Console.ReadLine();
-            Exit(choseSelected);
+            _exit.Exit(choseSelected);
 
             return choseSelected;
         }
@@ -345,7 +349,7 @@ namespace Meteo.UI
                     break;
             }
             var exportChoice = Console.ReadLine();
-            Exit(exportChoice);
+          _exit.Exit(exportChoice);
 
             return exportChoice;
         }
@@ -370,7 +374,7 @@ namespace Meteo.UI
                     break;
             }
             var choseSelected = Console.ReadLine();
-            Exit(choseSelected);
+           _exit.Exit(choseSelected);
 
 
             return choseSelected;
