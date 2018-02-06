@@ -22,7 +22,6 @@ namespace Meteo.UI.ForecastManager
         public string _fileName, _menuLang, _measureUnit, _extensionJson = ".json", _extensionXls = ".xls";
         public int _idUserMaster;
         public ForecastManagerUI _aunthenticationUserInterface;
-        public CreateXlsFromFiles _createXlsFromFile;
         public static DateTime _reciveDate = DateTime.Now;
         public string _dateTimeForFile = _reciveDate.Date.ToString("yyyy-MM-dd");
         public string _lat;
@@ -39,7 +38,6 @@ namespace Meteo.UI.ForecastManager
             _filemenager = new FileMenager();
             _emailManager = new EmailManager();
             _createXlsFile = new CreateXlsFile();
-            _createXlsFromFile = new CreateXlsFromFiles();
         }
         public void Actions(string username, string measureUnit)
         {

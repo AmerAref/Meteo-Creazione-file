@@ -6,10 +6,6 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO.Compression;
 
-
-
-
-
 namespace Meteo.Services
 {
     public class UpdateCity
@@ -20,7 +16,6 @@ namespace Meteo.Services
             string fileName = "current.city.list.json.gz";
 
             var myWebClient = new WebClient();
-
             var myStringWebResource = remoteUri + fileName;
             myWebClient.DownloadFile(myStringWebResource, fileName);
             return;
@@ -28,11 +23,7 @@ namespace Meteo.Services
 
         public List<CityJsonModels.CityJson> DataReadyToInsert()
         {
-
-
-
             var path = Directory.GetCurrentDirectory();
-
 
             string fileName = "/current.city.list.json.gz";
             var pathFileCompressed = path + fileName;
@@ -42,12 +33,10 @@ namespace Meteo.Services
             fileName = "/current.city.list.json";
             var pathFileDecompressed = path + fileName;
 
-
             var allCity = JsonConvert.DeserializeObject<List<CityJsonModels.CityJson>>(File.ReadAllText(pathFileDecompressed));
             File.Delete(pathFileDecompressed);
             File.Delete(pathFileCompressed);
 
-           
             return allCity;
         }
         public static void Decompress(FileInfo fileToDecompress)
@@ -67,9 +56,5 @@ namespace Meteo.Services
                 }
             }
         }
-
     }
-
-
 }
-
