@@ -63,9 +63,9 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
-        public void InsertDataMaster(string meteoChoiceDb, int idUserMaster, string dateOfRequist, int idCity)
+        public long InsertDataMaster(string meteoChoiceDb, int idUserMaster, string dateOfRequist, int idCity)
         {
-            return;
+            return 0;
         }
         public List<User> GetAllUsers()
         {
@@ -87,9 +87,9 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
-        public long InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
+        public void InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
         {
-            return 0;
+            return;
         }
         public List<Models.OneDayForecast> GetOneDayUserResearch(string username)
         {
@@ -115,9 +115,15 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
+<<<<<<< HEAD
         public void UpdateCities(List<CityJsonModels.CityJson> allCity)
         {
             return;
+=======
+        public List<Forecast> GetForecastDataByLastInsertedId(long lastInsertedForecastId)
+        {
+            return null;
+>>>>>>> ae2bbd3434bec4200f3993e36d21b9b3a3f88859
         }
     }
 }

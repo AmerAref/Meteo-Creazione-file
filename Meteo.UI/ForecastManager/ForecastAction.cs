@@ -1,6 +1,7 @@
 ﻿using System;
 using Meteo.Services;
 using Meteo.Services.Infrastructure;
+using Meteo.Services.Models;
 using Newtonsoft.Json;
 using Meteo.ExcelManager;
 using System.IO;
@@ -17,7 +18,7 @@ namespace Meteo.UI.ForecastManager
         public EmailManager _emailManager;
         public FileMenager _filemenager;
         public CreateXlsFile _createXlsFile;
-        public string _fileName, _menuLang, _measureUnit, _extensionJson = ".json", _extensionXls = "xls";
+        public string _fileName, _menuLang, _measureUnit, _extensionJson = ".json", _extensionXls = ".xls";
         public int _idUserMaster;
         public ForecastManagerUI _aunthenticationUserInterface;
         public CreateXlsFromFiles _createXlsFromFile;
@@ -60,13 +61,11 @@ namespace Meteo.UI.ForecastManager
                     switch (choseThisDay)
                     {
                         case "1":
-
                             OneDayOr5Days = "1Day";
                             searchingFor = "city";
 
                             ProcessRequestsForecasts(_place, null, null, searchingFor, OneDayOr5Days, username);
                             break;
-
                         case "2":
                             OneDayOr5Days = "1Day";
                             searchingFor = "coordinates";
@@ -93,7 +92,6 @@ namespace Meteo.UI.ForecastManager
                     switch (choseLast5Day)
                     {
                         case "1":
-                            _place = _aunthenticationUserInterface.InsertNamePlace();
                             try
                             {
                                 OneDayOr5Days = "5Days";
@@ -254,7 +252,7 @@ namespace Meteo.UI.ForecastManager
 
             PrintData(jsonObj, OneDayOr5DaysChoice);
 
-            InsertData(jsonObj, OneDayOr5DaysChoice, place, lat, lon, insertChoiceSelected, username);
+            var lastInsertedMasterId = InsertData(jsonObj, OneDayOr5DaysChoice, place, lat, lon, insertChoiceSelected, username);
 
             _aunthenticationUserInterface.RequestSucces();
             choiceSelected = _aunthenticationUserInterface.ChoiceDoFileJson();
@@ -274,7 +272,7 @@ namespace Meteo.UI.ForecastManager
                 if (choiceSelected == "1")
                 {
                     var xlsFileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionXls, OneDayOr5DaysChoice);
-                    ChoiceCreateFileXlsOneDayOr5Days(lat, lon, place, OneDayOr5DaysChoice, xlsFileName, _dateTimeForFile, jsonObj);
+                    ChoiceCreateFileXlsOneDayOr5Days(lat, lon, place, OneDayOr5DaysChoice, xlsFileName, _dateTimeForFile, lastInsertedMasterId);
                     _aunthenticationUserInterface.RequestSucces();
                 }
                 else
@@ -326,41 +324,50 @@ namespace Meteo.UI.ForecastManager
             }
         }
 
-        private void InsertData(dynamic jsonObj, string OneDayOr5Days, string place, string lat, string lon, string insertChoiceSelected, string username)
+        private long InsertData(dynamic jsonObj, string OneDayOr5Days, string place, string lat, string lon, string insertChoiceSelected, string username)
         {
+            long lastInsertedMasterId = 0L;
             var dateOfRequist = _reciveDate.ToString("yyyy-MM-dd HH:mm:ss");
             var cityName = queryBuilder.GetCityData(lat, lon, place).Name;
             var idCity = queryBuilder.GetCityData(lat, lon, place).Id;
-            queryBuilder.InsertDataMaster(insertChoiceSelected, _idUserMaster, dateOfRequist, idCity);
+            lastInsertedMasterId = queryBuilder.InsertDataMaster(insertChoiceSelected, _idUserMaster, dateOfRequist, idCity);
             var masterId = queryBuilder.GetMasterData(_idUserMaster, dateOfRequist).IdMaster;
 
             if (OneDayOr5Days == "1Day")
             {
-                var lastInsertedForecastId = queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, masterId, idCity, OneDayOr5Days, dateOfRequist);
-                Console.WriteLine(lastInsertedForecastId);
+                queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, masterId, idCity, OneDayOr5Days, dateOfRequist);
+                Console.WriteLine(lastInsertedMasterId);
             }
             else if (OneDayOr5Days == "5Days")
             {
                 queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, masterId, idCity, OneDayOr5Days, dateOfRequist);
+                Console.WriteLine(lastInsertedMasterId);
+                var forecastData = queryBuilder.GetForecastDataByLastInsertedId(lastInsertedMasterId);
+                foreach (var x in forecastData)
+                {
+                    Console.WriteLine(x.Pressure);
+                }
             }
+            return lastInsertedMasterId;
         }
-        private void ChoiceCreateFileXlsOneDayOr5Days(string lat, string lon, string place, string OneDayOr5Days, string xlsFile, string dateTime, dynamic jsonObj)
+        private void ChoiceCreateFileXlsOneDayOr5Days(string lat, string lon, string place, string OneDayOr5Days, string xlsFile, string dateTime, long lastInsertedMasterId)
         {
+            var forecastData = queryBuilder.GetForecastDataByLastInsertedId(lastInsertedMasterId);
             if (lat != null && OneDayOr5Days == "1Day")
             {
-                _createXlsFile.CreateXlsFileForToday(jsonObj, place, null, null, xlsFile, dateTime);
+                _createXlsFile.CreateXlsFileWithForecastData(forecastData, place, null, null, xlsFile, dateTime, OneDayOr5Days);
             }
             else if (place != null && OneDayOr5Days == "1Day")
             {
-                _createXlsFile.CreateXlsFileForToday(jsonObj, null, lat, lon, xlsFile, dateTime);
+                _createXlsFile.CreateXlsFileWithForecastData(forecastData, null, lat, lon, xlsFile, dateTime, OneDayOr5Days);
             }
             else if (place != null && OneDayOr5Days == "5Days")
             {
-                _createXlsFile.CreateXlsFileForLast5Days(jsonObj, place, null, null, xlsFile, dateTime);
+                _createXlsFile.CreateXlsFileWithForecastData(forecastData, place, null, null, xlsFile, dateTime, OneDayOr5Days);
             }
             else if (lat != null && OneDayOr5Days == "5Days")
             {
-                _createXlsFile.CreateXlsFileForLast5Days(jsonObj, null, lat, lon, xlsFile, dateTime);
+                _createXlsFile.CreateXlsFileWithForecastData(forecastData, null, lat, lon, xlsFile, dateTime, OneDayOr5Days);
             }
         }
         public void CreateXlsFromFileUserAction(string choiceXls)

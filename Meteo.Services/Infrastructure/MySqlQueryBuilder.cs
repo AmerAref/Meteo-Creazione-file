@@ -138,13 +138,15 @@ namespace Meteo.Services.Infrastructure
 
             return question;
         }
-        public void InsertDataMaster(string meteoChoiceDb, int idUserMaster, string dateOfRequist, int idCity)
+        public long InsertDataMaster(string meteoChoiceDb, int idUserMaster, string dateOfRequist, int idCity)
         {
             _manager.Open();
             var query = $"INSERT INTO `Master`(`Choice5DayOrNow`, `DateOfRequist`, `IdUser`, `IdCity`) VALUES ('{meteoChoiceDb}', '{dateOfRequist}', '{idUserMaster}', '{idCity}')";
             var cmd = _manager.GetCommand(query);
             cmd.ExecuteReader().DataReaderMapToList<Master>();
+            var lastInsertedForecastId = cmd.LastInsertedId;
             _manager.Close();
+            return lastInsertedForecastId;
         }
         public City GetCityData(string lat, string lon, string place)
         {
@@ -164,9 +166,8 @@ namespace Meteo.Services.Infrastructure
             }
             return city[0];
         }
-        public long InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
+        public void InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
         {
-            long lastInsertedForecastId = 0L;
             if (oneDayOrFiveDays == "1Day")
             {
                 var oneDay = jsonObj.Parameters;
@@ -175,9 +176,7 @@ namespace Meteo.Services.Infrastructure
                 var query = $"INSERT INTO `Forecast`(`CityName`, `IdCity`, `Pressure`, `Humidity`, `Temperature`, `TemperatureMin`, `TemperatureMax`, `WeatherDate`, `IdMaster`) VALUES ('{place}', '{idCity}', '{oneDay.Pressure}', '{oneDay.Humidity}', '{oneDay.Temp}', '{oneDay.TempMin}', '{oneDay.TempMax}', '{dateOfRequest}', '{idMaster}')";
                 var cmd = _manager.GetCommand(query);
                 cmd.ExecuteNonQuery();
-                lastInsertedForecastId = cmd.LastInsertedId;
                 _manager.Close();
-                return lastInsertedForecastId;
             }
             else if (oneDayOrFiveDays == "5Days")
             {
@@ -189,12 +188,18 @@ namespace Meteo.Services.Infrastructure
                     var query = $"INSERT INTO `Forecast`(`CityName`, `IdCity`, `Pressure`, `Humidity`, `Temperature`, `TemperatureMin`, `TemperatureMax`, `WeatherDate`, `IdMaster`) VALUES ('{place}', '{idCity}', '{data.Parameters.Pressure}', '{data.Parameters.Humidity}', '{data.Parameters.Temp}', '{data.Parameters.TempMin}', '{data.Parameters.TempMax}', '{data.TimeStamp}', '{idMaster}')";
                     var cmd = _manager.GetCommand(query);
                     cmd.ExecuteNonQuery();
-                    lastInsertedForecastId = cmd.LastInsertedId;
                 }
                 _manager.Close();
-                return lastInsertedForecastId;
             }
-            return lastInsertedForecastId;
+        }
+        public List<Forecast> GetForecastDataByLastInsertedId(long lastInsertedForecastId)
+        {
+            _manager.Open();
+            var query = $"SELECT * FROM `Forecast` WHERE `IdMaster` = '{lastInsertedForecastId}'";
+            var cmd = _manager.GetCommand(query);
+            var myData = cmd.ExecuteReader().DataReaderMapToList<Forecast>();
+            _manager.Close();
+            return myData;
         }
         public Master GetMasterData(int idUser, string dateOfRequist)
         {
