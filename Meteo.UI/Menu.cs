@@ -248,9 +248,8 @@ namespace Meteo.UI
                     Console.WriteLine("****3 - Accedi al menu filtraggio dati per città          *");
                     Console.WriteLine("****4 - Vuoi eliminare file nella cartella ?              *");
                     Console.WriteLine("****5 - Invia file tramite email                          *");
-                    Console.WriteLine("****6 - Creare un file XLS                                *");
-                    Console.WriteLine("****7 - Accedi al menu per l'esportazione di dati dal DB  *");
-                    Console.WriteLine("****8 - Termina sessione                                  *");
+                    Console.WriteLine("****6 - Accedi al menu per l'esportazione di dati dal DB  *");
+                    Console.WriteLine("****7 - Termina sessione                                  *");
                     Console.WriteLine("***********************************************************");
                     break;
                 case "en":
@@ -261,9 +260,8 @@ namespace Meteo.UI
                     Console.WriteLine("****3 - Access the data filtering menu by city            *");
                     Console.WriteLine("****4 - Do you want to delete files in the folder?        *");
                     Console.WriteLine("****5 - Send files via email                              *");
-                    Console.WriteLine("****6 - Create an XLS file                                *");
-                    Console.WriteLine("****7 - Access the DB data export menu                    *");
-                    Console.WriteLine("****8 - End session                                       *");
+                    Console.WriteLine("****6 - Access the DB data export menu                    *");
+                    Console.WriteLine("****7 - End session                                       *");
                     Console.WriteLine("***********************************************************");
                     break;
             }
@@ -271,7 +269,6 @@ namespace Meteo.UI
             Exit(choiceSelect);
 
             return choiceSelect;
-
         }
         public string ShowSecondMenu()
         {
@@ -323,36 +320,6 @@ namespace Meteo.UI
             Exit(choseSelected);
 
             return choseSelected;
-
-        }
-        public string ShowMenuCreateXlsFile()
-        {
-            switch (_lang)
-            {
-                case "it":
-                    Console.WriteLine("***********************************************************");
-                    Console.WriteLine("*************    Digitare il valore del menu    ***********");
-                    Console.WriteLine("****1 - Crea XLS per dati relativi a oggi                 *");
-                    Console.WriteLine("****2 - Crea XLS per dati relativi a 5 giorni             *");
-                    Console.WriteLine("****3 - Torna al menu principale                          *");
-                    Console.WriteLine("****4 - Termina sessione                                  *");
-                    Console.WriteLine("***********************************************************");
-                    break;
-                case "en":
-                    Console.WriteLine("***********************************************************");
-                    Console.WriteLine("*************            Digit value            ***********");
-                    Console.WriteLine("****1 - Create XLS for today's data                       *");
-                    Console.WriteLine("****2 - Create XLS for data for 5 days                    *");
-                    Console.WriteLine("****3 - Return to the main menu                           *");
-                    Console.WriteLine("****4 - End session                                       *");
-                    Console.WriteLine("***********************************************************");
-                    break;
-            }
-            var choseSelected = Console.ReadLine();
-            Exit(choseSelected);
-
-            return choseSelected;
-
         }
         public string ShowExportMenu()
         {
@@ -382,7 +349,6 @@ namespace Meteo.UI
 
             return exportChoice;
         }
-
 
         public string Chioce()
         {

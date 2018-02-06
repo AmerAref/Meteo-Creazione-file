@@ -109,11 +109,11 @@ namespace Meteo.UI.AuthenticationUser
         {
             if (_menuLang == "it")
             {
-                Console.WriteLine(DataInterface.insertNameFileIT);
+                Console.WriteLine(DataInterface.insertNameFileIT + $"({extension})");
             }
             else
             {
-                Console.WriteLine(DataInterface.insertNameFileEN);
+                Console.WriteLine(DataInterface.insertNameFileEN + $"({extension})");
             }
             if (extension == ".json")
             {

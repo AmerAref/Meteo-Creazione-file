@@ -4,8 +4,8 @@ namespace Meteo.UI
 {
     public static class DataInterface
     {
-        public static string insertNameFileIT = "Inserisci nome file da creare";
-        public static string insertNameFileEN = "Enter the name of the file to be created";
+        public static string insertNameFileIT = "Inserisci nome file";
+        public static string insertNameFileEN = "Enter the name of the file";
         public static string successIT = "Richiesta elaborata con successo", successEN = "request processed successfully";
         public static string choiceDoFileIT = "Vuoi creare un file JSON con i dati precedentemente richiesti?";
         public static string choiceDoFileEN = "Do you want to create a JSON file with the data previously requested? ";

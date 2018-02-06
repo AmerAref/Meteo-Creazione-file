@@ -166,28 +166,10 @@ namespace Meteo.UI.ForecastManager
                     break;
                 case "5":
                     _fileName = _aunthenticationUserInterface.InsertNameFile(null, null, null);
+                    _aunthenticationUserInterface.AuthenticationUserInterfaceSendEmail();
                     _emailManager.AttempsPasswordAndSendEmail(_fileName, _aunthenticationUserInterface.senderValue, _aunthenticationUserInterface.receiverValue, _aunthenticationUserInterface.bodyValue, _aunthenticationUserInterface.subjectValue, _aunthenticationUserInterface.userValue, _aunthenticationUserInterface.password);
                     break;
                 case "6":
-                    _menu.ShowMenuCreateXlsFile();
-                    var choiceXls = _aunthenticationUserInterface.ChoiceDoFileXls();
-                    switch (choiceXls)
-                    {
-                        case "1":
-                            CreateXlsFromFileUserAction(choiceXls);
-                            break;
-                        case "2":
-                            CreateXlsFromFileUserAction(choiceXls);
-                            break;
-                        case "3":
-                            _menu.ShowSecondMenu();
-                            break;
-                        case "4":
-                            _aunthenticationUserInterface.Exit();
-                            break;
-                    }
-                    break;
-                case "7":
                     var exportChoice = _menu.ShowExportMenu();
                     switch (exportChoice)
                     {
@@ -205,7 +187,7 @@ namespace Meteo.UI.ForecastManager
                             break;
                     }
                     break;
-                case "8":
+                case "7":
                     _aunthenticationUserInterface.Exit();
                     break;
             }
@@ -346,20 +328,6 @@ namespace Meteo.UI.ForecastManager
                 _createXlsFile.CreateXlsFileWithForecastData(forecastData, null, lat, lon, xlsFile, dateTime, OneDayOr5Days);
             }
         }
-        public void CreateXlsFromFileUserAction(string choiceXls)
-        {
-            var sourceFileName = _aunthenticationUserInterface.InsertNameFile(null, _extensionJson, null);
-            var sourceFilePath = Path.Combine(DataInterface.filePath, sourceFileName);
-            var xlsFileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionXls, null);
-            if (choiceXls == "1")
-            {
-                _createXlsFromFile.CreateXlsFromFileForToday(sourceFilePath, xlsFileName, _dateTimeForFile);
-            }
-            else
-            {
-                _createXlsFromFile.CreateXlsFromFileFor5Days(sourceFilePath, xlsFileName, _dateTimeForFile);
-            }
-        }
         public void CreateXlsWithExportedData(string exportChoice, string username)
         {
             dynamic forecastResearch;
@@ -378,7 +346,6 @@ namespace Meteo.UI.ForecastManager
                 _createXlsFile.CreateXlsFileWithExportedData(forecastResearch, _fileName, _dateTimeForFile, exportChoice);
             }
         }
-
         public void ControlCoordinates(string lat, string lon)
         {
             var latUserInput = new CoordinatesUserInput(lat);
