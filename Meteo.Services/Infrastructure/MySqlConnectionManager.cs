@@ -48,7 +48,6 @@ namespace Meteo.Services.Infrastructure
                 _connection.Close();
             }
         }
-
         public void Dispose()
         {
             if (_connection != null)
@@ -83,14 +82,10 @@ namespace Meteo.Services.Infrastructure
         void DeleteUser(string username);
         void QueryForUpdateRole(string username, int role);
         City GetCityData(string lat, string lon, string place);
-        void InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest);
-        List<Models.OneDayForecast> GetOneDayUserResearch(string username);
-        List<Models.Forecast> GetForecastUserOneDayResearch(string username);
-        List<Models.Forecast> GetForecastUserNext5DaysResearch(string username);
-        List<Models.FiveDaysForecast> GetNextFiveDaysUserResearch(string username);
-        Master GetMasterData(int idUser, string dateOfRequist);
-        List<Models.Forecast> GetForecastFilteredByDate(string username, string dataInizio, string dataFine);
         void UpdateCities(List<CityJsonModels.CityJson> allCity);
+        void InsertDataIntoForecastTable(dynamic jsonObj, string place, long idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest);
+        List<Models.Forecast> GetUserForecastResearch(int idUser);
+        List<Models.Forecast> GetForecastFilteredByDate(string dataInizio, string dataFine);
         List<Forecast> GetForecastDataByLastInsertedId(long lastInsertedForecastId);
     }
 }

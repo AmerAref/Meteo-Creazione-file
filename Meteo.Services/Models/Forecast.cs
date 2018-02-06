@@ -17,7 +17,7 @@ namespace Meteo.Services.Models
         public DateTime WeatherDate { get; set; }
 
         [ForeignKey("Master")]
-        public int IdMaster { get; set; }
+        public long IdMaster { get; set; }
 
         [ForeignKey("City")]
         public int IdCity { get; set; }

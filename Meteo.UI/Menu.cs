@@ -361,21 +361,19 @@ namespace Meteo.UI
                 case "it":
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************    Digitare il valore del menu    ***********");
-                    Console.WriteLine("****1 - Esporta dati relativi alle ricerce per un giorno  *");
-                    Console.WriteLine("****2 - Esporta dati relativi alle ricerche per 5 giorni  *");
-                    Console.WriteLine("****3 - Esporta dati passando un range di date            *");
-                    Console.WriteLine("****4 - Torna al menu principale                          *");
-                    Console.WriteLine("****5 - Termina sessione                                  *");
+                    Console.WriteLine("****1 - Esporta dati relativi alle ricerce                *");
+                    Console.WriteLine("****2 - Esporta dati passando un range di date            *");
+                    Console.WriteLine("****3 - Torna al menu principale                          *");
+                    Console.WriteLine("****4 - Termina sessione                                  *");
                     Console.WriteLine("***********************************************************");
                     break;
                 case "en":
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************            Digit value            ***********");
-                    Console.WriteLine("****1 - Export one day research data                      *");
-                    Console.WriteLine("****2 - Export 5 days research data                       *");
-                    Console.WriteLine("****4 - Export data giving a date range                   *");
-                    Console.WriteLine("****4 - Return to the main menu                           *");
-                    Console.WriteLine("****5 - End session                                       *");
+                    Console.WriteLine("****1 - Export forecast research                          *");
+                    Console.WriteLine("****2 - Export data giving a date range                   *");
+                    Console.WriteLine("****3 - Return to the main menu                           *");
+                    Console.WriteLine("****4 - End session                                       *");
                     Console.WriteLine("***********************************************************");
                     break;
             }

@@ -39,13 +39,9 @@ namespace Meteo.Services.Infrastructure
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             _manager.Close();
             if (user.Any())
-            {
-                return user[0];
-            }
+            { return user[0]; }
             else
-            {
-                return null;
-            }
+            { return null; }
         }
         public Question GetQuestion(int IdQuestion)
         {
@@ -55,12 +51,9 @@ namespace Meteo.Services.Infrastructure
             var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
             _manager.Close();
             if (question.Any())
-            {
-                return question[0];
-            }
+            { return question[0]; }
             else
             { return null; }
-
         }
         public void InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit, int role)
         {
@@ -79,12 +72,9 @@ namespace Meteo.Services.Infrastructure
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             _manager.Close();
             if (user.Any())
-            {
-                return user[0];
-            }
+            { return user[0]; }
             else
-                return null;
-
+            { return null; }
         }
         public User AutentiationWithAnswer(string answer, string username)
         {
@@ -94,11 +84,9 @@ namespace Meteo.Services.Infrastructure
             var user = cmd.ExecuteReader().DataReaderMapToList<User>();
             _manager.Close();
             if (user.Any())
-            {
-                return user[0];
-            }
+            { return user[0]; }
             else
-                return null;
+            { return null; }
         }
         public void QueryForUpdatePsw(string psw, string username)
         {
@@ -156,9 +144,7 @@ namespace Meteo.Services.Infrastructure
             var city = cmd.ExecuteReader().DataReaderMapToList<City>();
             _manager.Close();
             if (city != null)
-            {
-                return city[0];
-            }
+            { return city[0]; }
             else
             {
                 Console.WriteLine("ERROR");
@@ -166,7 +152,7 @@ namespace Meteo.Services.Infrastructure
             }
             return city[0];
         }
-        public void InsertDataIntoForecastTable(dynamic jsonObj, string place, int idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
+        public void InsertDataIntoForecastTable(dynamic jsonObj, string place, long idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
         {
             if (oneDayOrFiveDays == "1Day")
             {
@@ -200,15 +186,6 @@ namespace Meteo.Services.Infrastructure
             var myData = cmd.ExecuteReader().DataReaderMapToList<Forecast>();
             _manager.Close();
             return myData;
-        }
-        public Master GetMasterData(int idUser, string dateOfRequist)
-        {
-            _manager.Open();
-            var query = $"SELECT * FROM `Master` WHERE `IdUser` = {idUser} AND `DateOfRequist` = '{dateOfRequist}'";
-            var cmd = _manager.GetCommand(query);
-            var master = cmd.ExecuteReader().DataReaderMapToList<Master>();
-            _manager.Close();
-            return master[0];
         }
 
         //Query per eseguite da utente con ruolo Admin
@@ -252,47 +229,20 @@ namespace Meteo.Services.Infrastructure
         }
 
         //Query per l'export dei dati
-        public List<Models.OneDayForecast> GetOneDayUserResearch(string username)
+        public List<Models.Forecast> GetUserForecastResearch(int idUser)
         {
             _manager.Open();
-            var query = $"SELECT * FROM `OneDayForecast`, `User` WHERE User.Username = '{username}'";
-            var cmd = _manager.GetCommand(query);
-            var researchData = cmd.ExecuteReader().DataReaderMapToList<Models.OneDayForecast>();
-            _manager.Close();
-            return researchData;
-        }
-        public List<Models.Forecast> GetForecastUserOneDayResearch(string username)
-        {
-            _manager.Open();
-            var query = $"SELECT * FROM `Forecast`, `User`, `Master` WHERE User.Username = '{username}' AND Master.Choice5DayOrNow IN ('Forecast 1Day (city)', 'Forecast 1Day (coordinates)') AND Forecast.IdMaster = Master.IdMaster";
+            var query = $"SELECT * FROM `Forecast`, `User`, `Master` WHERE User.IdUser = '{idUser}' AND Master.IdUser = User.IdUser AND Master.IdMaster = Forecast.IdMaster";
             var cmd = _manager.GetCommand(query);
             var researchData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
-            _manager.Close();
-            return researchData;
-        }
-        public List<Models.Forecast> GetForecastUserNext5DaysResearch(string username)
-        {
-            _manager.Open();
-            var query = $"SELECT * FROM `Forecast`, `User`, `Master` WHERE User.Username = '{username}' AND Master.Choice5DayOrNow IN ('Forecast 5Days (city)', 'Forecast 5Days (coordinates)') AND Forecast.IdMaster = Master.IdMaster";
-            var cmd = _manager.GetCommand(query);
-            var researchData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
-            _manager.Close();
-            return researchData;
-        }
-        public List<Models.FiveDaysForecast> GetNextFiveDaysUserResearch(string username)
-        {
-            _manager.Open();
-            var query = $"SELECT * FROM `Last5DaysForecast`, `User` WHERE User.Username = '{username}'";
-            var cmd = _manager.GetCommand(query);
-            var researchData = cmd.ExecuteReader().DataReaderMapToList<Models.FiveDaysForecast>();
             _manager.Close();
             return researchData;
         }
 
-        public List<Models.Forecast> GetForecastFilteredByDate(string username, string dataInizio, string dataFine)
+        public List<Models.Forecast> GetForecastFilteredByDate(string dataInizio, string dataFine)
         {
             _manager.Open();
-            var query = $"SELECT * FROM `Forecast`, `User` WHERE (Forecast.WeatherDate  BETWEEN '{dataInizio}' AND '{dataFine}') AND User.Username = '{username}'";
+            var query = $"SELECT * FROM `Forecast`, `Master` WHERE (Forecast.WeatherDate  BETWEEN '{dataInizio}' AND '{dataFine}')";
             var cmd = _manager.GetCommand(query);
             var filteredData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
             _manager.Close();
