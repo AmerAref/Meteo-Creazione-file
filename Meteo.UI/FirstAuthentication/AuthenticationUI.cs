@@ -3,11 +3,11 @@ using Meteo.UI;
 
 namespace Meteo.Services
 {
-    public class RegistrationUserUI
+    public class AuthenticationUI : ExitService
     {
         public string _lang;
 
-        public RegistrationUserUI(string lang)
+        public AuthenticationUI(string lang)
         {
             _lang = lang;
         }
@@ -23,6 +23,7 @@ namespace Meteo.Services
                 Console.WriteLine("Enter Name");
             }
             var nameNewAccount = Console.ReadLine();
+            Exit(nameNewAccount);
 
             return nameNewAccount;
         }
@@ -37,10 +38,12 @@ namespace Meteo.Services
                 Console.WriteLine("Enter Surname");
             }
             var surnameNewAccount = Console.ReadLine();
+            Exit(surnameNewAccount);
+
 
             return surnameNewAccount;
         }
-        public string ReadUser()
+        public string ReadUsername()
         {
             if (_lang == "it")
             {
@@ -51,6 +54,7 @@ namespace Meteo.Services
                 Console.WriteLine(DataInterface.insertUserEN);
             }
             var newUsername = Console.ReadLine();
+            Exit(newUsername);
             return newUsername;
 
 
@@ -81,6 +85,7 @@ namespace Meteo.Services
                 Console.WriteLine(DataInterface.insertPswEN);
             }
             var newpsw = DataMaskManager.MaskData(passwordRegistration);
+            Exit(newpsw);
             return newpsw;
 
         }
@@ -109,6 +114,8 @@ namespace Meteo.Services
                 Console.WriteLine("\nReenter Password.");
             }
             var compPsw = DataMaskManager.MaskData(passwordComparisonNotEcrypted);
+            Exit(compPsw);
+
             return compPsw;
 
         }
@@ -126,8 +133,9 @@ namespace Meteo.Services
 
         }
 
-        public void InsertAnswer()
+        public string ReadAnswer()
         {
+            var answerNotEcrypted = "";
             if (_lang == "it")
             {
                 Console.WriteLine("Inserisci risposta di sicurezza");
@@ -136,6 +144,11 @@ namespace Meteo.Services
             {
                 Console.WriteLine("Insert security answer");
             }
+            var answer = DataMaskManager.MaskData(answerNotEcrypted);
+            Exit(answer);
+
+            return answer;
+
 
         }
         public void ConfirmationAnswer(string insertAnswer)
@@ -153,6 +166,37 @@ namespace Meteo.Services
 
             }
         }
+        public void WelcomeUser(string username)
+        {
+            Console.WriteLine("\n");
+            if (_lang == "it")
+            {
+                Console.WriteLine("Benvenuto" + " " + $"{username}");
+            }
+            else
+            {
+                Console.WriteLine("Welcome" + " " + $"{username}");
+            }
+        }
+        public string ReadUsernameForSecureQuestion()
+        {
+            if (_lang == "it")
+            {
+                Console.WriteLine($"\n{DataInterface.secureQuestionIT}");
+            }
+            else
+            {
+                Console.WriteLine($"\n{DataInterface.secureQuestionEN}");
+            }
+            var secureAnswer = Console.ReadLine();
+            Exit(secureAnswer);
+
+            return secureAnswer;
+        }
+
+
+
+
 
 
 

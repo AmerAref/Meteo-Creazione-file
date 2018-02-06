@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="CityJsonModels\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Infrastructure\ApplicationDbContext.cs" />

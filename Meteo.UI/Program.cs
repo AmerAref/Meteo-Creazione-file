@@ -16,6 +16,7 @@ namespace Meteo.UI
     {
         static void Main(string[] args)
         {
+
             var menuLang = "";
             var measureUnit = "";
             var emailManager = new EmailManager();
@@ -33,7 +34,7 @@ namespace Meteo.UI
             var menu = new Menu(queryBuilder, lang);
 
             //scleta prima lingua nel menu
-
+           
             lang = menu.SelectLanguageStart();
 
             menu = new Menu(queryBuilder, lang);

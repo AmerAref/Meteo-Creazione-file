@@ -1,7 +1,6 @@
 ﻿using System;
 using Meteo.Services;
 using Meteo.Services.Infrastructure;
-using Meteo.UI.Authentication;
 
 
 namespace Meteo.UI
@@ -11,19 +10,15 @@ namespace Meteo.UI
         public static IQueryBuilder _queryBuilder;
         public string _lang;
         private Menu _menu;
-        private RegistrationUserUI _registationUserUI;
+        private readonly AuthenticationUI _authenticationUI;
         public Services.Models.User _authentication;
-        public LoginUserUI _loginUserUI;
 
         public LoginOrRegistration(string lang, IQueryBuilder queryBuilderCostr)
         {
             _lang = lang;
             _queryBuilder = queryBuilderCostr;
             _menu = new Menu(_queryBuilder, _lang);
-            _registationUserUI = new RegistrationUserUI(_lang);
-            _loginUserUI = new LoginUserUI(_lang);
-
-
+            _authenticationUI = new AuthenticationUI(_lang);
         }
 
         public Services.Models.User RegistrationNewAccount()
@@ -38,8 +33,8 @@ namespace Meteo.UI
             var encryptedAnswer = "";
             var encryptedPwd = "";
 
-            nameNewAccount = _registationUserUI.ReadName();
-            surnameNewAccount = _registationUserUI.ReadSurname();
+            nameNewAccount = _authenticationUI.ReadName();
+            surnameNewAccount = _authenticationUI.ReadSurname();
 
             newUsername = ReadUserAndAuthenication();
             pswNewAccount = ReadNewPsw();
@@ -61,7 +56,9 @@ namespace Meteo.UI
             }
             var roleNewAccount = 2;
             _queryBuilder.InsertNewUser(encryptedPwd, newUsername, surnameNewAccount, nameNewAccount, idSelectedForQuestion, encryptedAnswer, languageNewAccunt, measureUnit, roleNewAccount);
-             var user = _queryBuilder.GetUser(newUsername);
+            var user = _queryBuilder.GetUser(newUsername);
+            _authenticationUI.WelcomeUser(user.Username);
+
             return user;
         }
 
@@ -72,11 +69,11 @@ namespace Meteo.UI
             var newUsername = "";
             for (var countAttempts = 0; countAttempts < 3; countAttempts++)
             {
-                newUsername = _registationUserUI.ReadUser();
+                newUsername = _authenticationUI.ReadUsername();
                 _authentication = _queryBuilder.GetUser(newUsername);
                 if (_authentication != null)
                 {
-                    _registationUserUI.IfUsernameExist();
+                    _authenticationUI.IfUsernameExist();
                     if (countAttempts == 2)
                     {
                         Environment.Exit(0);
@@ -90,7 +87,6 @@ namespace Meteo.UI
             }
             return newUsername;
         }
-
         private string ReadNewPsw()
         {
 
@@ -98,12 +94,12 @@ namespace Meteo.UI
             var pswNewAccount = "";
             for (var countAttempts = 0; countAttempts < 3; countAttempts++)
             {
-                pswNewAccount = _registationUserUI.ReadPsw();
+                pswNewAccount = _authenticationUI.ReadPsw();
 
                 // Controlla se Accetta i criteri di sicurezza psw
                 if (Helper.RegexForPsw(pswNewAccount) == false)
                 {
-                    _registationUserUI.ReadPswSecondTime();
+                    _authenticationUI.ReadPswSecondTime();
                     if (countAttempts == 2)
                     {
                         Environment.Exit(0);
@@ -126,13 +122,13 @@ namespace Meteo.UI
 
             for (var countAttempts = 0; countAttempts < 3; countAttempts++)
             {
-                var pswComparison = _registationUserUI.ComparisonPsw();
+                var pswComparison = _authenticationUI.ComparisonPsw();
 
                 // maschera reinserimento psw
                 // confronto fra le due psw scritte. Se corrispondo l'utente deve selezionare una domanda di sicurezza per recupero psw 
                 if (pswNewAccount != pswComparison)
                 {
-                    _registationUserUI.PswNotEquals();
+                    _authenticationUI.PswNotEquals();
                     if (countAttempts == 2)
                     {
                         Environment.Exit(0);
@@ -161,7 +157,7 @@ namespace Meteo.UI
                 Console.WriteLine(questionselect.DefaultQuestion);
                 // conferma rispost inserita 
                 var readAnswer = Console.ReadLine();
-                _registationUserUI.ConfirmationAnswer(readAnswer);
+                _authenticationUI.ConfirmationAnswer(readAnswer);
                 var confermation = _menu.Confirmation();
                 if (confermation == "1")
                 {
@@ -184,7 +180,7 @@ namespace Meteo.UI
             _authentication = AuthenicationWithUsernameAndPsw();
             if (_authentication != null)
             {
-                _loginUserUI.WelcomeUser(_authentication.Username);
+                _authenticationUI.WelcomeUser(_authentication.Username);
                 return _authentication;
             }
             _authentication = GetUserIfExist();
@@ -194,7 +190,7 @@ namespace Meteo.UI
             _authentication = AuthenicationWithUsernameAndPsw();
             if (_authentication != null)
             {
-                _loginUserUI.WelcomeUser(_authentication.Username);
+                _authenticationUI.WelcomeUser(_authentication.Username);
                 return _authentication;
             }
             Environment.Exit(0);
@@ -207,7 +203,7 @@ namespace Meteo.UI
 
             for (var c = 0; c < 3; c++)
             {
-                var forAnswerReadUsername = _loginUserUI.SecureQuestion();
+                var forAnswerReadUsername = _authenticationUI.ReadUsernameForSecureQuestion();
                 var userIfExist = _queryBuilder.GetUser(forAnswerReadUsername);
                 if (userIfExist != null)
                 {
@@ -225,8 +221,10 @@ namespace Meteo.UI
             for (var c = 0; c < 3; c++)
             {
                 // Inserimento User
-                var usernameAuthentication = _loginUserUI.ReadUsername();
-                var authPwd = _loginUserUI.ReadPassword();
+                var usernameAuthentication = _authenticationUI.ReadUsername();
+                var authPwd = _authenticationUI.ReadPsw();
+                authPwd = Register.EncryptPwd(authPwd);
+
 
                 // confronto se esiste psw (Massimo 3 volte )
                 _authentication = _queryBuilder.GetUserIfExist(usernameAuthentication, authPwd);
@@ -247,8 +245,7 @@ namespace Meteo.UI
             {
                 Console.WriteLine(questionPrinted);
 
-                var answerToLogin = "";
-                var insertAnswerMaskered = DataMaskManager.MaskData(answerToLogin);
+                var insertAnswerMaskered = _authenticationUI.ReadAnswer();
                 // criptaggio della Risposta inserita 
                 var insertAnswerForAccessEcrypted = Register.EncryptPwd(insertAnswerMaskered);
                 _authentication = _queryBuilder.AutentiationWithAnswer(insertAnswerForAccessEcrypted, forAnswerInsertUsername);

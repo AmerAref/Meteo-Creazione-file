@@ -3,7 +3,7 @@ using Meteo.Services;
 
 namespace Meteo.UI.AdminActions
 {
-    public class AdminManagerUI
+    public class AdminManagerUI : ExitService
     {
         public string _lang;
 
@@ -24,7 +24,7 @@ namespace Meteo.UI.AdminActions
                 Console.WriteLine("Session ended");
             }
         }
-        public void InsertUsernameToDelete()
+        public string InsertUsernameToDelete()
         {
             if (_lang == "it")
             {
@@ -37,7 +37,10 @@ namespace Meteo.UI.AdminActions
                 Console.WriteLine("Insert the username of the user to delete");
             }
 
+            var usernameToDelete = Console.ReadLine();
 
+            Exit(usernameToDelete);
+            return usernameToDelete;
         }
         public string InsertNameUserToModfy ()
         {
@@ -51,6 +54,8 @@ namespace Meteo.UI.AdminActions
                 Console.WriteLine("Insert the username of the user to modify"); 
             }
             var usernameModify = Console.ReadLine();
+            Exit(usernameModify);
+
             return usernameModify;
         }
         public string InsertFirstPsw()
@@ -65,6 +70,7 @@ namespace Meteo.UI.AdminActions
                 Console.WriteLine("\nInsert the new password of the user");
             }
             var pswModifyRegex = DataMaskManager.MaskData(pswModify);
+            Exit(pswModifyRegex);
             return pswModifyRegex;
 
             
@@ -82,6 +88,7 @@ namespace Meteo.UI.AdminActions
                 Console.WriteLine("\nReenter the new password of the users");
             }
             var pswModifyRegex = DataMaskManager.MaskData(pswModify);
+            Exit(pswModifyRegex);
             return pswModifyRegex;
 
         }

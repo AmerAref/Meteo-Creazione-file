@@ -115,5 +115,9 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
+        public void UpdateCities(List<CityJsonModels.CityJson> allCity)
+        {
+            return;
+        }
     }
 }

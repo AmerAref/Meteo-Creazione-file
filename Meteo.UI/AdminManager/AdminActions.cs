@@ -21,6 +21,8 @@ namespace Meteo.UI.AdminActions
 
         public void LoginAdmin(string choiceSelect)
         {
+            var updateCity = new UpdateCity();
+
             var print = new PrintData();
 
 
@@ -41,6 +43,12 @@ namespace Meteo.UI.AdminActions
                 case "4":
                     return;
                 case "5":
+                    updateCity.DownloadJsonCity();
+                    var allCity = updateCity.DataReadyToInsert();
+                    queryBuilder.UpdateCities(allCity);
+
+                    break;
+                case "6":
                     adminInterface.Exit();
                     Environment.Exit(0);
                     break;

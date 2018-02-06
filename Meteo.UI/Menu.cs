@@ -1,9 +1,11 @@
 using System;
+using Meteo.Services;
 using Meteo.Services.Infrastructure;
+
 
 namespace Meteo.UI
 {
-    public class Menu
+    public class Menu : ExitService
     {
         private IQueryBuilder _queryBuilder { get; set; }
         private string _lang;
@@ -57,6 +59,7 @@ namespace Meteo.UI
                     break;
             }
             var choiceSelected = Console.ReadLine();
+            Exit(choiceSelected);
             return choiceSelected;
         }
         public int SelectQuestion()
@@ -109,6 +112,7 @@ namespace Meteo.UI
             }
 
             var confermation = Console.ReadLine();
+            Exit(confermation);
 
             return confermation;
         }
@@ -132,6 +136,8 @@ namespace Meteo.UI
                     break;
             }
             var langToInsert = Console.ReadLine();
+            Exit(langToInsert);
+
             return langToInsert;
         }
 
@@ -147,7 +153,8 @@ namespace Meteo.UI
                     Console.WriteLine("****2 - Visualizza la tabella 'Master'                          *");
                     Console.WriteLine("****3 - Modifica la tabella 'User' (crea/elimina/modifica user) *");
                     Console.WriteLine("****4 - Accedi al menu previsioni                               *");
-                    Console.WriteLine("****5 - Termina sessione                                        *");
+                    Console.WriteLine("****5 - Aggiorna città presenti nel DB                          *");
+                    Console.WriteLine("****6 - Termina sessione                                        *");
                     Console.WriteLine("*****************************************************************");
                     break;
                 case "en":
@@ -156,12 +163,15 @@ namespace Meteo.UI
                     Console.WriteLine("****1 - View all the registrated users                          *");
                     Console.WriteLine("****2 - View the 'Master' table                                 *");
                     Console.WriteLine("****3 - Modify the 'User' table (create/delete/modify user)     *");
-                    Console.WriteLine("****4 - Access to forecast menu                             *");
-                    Console.WriteLine("****5 - End session                                             *");
+                    Console.WriteLine("****4 - Access to forecast menu                                 *");
+                    Console.WriteLine("****5 - Aggiorna città presenti nel DB                          *");
+                    Console.WriteLine("****6 - End session                                             *");
                     Console.WriteLine("*****************************************************************");
                     break;
             }
             var choiceSelected = Console.ReadLine();
+            Exit(choiceSelected);
+
             return choiceSelected;
         }
         public string ShowSecondMenuAdmin()
@@ -189,6 +199,8 @@ namespace Meteo.UI
                     break;
             }
             var choiceSelected = Console.ReadLine();
+            Exit(choiceSelected);
+
             return choiceSelected;
 
         }
@@ -218,6 +230,8 @@ namespace Meteo.UI
                     break;
             }
             var roleSelected = Console.ReadLine();
+            Exit(roleSelected);
+
             return roleSelected;
         }
 
@@ -254,6 +268,8 @@ namespace Meteo.UI
                     break;
             }
             var choiceSelect = Console.ReadLine();
+            Exit(choiceSelect);
+
             return choiceSelect;
 
         }
@@ -275,11 +291,7 @@ namespace Meteo.UI
 
             }
             var parameters = Console.ReadLine();
-            if (parameters == "exit")
-            {
-                Environment.Exit(0);
-            }
-
+            Exit(parameters);
             return parameters;
 
         }
@@ -308,10 +320,7 @@ namespace Meteo.UI
                     break;
             }
             var choseSelected = Console.ReadLine();
-            if (choseSelected == "exit")
-            {
-                Environment.Exit(0);
-            }
+            Exit(choseSelected);
 
             return choseSelected;
 
@@ -340,10 +349,7 @@ namespace Meteo.UI
                     break;
             }
             var choseSelected = Console.ReadLine();
-            if (choseSelected == "exit")
-            {
-                Environment.Exit(0);
-            }
+            Exit(choseSelected);
 
             return choseSelected;
 
@@ -374,6 +380,8 @@ namespace Meteo.UI
                     break;
             }
             var exportChoice = Console.ReadLine();
+            Exit(exportChoice);
+
             return exportChoice;
         }
 
@@ -398,10 +406,8 @@ namespace Meteo.UI
                     break;
             }
             var choseSelected = Console.ReadLine();
-            if (choseSelected == "exit")
-            {
-                Environment.Exit(0);
-            }
+            Exit(choseSelected);
+
 
             return choseSelected;
         }
