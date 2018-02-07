@@ -63,8 +63,6 @@ namespace Meteo.UI.FirstAuthentication
 
             return user;
         }
-
-
         private string ReadUserAndAuthenication()
         {
 
@@ -85,14 +83,11 @@ namespace Meteo.UI.FirstAuthentication
                 {
                     countAttempts = 3;
                 }
-
             }
             return newUsername;
         }
         private string ReadNewPsw()
         {
-
-
             var pswNewAccount = "";
             for (var countAttempts = 0; countAttempts < 3; countAttempts++)
             {
@@ -112,7 +107,6 @@ namespace Meteo.UI.FirstAuthentication
                 {
                     countAttempts = 3;
                 }
-
             }
             return pswNewAccount;
         }
@@ -120,8 +114,6 @@ namespace Meteo.UI.FirstAuthentication
 
         private string ComparisonPswAndEcrypted(string pswNewAccount)
         {
-
-
             for (var countAttempts = 0; countAttempts < 3; countAttempts++)
             {
                 var pswComparison = _authenticationUI.ComparisonPsw();
@@ -145,17 +137,10 @@ namespace Meteo.UI.FirstAuthentication
             }
             return null;
         }
-
-
         private string ReadAnswerAndEcrypted(Services.Models.Question questionselect)
         {
-
-
-
-
             for (var countAttempts = 0; countAttempts < 5; countAttempts++)
             {
-
                 Console.WriteLine(questionselect.DefaultQuestion);
                 // conferma rispost inserita 
                 var readAnswer = Console.ReadLine();
@@ -173,12 +158,9 @@ namespace Meteo.UI.FirstAuthentication
                 }
             }
             return null;
-
         }
         public Meteo.Services.Models.User Login()
         {
-
-
             _authentication = AuthenicationWithUsernameAndPsw();
             if (_authentication != null)
             {
@@ -200,9 +182,7 @@ namespace Meteo.UI.FirstAuthentication
         }
 
         private Services.Models.User GetUserIfExist()
-
         {
-
             for (var c = 0; c < 3; c++)
             {
                 var forAnswerReadUsername = _authenticationUI.ReadUsernameForSecureQuestion();
@@ -214,12 +194,10 @@ namespace Meteo.UI.FirstAuthentication
             }
             Environment.Exit(0);
             return null;
-
         }
 
         private Services.Models.User AuthenicationWithUsernameAndPsw()
         {
-
             for (var c = 0; c < 3; c++)
             {
                 // Inserimento User
@@ -227,18 +205,14 @@ namespace Meteo.UI.FirstAuthentication
                 var authPwd = _authenticationUI.ReadPsw();
                 authPwd = Register.EncryptPwd(authPwd);
 
-
                 // confronto se esiste psw (Massimo 3 volte )
                 _authentication = _queryBuilder.GetUserIfExist(usernameAuthentication, authPwd);
                 if (_authentication != null)
                 {
                     return _authentication;
                 }
-
             }
             return _authentication;
-
-
         }
 
         private Services.Models.User AuthenticationWithAnswer(string forAnswerInsertUsername, string questionPrinted)
@@ -254,13 +228,10 @@ namespace Meteo.UI.FirstAuthentication
                 if (_authentication != null)
                 {
                     return _authentication;
-
                 }
             }
             Environment.Exit(0);
             return null;
-
-
         }
     }
 }

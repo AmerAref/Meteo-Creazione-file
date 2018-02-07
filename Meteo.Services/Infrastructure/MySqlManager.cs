@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Meteo.Services.Infrastructure
 {
     public class MySqlManager

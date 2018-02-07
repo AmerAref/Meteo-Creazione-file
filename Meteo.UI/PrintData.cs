@@ -4,7 +4,15 @@ using Meteo.Services.Models;
 
 namespace Meteo.UI
 {
-    public class PrintData
+    public interface IPrintingService
+    {
+        void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang);
+        void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang);
+        void PrintFilteredDataHumidity(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast objFiltred, string menuLang);
+        void PrintAllUsers(List<User> allUsers);
+        void PrintAllMasterRecords(List<Master> allMasterRecords);
+    }
+    public class PrintData : IPrintingService
     {
         static DateTime masterDate = DateTime.Now;
         static string format = "yyyy-MM-dd hh:mm:ss";
@@ -45,7 +53,7 @@ namespace Meteo.UI
             }
         }
 
-        public void PrintDataLast5Day(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang)
+        public void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang)
         {
             foreach (var measure in jsonObj.List)
             {

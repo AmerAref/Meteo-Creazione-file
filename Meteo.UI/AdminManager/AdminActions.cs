@@ -21,12 +21,10 @@ namespace Meteo.UI.AdminManager
             _queryBuilder = queryBuilderForCostr;
             _menu = new Menu(_queryBuilder, _lang, _exit);
         }
-
         public void AdminLogic(string choiceSelect)
         {
             var updateCity = new UpdateCity();
             var print = new PrintData();
-
 
             switch (choiceSelect)
             {
@@ -48,7 +46,6 @@ namespace Meteo.UI.AdminManager
                     updateCity.DownloadJsonCity();
                     var allCity = updateCity.DataReadyToUpdateTableCity();
                     _queryBuilder.UpdateCities(allCity);
-
                     break;
                 case "6":
                     _adminInteractions.Exit();
@@ -56,7 +53,6 @@ namespace Meteo.UI.AdminManager
                     break;
             }
         }
-
         public void ModifyUserTable(string secondAdminChoice)
         {
             {

@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Meteo.Services.Models;
 
-
 namespace Meteo.Services.Infrastructure
 {
     public class MySqlQueryBuilder : IQueryBuilder
     {
-
         private readonly IDbConnectionManager _manager;
 
         public MySqlQueryBuilder(IDbConnectionManager manager)
@@ -257,11 +255,9 @@ namespace Meteo.Services.Infrastructure
                 var query = $"UPDATE  `City` SET `IdCity` = '{city.IdCity}' , `Country` = '{city.Country}', `Longitude` = '{city.Coord.Longitude}', `Latitude`= '{city.Coord.Latitude}', `Name`='{city.Name}'  WHERE `IdCity` = '{city.IdCity}'";
                 var cmd = _manager.GetCommand(query);
                 cmd.ExecuteNonQuery();
-
             }
             _manager.Close();
             return;
         }
-
     }
 }

@@ -69,7 +69,7 @@ namespace Meteo.UI
             exit = true;
             while (exit)
             {
-                var forecastManager = new ForecastAction(menuLang, new ExitService());
+                var forecastManager = new ForecastAction(menuLang, new ExitService(), new PrintData());
                 forecastManager.Actions(user.Username, measureUnit);
             }
         }

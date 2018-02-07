@@ -5,7 +5,7 @@ using Meteo.Services;
 
 namespace Meteo.UI.ForecastManager
 {
-    public class ForecastInteractions : ExitService
+    public class ForecastManagerUI
     {
         public string _menuLang;
         public Menu _menu;
@@ -18,7 +18,7 @@ namespace Meteo.UI.ForecastManager
         public string password { get; set; }
         public string passwordMaskered { get; set; }
 
-        public ForecastInteractions(string menuLang, Menu menu)
+        public ForecastManagerUI(string menuLang, Menu menu)
         {
             _menuLang = menuLang;
             _menu = menu;
@@ -39,7 +39,6 @@ namespace Meteo.UI.ForecastManager
                 Console.WriteLine(DataInterface.insertNamePlaceEN);
             }
             var place = Console.ReadLine();
-            Exit(place);
             return place;
         }
 
@@ -55,7 +54,6 @@ namespace Meteo.UI.ForecastManager
             {
                 meteoChoiceForDB = $"Forecast {OneDayOr5DaysChoice} ({searchingFor})";
             }
-
             return meteoChoiceForDB;
         }
 
@@ -63,14 +61,13 @@ namespace Meteo.UI.ForecastManager
         {
             if (_menuLang == "it")
             {
-                Console.WriteLine(DataInterface.successIT);
+                Console.WriteLine(DataInterface.successIT + "\n");
             }
             else
             {
-                Console.WriteLine(DataInterface.successEN);
+                Console.WriteLine(DataInterface.successEN + "\n");
             }
         }
-
         public string ChoiceDoFileJson()
         {
             if (_menuLang == "it")
@@ -82,8 +79,6 @@ namespace Meteo.UI.ForecastManager
                 Console.WriteLine(DataInterface.choiceDoFileEN);
             }
             var choiceSelected = _menu.Chioce();
-            Exit(choiceSelected);
-
 
             return choiceSelected;
         }
@@ -98,8 +93,6 @@ namespace Meteo.UI.ForecastManager
                 Console.WriteLine(DataInterface.choiceCreateXlsFileEN);
             }
             var choiceSelected = _menu.Chioce();
-            Exit(choiceSelected);
-
             return choiceSelected;
         }
         public string InsertNameFile(string dataPrinted, string extension, string OneDayOr5Days)
@@ -121,13 +114,12 @@ namespace Meteo.UI.ForecastManager
             else if (extension == ".xls")
             {
                 var fileName = Console.ReadLine();
-                Exit(fileName);
                 return fileName;
             }
             else
             {
                 var fileName = Console.ReadLine();
-                Exit(fileName); 
+
                 return fileName;
             }
         }
@@ -142,7 +134,6 @@ namespace Meteo.UI.ForecastManager
                 Console.WriteLine(DataInterface.choiceSendEmailEN);
             }
             var choiceSelected = _menu.Chioce();
-            Exit(choiceSelected);
             return choiceSelected;
         }
 
@@ -155,9 +146,7 @@ namespace Meteo.UI.ForecastManager
             subjectValue = dataForEmail["subjectKey"];
             userValue = dataForEmail["userKey"];
             password = "";
-
             passwordMaskered = DataMaskManager.MaskData(password);
-
         }
         public string ReadHumidityValue()
         {
@@ -172,24 +161,6 @@ namespace Meteo.UI.ForecastManager
 
             var humidity = Console.ReadLine();
             return humidity;
-
-
-        }
-        public DateTimeUserInput ReadDataTime()
-        {
-            if (_menuLang == "it")
-            {
-                Console.WriteLine("Inserisci data con il seguente formato YYYY-mm-GG");
-            }
-            else
-            {
-                Console.WriteLine("Enter date with the following format YYYY-mm-GG");
-            }
-            var date = Console.ReadLine();
-            Exit(date);
-
-            var validateDateTime = new DateTimeUserInput(date);
-            return validateDateTime;
         }
         public string ReadTime()
         {
@@ -203,9 +174,7 @@ namespace Meteo.UI.ForecastManager
                 Console.WriteLine("Enter time with the following format HH:MM:SS");
             }
             time = Console.ReadLine();
-            Exit(time);
             return time;
-
         }
         public string ReadQualitySky()
         {
@@ -218,7 +187,6 @@ namespace Meteo.UI.ForecastManager
                 Console.WriteLine("Enter the type of requested weather");
             }
             var typeWeather = Console.ReadLine();
-            Exit(typeWeather);
             return typeWeather;
         }
 
@@ -233,7 +201,6 @@ namespace Meteo.UI.ForecastManager
                 Console.WriteLine("Enter the start date");
             }
             var startDate = Console.ReadLine();
-            Exit(startDate);
             return startDate;
         }
         public string InsertEndDate()
@@ -247,10 +214,8 @@ namespace Meteo.UI.ForecastManager
                 Console.WriteLine("Enter the end date");
             }
             var endDate = Console.ReadLine();
-            Exit(endDate); 
             return endDate;
         }
-
 
         public void Exit()
         {
@@ -262,7 +227,6 @@ namespace Meteo.UI.ForecastManager
             {
                 Console.WriteLine("Session ended");
             }
-
             Environment.Exit(0);
         }
         public string ReadDate()
@@ -276,11 +240,7 @@ namespace Meteo.UI.ForecastManager
                 Console.WriteLine("Read Data");
             }
             var readDate = Console.ReadLine();
-            Exit(readDate);
             return readDate;
-
-
         }
-
     }
 }

@@ -1,4 +1,5 @@
 ﻿﻿using System;
+
 namespace Meteo.Services
 {
     public interface IUserInput<T>

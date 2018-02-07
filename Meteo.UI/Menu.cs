@@ -2,7 +2,6 @@ using System;
 using Meteo.Services;
 using Meteo.Services.Infrastructure;
 
-
 namespace Meteo.UI
 {
     public class Menu 
@@ -16,6 +15,11 @@ namespace Meteo.UI
             _queryBuilder = queryBuilder;
             _lang = lang;
             _exit = exit;
+        }
+
+        public void ChangeLanguage(string lang)
+        {
+            _lang = lang;
         }
 
         public string SelectLanguageStart()
@@ -144,8 +148,6 @@ namespace Meteo.UI
 
             return langToInsert;
         }
-
-
         public string ShowFirtsMenuAdmin()
         {
             switch (_lang)
@@ -157,7 +159,7 @@ namespace Meteo.UI
                     Console.WriteLine("****2 - Visualizza la tabella 'Master'                          *");
                     Console.WriteLine("****3 - Modifica la tabella 'User' (crea/elimina/modifica user) *");
                     Console.WriteLine("****4 - Accedi al menu previsioni                               *");
-                    Console.WriteLine("****5 - Aggiorna città presenti nel DB                          *");
+                    Console.WriteLine("****5 - Aggiorna la tabella 'City' del database                 *");
                     Console.WriteLine("****6 - Termina sessione                                        *");
                     Console.WriteLine("*****************************************************************");
                     break;
@@ -168,7 +170,7 @@ namespace Meteo.UI
                     Console.WriteLine("****2 - View the 'Master' table                                 *");
                     Console.WriteLine("****3 - Modify the 'User' table (create/delete/modify user)     *");
                     Console.WriteLine("****4 - Access to forecast menu                                 *");
-                    Console.WriteLine("****5 - Aggiorna città presenti nel DB                          *");
+                    Console.WriteLine("****5 - Update the 'City' table of the database                 *");
                     Console.WriteLine("****6 - End session                                             *");
                     Console.WriteLine("*****************************************************************");
                     break;
@@ -206,7 +208,6 @@ namespace Meteo.UI
             _exit.Exit(choiceSelected);
 
             return choiceSelected;
-
         }
         public string SelectRole()
         {
@@ -238,7 +239,6 @@ namespace Meteo.UI
 
             return roleSelected;
         }
-
 
         public string ShowFirst()
         {
@@ -288,13 +288,10 @@ namespace Meteo.UI
                     Console.WriteLine("*************   Enter parameters to search     * **********");
                     Console.WriteLine("***********************************************************");
                     break;
-
-
             }
             var parameters = Console.ReadLine();
             _exit.Exit(parameters);
             return parameters;
-
         }
         public string ShowFiltredMenu()
         {
@@ -375,7 +372,6 @@ namespace Meteo.UI
             }
             var choseSelected = Console.ReadLine();
            _exit.Exit(choseSelected);
-
 
             return choseSelected;
         }

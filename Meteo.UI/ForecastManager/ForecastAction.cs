@@ -11,28 +11,25 @@ namespace Meteo.UI.ForecastManager
     public class ForecastAction
     {
         public MeteoApi _meteoApi;
-        public PrintData _printData;
         public static IQueryBuilder queryBuilder = QueryBuilderServices.QueryBuilder();
         public static Menu _menu;
         public EmailManager _emailManager;
         public FileMenager _filemenager;
         public CreateXlsFile _createXlsFile;
-        public string _fileName, _menuLang, _measureUnit, _extensionJson = ".json", _extensionXls = ".xls";
+        public string _fileName, _menuLang, _measureUnit, _extensionJson = ".json", _extensionXls = ".xls", _lat, _lon, _place;
         public int _idUserMaster;
         public ForecastInteractions _aunthenticationUserInterface;
         public static DateTime _reciveDate = DateTime.Now;
         private IService _exit;
+        private IPrintingService _printService;
         public string _dateTimeForFile = _reciveDate.Date.ToString("yyyy-MM-dd");
-        public string _lat;
-        public string _lon;
-        public string _place;
 
-        public ForecastAction(string lang, IService exit)
+        public ForecastAction(string lang, IService exit, IPrintingService printService)
         {
             _exit = exit;
             _menuLang = lang;
             _meteoApi = new MeteoApi();
-            _printData = new PrintData();
+            _printService = printService;
             _menu = new Menu(queryBuilder, _menuLang, _exit);
             _aunthenticationUserInterface = new ForecastInteractions(_menuLang, _menu);
             _filemenager = new FileMenager();
@@ -125,8 +122,8 @@ namespace Meteo.UI.ForecastManager
 
                             try
                             {
-                                var objFilteredForHumidity = _meteoApi.FiltredMeteoByHumidityLast5Day(humidity, _place).Result;
-                                _printData.PrintFilteredDataHumidity(objFilteredForHumidity, _menuLang);
+                                var objFilteredForHumidity = _meteoApi.FilteredMeteoByHumidityNext5Day(humidity, _place).Result;
+                                _printService.PrintFilteredDataHumidity(objFilteredForHumidity, _menuLang);
 
                                 _aunthenticationUserInterface.RequestSucces();
                             }
@@ -139,15 +136,15 @@ namespace Meteo.UI.ForecastManager
                             _place = _aunthenticationUserInterface.InsertNamePlace();
                             var time = _aunthenticationUserInterface.ReadTime();
                             var readDate = _aunthenticationUserInterface.ReadDate();
-                            var objFilteredForTimeDate = _meteoApi.FiltredMeteoByDateTimeLast5Day(readDate, time, _place).Result;
-                            _printData.PrintDataLast5Day(objFilteredForTimeDate, _menuLang);
+                            var objFilteredForTimeDate = _meteoApi.FilteredMeteoByDateTimeNext5Day(readDate, time, _place).Result;
+                            _printService.PrintDataFor5Days(objFilteredForTimeDate, _menuLang);
                             _aunthenticationUserInterface.RequestSucces();
                             break;
                         case "3":
                             _place = _aunthenticationUserInterface.InsertNamePlace();
 
                             var typeWeather = _aunthenticationUserInterface.ReadQualitySky();
-                            var jsonObj = _meteoApi.FiltredMeteoByWeatherLast5Day(typeWeather, _place);
+                            var jsonObj = _meteoApi.FilteredMeteoByWeatherNext5Day(typeWeather, _place);
                             _aunthenticationUserInterface.RequestSucces();
                             break;
                         case "4":
@@ -280,12 +277,12 @@ namespace Meteo.UI.ForecastManager
         {
             if (OneDayOr5Days == "1Day")
             {
-                _printData.PrintForData(jsonObj, _menuLang);
+                _printService.PrintForData(jsonObj, _menuLang);
             }
 
             else if (OneDayOr5Days == "5Days")
             {
-                _printData.PrintDataLast5Day(jsonObj, _menuLang);
+                _printService.PrintDataFor5Days(jsonObj, _menuLang);
             }
         }
         private long InsertData(dynamic jsonObj, string OneDayOr5Days, string place, string lat, string lon, string insertChoiceSelected, string username)

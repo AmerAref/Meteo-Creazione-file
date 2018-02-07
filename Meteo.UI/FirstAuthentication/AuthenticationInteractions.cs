@@ -11,7 +11,6 @@ namespace Meteo.UI.FirstAuthentication
         {
             _lang = lang;
         }
-
         public string ReadName()
         {
             if (_lang == "it")
@@ -40,7 +39,6 @@ namespace Meteo.UI.FirstAuthentication
             var surnameNewAccount = Console.ReadLine();
             Exit(surnameNewAccount);
 
-
             return surnameNewAccount;
         }
         public string ReadUsername()
@@ -56,11 +54,7 @@ namespace Meteo.UI.FirstAuthentication
             var newUsername = Console.ReadLine();
             Exit(newUsername);
             return newUsername;
-
-
         }
-
-
         public void IfUsernameExist()
         {
             if (_lang == "it")
@@ -87,7 +81,6 @@ namespace Meteo.UI.FirstAuthentication
             var newpsw = DataMaskManager.MaskData(passwordRegistration);
             Exit(newpsw);
             return newpsw;
-
         }
         public void ReadPswSecondTime()
         {
@@ -117,9 +110,7 @@ namespace Meteo.UI.FirstAuthentication
             Exit(compPsw);
 
             return compPsw;
-
         }
-
         public void PswNotEquals()
         {
             if (_lang == "it")
@@ -130,9 +121,7 @@ namespace Meteo.UI.FirstAuthentication
             {
                 Console.WriteLine($"\nThe two entered passwords don't match! {DataInterface.reinsertUserPswEN}");
             }
-
         }
-
         public string ReadAnswer()
         {
             var answerNotEcrypted = "";
@@ -148,8 +137,6 @@ namespace Meteo.UI.FirstAuthentication
             Exit(answer);
 
             return answer;
-
-
         }
         public void ConfirmationAnswer(string insertAnswer)
         {
@@ -157,13 +144,11 @@ namespace Meteo.UI.FirstAuthentication
             {
                 Console.WriteLine("La risposta richiesta è la seguente? ");
                 Console.WriteLine(insertAnswer);
-
             }
             else
             {
                 Console.WriteLine("Is the following the required answer?");
                 Console.WriteLine(insertAnswer);
-
             }
         }
         public void WelcomeUser(string username)
@@ -193,12 +178,5 @@ namespace Meteo.UI.FirstAuthentication
 
             return secureAnswer;
         }
-
-
-
-
-
-
-
     }
 }

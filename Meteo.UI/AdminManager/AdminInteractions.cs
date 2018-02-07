@@ -12,9 +12,7 @@ namespace Meteo.UI.AdminManager
         {
             _lang = lang;
             _exit = exit;
-
         }
-
         public void Exit()
         {
 
@@ -93,7 +91,6 @@ namespace Meteo.UI.AdminManager
             var pswModifyRegex = DataMaskManager.MaskData(pswModify);
             _exit.Exit(pswModifyRegex);
             return pswModifyRegex;
-
         }
         public void AttemptsPsw(int pswModifyCount)
         {
@@ -105,7 +102,6 @@ namespace Meteo.UI.AdminManager
             {
                 Console.WriteLine($"\nThe two passwords do not match! You still have {pswModifyCount} attempts.");
             }
-
         }
         public void AttemtsRegexPsw()
         {

@@ -1,11 +1,10 @@
 ﻿using System;
+
 namespace Meteo.Services
 {
-
     public interface IService
     {
         void Exit(string readParam);
-
     }
     public class ExitService : IService
     {
@@ -18,7 +17,4 @@ namespace Meteo.Services
             }
         }
     }
-
-
 }
-    

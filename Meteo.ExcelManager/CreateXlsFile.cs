@@ -7,22 +7,22 @@ namespace Meteo.ExcelManager
 {
     public class CreateXlsFile
     {
-        private readonly string _path = Directory.GetCurrentDirectory() + "/";
+        private readonly string _destinationPath = Directory.GetCurrentDirectory() + "/";
         int _row = 2;
-        public void CreateXlsFileWithForecastData(List<Forecast> forecastData, string place, string lat, string lon, string xlsFile, string dateTime, string OneOrFiveDays)
+        public void CreateXlsFileWithForecastData(List<Forecast> forecastResearchData, string place, string latitude, string longitude, string xlsFileName, string dateTime, string oneOrFiveDaysChoice)
         {
-            var newFile = new FileInfo(_path + $@"{xlsFile}" + OneOrFiveDays + dateTime + ".xls");
+            var newFile = new FileInfo(_destinationPath + $@"{xlsFileName}" + oneOrFiveDaysChoice + dateTime + ".xls");
             ExcelWorksheet worksheet;
 
             using (var pkg = new ExcelPackage(newFile))
             {
                 if (place != null)
                 {
-                    worksheet = pkg.Workbook.Worksheets.Add($"{OneOrFiveDays} meteo for {place}");
+                    worksheet = pkg.Workbook.Worksheets.Add($"{oneOrFiveDaysChoice} meteo for {place}");
                 }
                 else
                 {
-                    worksheet = pkg.Workbook.Worksheets.Add($"{OneOrFiveDays} meteo for Latitude: {lat} & Longitude: {lon}");
+                    worksheet = pkg.Workbook.Worksheets.Add($"{oneOrFiveDaysChoice} meteo for Latitude: {latitude} & Longitude: {longitude}");
                 }
                 worksheet.Cells[1, 1].Value = "Pressure";
                 worksheet.Cells[1, 2].Value = "Humidity";
@@ -32,24 +32,24 @@ namespace Meteo.ExcelManager
                 worksheet.Cells[1, 6].Value = "City name";
                 worksheet.Cells[1, 7].Value = "Weather date";
 
-                foreach (var forecastResearch in forecastData)
+                foreach (var researchData in forecastResearchData)
                 {
-                    worksheet.Cells[_row, 1].Value = forecastResearch.Pressure;
-                    worksheet.Cells[_row, 2].Value = forecastResearch.Humidity;
-                    worksheet.Cells[_row, 3].Value = forecastResearch.Temperature;
-                    worksheet.Cells[_row, 4].Value = forecastResearch.TemperatureMin;
-                    worksheet.Cells[_row, 5].Value = forecastResearch.TemperatureMax;
-                    worksheet.Cells[_row, 6].Value = forecastResearch.CityName;
-                    worksheet.Cells[_row, 7].Value = forecastResearch.WeatherDate.ToString("yyyy-MM-dd HH:mm:ss");
+                    worksheet.Cells[_row, 1].Value = researchData.Pressure;
+                    worksheet.Cells[_row, 2].Value = researchData.Humidity;
+                    worksheet.Cells[_row, 3].Value = researchData.Temperature;
+                    worksheet.Cells[_row, 4].Value = researchData.TemperatureMin;
+                    worksheet.Cells[_row, 5].Value = researchData.TemperatureMax;
+                    worksheet.Cells[_row, 6].Value = researchData.CityName;
+                    worksheet.Cells[_row, 7].Value = researchData.WeatherDate.ToString("yyyy-MM-dd HH:mm:ss");
                     _row++;
                 }
                 pkg.Save();
             }
         }
 
-        public void CreateXlsFileWithExportedData(List<Forecast> forecastResearch, string xlsFile, string dateTime, string exportChoice)
+        public void CreateXlsFileWithExportedData(List<Forecast> forecastResearchData, string xlsFileName, string dateTime, string exportChoice)
         {
-            var newFile = new FileInfo(_path + $@"{xlsFile}" + "Exported" + dateTime + ".xls");
+            var newFile = new FileInfo(_destinationPath + $@"{xlsFileName}" + "Exported" + dateTime + ".xls");
             ExcelWorksheet worksheet;
 
             using (var pkg = new ExcelPackage(newFile))
@@ -71,15 +71,15 @@ namespace Meteo.ExcelManager
                 worksheet.Cells[1, 6].Value = "City Name";
                 worksheet.Cells[1, 7].Value = "Date Of Research";
 
-                foreach (var forecast in forecastResearch)
+                foreach (var researchData in forecastResearchData)
                 {
-                    worksheet.Cells[_row, 1].Value = forecast.Pressure;
-                    worksheet.Cells[_row, 2].Value = forecast.Humidity;
-                    worksheet.Cells[_row, 3].Value = forecast.Temperature;
-                    worksheet.Cells[_row, 4].Value = forecast.TemperatureMin;
-                    worksheet.Cells[_row, 5].Value = forecast.TemperatureMax;
-                    worksheet.Cells[_row, 6].Value = forecast.CityName;
-                    worksheet.Cells[_row, 7].Value = forecast.WeatherDate.ToString("yyyy-MM-dd hh:mm:ss");
+                    worksheet.Cells[_row, 1].Value = researchData.Pressure;
+                    worksheet.Cells[_row, 2].Value = researchData.Humidity;
+                    worksheet.Cells[_row, 3].Value = researchData.Temperature;
+                    worksheet.Cells[_row, 4].Value = researchData.TemperatureMin;
+                    worksheet.Cells[_row, 5].Value = researchData.TemperatureMax;
+                    worksheet.Cells[_row, 6].Value = researchData.CityName;
+                    worksheet.Cells[_row, 7].Value = researchData.WeatherDate.ToString("yyyy-MM-dd hh:mm:ss");
                     _row++;
                 }
                 pkg.Save();

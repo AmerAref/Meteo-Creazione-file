@@ -5,7 +5,6 @@ namespace Meteo.Services.CityJsonModels
 {
     public class City
     {
-        public List<CityJson>List{ get; set; }
-
+        public List<CityJson> List { get; set; }
     }
 }

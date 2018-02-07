@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Meteo.Services.CityJsonModels;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Meteo.Services.CityJsonModels
 {
@@ -13,20 +10,10 @@ namespace Meteo.Services.CityJsonModels
         [JsonProperty("name")]
         public string Name { get; set; }
 
-
-
         [JsonProperty("coord")]
         public Coordinates Coord { get; set; }
 
         [JsonProperty("country")]
         public string Country { get; set; }
-
-
-
     }
-
 }
-
-
-
-
