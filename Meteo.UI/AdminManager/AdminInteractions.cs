@@ -114,5 +114,16 @@ namespace Meteo.UI.AdminManager
                 Console.WriteLine($"\nThe psw does not meet the security criteria");
             }
         }
+        public void RequestSucces()
+        {
+            if (_lang == "it")
+            {
+                Console.WriteLine(DataInterface.successIT);
+            }
+            else
+            {
+                Console.WriteLine(DataInterface.successEN);
+            }
+        }
     }
 }

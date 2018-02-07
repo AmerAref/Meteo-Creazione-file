@@ -89,14 +89,16 @@ namespace Meteo.UI.FirstAuthentication
         private string ReadNewPsw()
         {
             var pswNewAccount = "";
+            pswNewAccount = _authenticationUI.ReadPsw();
+
+
             for (var countAttempts = 0; countAttempts < 3; countAttempts++)
             {
-                pswNewAccount = _authenticationUI.ReadPsw();
 
                 // Controlla se Accetta i criteri di sicurezza psw
                 if (Helper.RegexForPsw(pswNewAccount) == false)
                 {
-                    _authenticationUI.ReadPswSecondTime();
+                    pswNewAccount = _authenticationUI.ReadPswSecondTime();
                     if (countAttempts == 2)
                     {
                         Environment.Exit(0);
@@ -205,7 +207,6 @@ namespace Meteo.UI.FirstAuthentication
                 var authPwd = _authenticationUI.ReadPsw();
                 authPwd = Register.EncryptPwd(authPwd);
 
-                // confronto se esiste psw (Massimo 3 volte )
                 _authentication = _queryBuilder.GetUserIfExist(usernameAuthentication, authPwd);
                 if (_authentication != null)
                 {
@@ -219,7 +220,7 @@ namespace Meteo.UI.FirstAuthentication
         {
             for (var c = 0; c < 3; c++)
             {
-                Console.WriteLine(questionPrinted);
+                Console.WriteLine($"\n{questionPrinted}");
 
                 var insertAnswerMaskered = _authenticationUI.ReadAnswer();
                 // criptaggio della Risposta inserita 

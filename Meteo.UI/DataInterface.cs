@@ -20,8 +20,8 @@ namespace Meteo.UI
         public static string insertUserIT = "\nInserisci Username", insertUserEN = "\nEnter Username";
         public static string insertPswIT = "Inserisci Password", insertPswEN = "Enter Password";
         public static string newPswIT = "Inserisci la nuova password", newPswEN = "Enter the new password";
-        public static string reinsertUserPswIT = "Reinsersci Username e password", reinsertUserPswEN = "Reenter Username and Password";
-        public static string remainingAttemptsIT = "Tentativi rimasi: ", remainingAttemptsEN = "Remaining attempts: ";
+        public static string reinsertUserPswIT = "\nReinsersci Username e password", reinsertUserPswEN = "\nReenter Username and Password";
+        public static string remainingAttemptsIT = "\nTentativi rimasi: ", remainingAttemptsEN = "\nRemaining attempts: ";
         public static string secureQuestionIT = "Inserisci Username per la domanda di sicurezza", secureQuestionEN = "Enter Username for the security question";
         public static string insertNameFileXlsIT = "Inserisci nome file";
         public static string insertNameFileXlsEN = "Insert file name";

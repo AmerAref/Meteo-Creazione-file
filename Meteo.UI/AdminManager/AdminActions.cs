@@ -31,14 +31,19 @@ namespace Meteo.UI.AdminManager
                 case "1":
                     var allUsers = _queryBuilder.GetAllUsers();
                     print.PrintAllUsers(allUsers);
+                    _adminInteractions.RequestSucces();
                     break;
                 case "2":
                     var allMasterRecords = _queryBuilder.GetAllMasterRecords();
                     print.PrintAllMasterRecords(allMasterRecords);
+                    _adminInteractions.RequestSucces();
+
                     break;
                 case "3":
                     var secondAdminChoice = _menu.ShowSecondMenuAdmin();
                     ModifyUserTable(secondAdminChoice);
+                    _adminInteractions.RequestSucces();
+
                     break;
                 case "4":
                     return;
@@ -46,6 +51,8 @@ namespace Meteo.UI.AdminManager
                     updateCity.DownloadJsonCity();
                     var allCity = updateCity.DataReadyToUpdateTableCity();
                     _queryBuilder.UpdateCities(allCity);
+                    _adminInteractions.RequestSucces();
+
                     break;
                 case "6":
                     _adminInteractions.Exit();
@@ -59,17 +66,15 @@ namespace Meteo.UI.AdminManager
                 switch (secondAdminChoice)
                 {
                     case "1":
-                        _adminInteractions.InsertUsernameToDelete();
-                        var usernameDelete = Console.ReadLine();
+                        var usernameDelete = _adminInteractions.InsertUsernameToDelete();
                         _queryBuilder.DeleteUser(usernameDelete);
                         break;
                     case "2":
                         ModifyPsw();
                         break;
                     case "3":
-                        _adminInteractions.InsertNameUserToModfy();
-                        var usernameRoleModify = Console.ReadLine();
-                        var roleModify = Convert.ToInt32(_menu.SelectRole());
+                        var usernameRoleModify = _adminInteractions.InsertNameUserToModfy();
+                        var roleModify = _menu.SelectRole();
                         _queryBuilder.QueryForUpdateRole(usernameRoleModify, roleModify);
                         break;
                     case "4":

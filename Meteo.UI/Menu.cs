@@ -160,7 +160,6 @@ namespace Meteo.UI
                     Console.WriteLine("****3 - Modifica la tabella 'User' (crea/elimina/modifica user) *");
                     Console.WriteLine("****4 - Accedi al menu previsioni                               *");
                     Console.WriteLine("****5 - Aggiorna la tabella 'City' del database                 *");
-                    Console.WriteLine("****6 - Termina sessione                                        *");
                     Console.WriteLine("*****************************************************************");
                     break;
                 case "en":
@@ -171,7 +170,6 @@ namespace Meteo.UI
                     Console.WriteLine("****3 - Modify the 'User' table (create/delete/modify user)     *");
                     Console.WriteLine("****4 - Access to forecast menu                                 *");
                     Console.WriteLine("****5 - Update the 'City' table of the database                 *");
-                    Console.WriteLine("****6 - End session                                             *");
                     Console.WriteLine("*****************************************************************");
                     break;
             }
@@ -190,7 +188,6 @@ namespace Meteo.UI
                     Console.WriteLine("****2 - Vuoi modificare la password di un utente?               *");
                     Console.WriteLine("****3 - Vuoi modificare il ruolo di un utente?                  *");
                     Console.WriteLine("****4 - Torna al menù principale                                *");
-                    Console.WriteLine("****5 - Termina sessione                                        *");
                     Console.WriteLine("*****************************************************************");
                     break;
                 case "en":
@@ -200,7 +197,6 @@ namespace Meteo.UI
                     Console.WriteLine("****2 - Do you want to modify an users password?                *");
                     Console.WriteLine("****3 - Do you want to modify an users role?                    *");
                     Console.WriteLine("****4 - Go back to the main menu                                *");
-                    Console.WriteLine("****5 - End session                                             *");
                     Console.WriteLine("*****************************************************************");
                     break;
             }
@@ -209,7 +205,7 @@ namespace Meteo.UI
 
             return choiceSelected;
         }
-        public string SelectRole()
+        public int SelectRole()
         {
             switch (_lang)
             {
@@ -235,9 +231,12 @@ namespace Meteo.UI
                     break;
             }
             var roleSelected = Console.ReadLine();
+
             _exit.Exit(roleSelected);
 
-            return roleSelected;
+            var roleFormatted = Convert.ToInt32(roleSelected);
+
+            return roleFormatted;
         }
 
         public string ShowFirst()
@@ -253,7 +252,6 @@ namespace Meteo.UI
                     Console.WriteLine("****4 - Vuoi eliminare file nella cartella ?              *");
                     Console.WriteLine("****5 - Invia file tramite email                          *");
                     Console.WriteLine("****6 - Accedi al menu per l'esportazione di dati dal DB  *");
-                    Console.WriteLine("****7 - Termina sessione                                  *");
                     Console.WriteLine("***********************************************************");
                     break;
                 case "en":
@@ -265,7 +263,6 @@ namespace Meteo.UI
                     Console.WriteLine("****4 - Do you want to delete files in the folder?        *");
                     Console.WriteLine("****5 - Send files via email                              *");
                     Console.WriteLine("****6 - Access the DB data export menu                    *");
-                    Console.WriteLine("****7 - End session                                       *");
                     Console.WriteLine("***********************************************************");
                     break;
             }
@@ -313,7 +310,6 @@ namespace Meteo.UI
                     Console.WriteLine("****2 - Filter data by date and / or time                 *");
                     Console.WriteLine("****3 - Filter by sky quality                             *");
                     Console.WriteLine("****4 - Go back to the main menu                          *");
-                    Console.WriteLine("****5 - End session                                       *");
                     Console.WriteLine("***********************************************************");
                     break;
             }
@@ -332,7 +328,6 @@ namespace Meteo.UI
                     Console.WriteLine("****1 - Esporta dati relativi alle ricerce                *");
                     Console.WriteLine("****2 - Esporta dati passando un range di date            *");
                     Console.WriteLine("****3 - Torna al menu principale                          *");
-                    Console.WriteLine("****4 - Termina sessione                                  *");
                     Console.WriteLine("***********************************************************");
                     break;
                 case "en":
@@ -341,7 +336,6 @@ namespace Meteo.UI
                     Console.WriteLine("****1 - Export forecast research                          *");
                     Console.WriteLine("****2 - Export data giving a date range                   *");
                     Console.WriteLine("****3 - Return to the main menu                           *");
-                    Console.WriteLine("****4 - End session                                       *");
                     Console.WriteLine("***********************************************************");
                     break;
             }

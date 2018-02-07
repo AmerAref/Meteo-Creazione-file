@@ -72,18 +72,19 @@ namespace Meteo.UI.FirstAuthentication
             var passwordRegistration = "";
             if (_lang == "it")
             {
-                Console.WriteLine(DataInterface.insertPswIT);
+                Console.WriteLine($"\n{DataInterface.insertPswIT}");
             }
             else
             {
-                Console.WriteLine(DataInterface.insertPswEN);
+                Console.WriteLine($"\n{DataInterface.insertPswEN}");
             }
             var newpsw = DataMaskManager.MaskData(passwordRegistration);
             Exit(newpsw);
             return newpsw;
         }
-        public void ReadPswSecondTime()
+        public string ReadPswSecondTime()
         {
+            var passwordRegistration = "";
             if (_lang == "it")
             {
                 Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire almeno 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
@@ -94,6 +95,10 @@ namespace Meteo.UI.FirstAuthentication
                 Console.WriteLine("\nThe security criteria are not met (Enter at least 1 capital letter, 1 number, 1 special character. The length must be greater than or equal to 8)");
                 Console.WriteLine("\nReenter Password.");
             }
+            var newpsw = DataMaskManager.MaskData(passwordRegistration);
+            Exit(newpsw);
+            return newpsw;
+
         }
         public string ComparisonPsw()
         {
