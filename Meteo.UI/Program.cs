@@ -20,18 +20,15 @@ namespace Meteo.UI
             var user = new User();
             var exit = true;
             var lang = "";
-
-
-
-
             var kernel = new StandardKernel();
+
+
+
             kernel.Load(Assembly.GetAssembly(typeof(MySqlManager)));
             var queryBuilder = kernel.Get<IQueryBuilder>();
             var manager = new MySqlManager(queryBuilder);
             var menu = new Menu(queryBuilder, lang, new ExitService());
 
-
-            //scleta prima lingua nel menu
             lang = menu.SelectLanguageStart();
 
             menu = new Menu(queryBuilder, lang, new ExitService());

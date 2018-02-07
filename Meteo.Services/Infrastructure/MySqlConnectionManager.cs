@@ -2,10 +2,8 @@
 using System.Data;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
-using Ninject.Modules;
 using System.IO;
 using Meteo.Services.Models;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace Meteo.Services.Infrastructure
