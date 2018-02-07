@@ -6,7 +6,7 @@ namespace Meteo.UI.AdminManager
 {
     public class AdminActions
     {
-        public static AdminManagerUI _adminInteractions;
+        public static AdminInteractions _adminInteractions;
         public static string _lang;
         public static IQueryBuilder _queryBuilder;
         public static Menu _menu;
@@ -17,7 +17,7 @@ namespace Meteo.UI.AdminManager
         {
             _exit = exit;
             _lang = menuLang;
-            _adminInteractions = new AdminManagerUI(_lang, _exit);
+            _adminInteractions = new AdminInteractions(_lang, _exit);
             _queryBuilder = queryBuilderForCostr;
             _menu = new Menu(_queryBuilder, _lang, _exit);
         }
@@ -25,7 +25,6 @@ namespace Meteo.UI.AdminManager
         public void AdminLogic(string choiceSelect)
         {
             var updateCity = new UpdateCity();
-
             var print = new PrintData();
 
 
@@ -47,7 +46,7 @@ namespace Meteo.UI.AdminManager
                     return;
                 case "5":
                     updateCity.DownloadJsonCity();
-                    var allCity = updateCity.DataReadyToInsert();
+                    var allCity = updateCity.DataReadyToUpdateTableCity();
                     _queryBuilder.UpdateCities(allCity);
 
                     break;

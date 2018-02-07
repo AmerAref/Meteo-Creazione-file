@@ -16,26 +16,27 @@ namespace Meteo.Services
             string fileName = "current.city.list.json.gz";
 
             var myWebClient = new WebClient();
-            var myStringWebResource = remoteUri + fileName;
-            myWebClient.DownloadFile(myStringWebResource, fileName);
+            var myWebResource = remoteUri + fileName;
+            myWebClient.DownloadFile(myWebResource, fileName);
             return;
         }
 
-        public List<CityJsonModels.CityJson> DataReadyToInsert()
+        public List<CityJsonModels.CityJson> DataReadyToUpdateTableCity()
         {
-            var path = Directory.GetCurrentDirectory();
+            var pathWhereTheFileIsDownload = Directory.GetCurrentDirectory();
 
             string fileName = "/current.city.list.json.gz";
-            var pathFileCompressed = path + fileName;
+            pathWhereTheFileIsDownload = pathWhereTheFileIsDownload + fileName;
             var serializer = new JsonSerializer();
-            var fileToDecompressed = new FileInfo(pathFileCompressed);
-            Decompress(fileToDecompressed);
+            var fileToDecompress = new FileInfo(pathWhereTheFileIsDownload);
+            Decompress(fileToDecompress);
+
             fileName = "/current.city.list.json";
-            var pathFileDecompressed = path + fileName;
+            var pathFileDecompressed = pathWhereTheFileIsDownload + fileName;
 
             var allCity = JsonConvert.DeserializeObject<List<CityJsonModels.CityJson>>(File.ReadAllText(pathFileDecompressed));
-            File.Delete(pathFileDecompressed);
-            File.Delete(pathFileCompressed);
+            File.Delete(pathFileDecompressed); // Delete All files
+            File.Delete(pathWhereTheFileIsDownload);
 
             return allCity;
         }

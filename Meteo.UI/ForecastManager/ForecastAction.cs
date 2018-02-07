@@ -19,7 +19,7 @@ namespace Meteo.UI.ForecastManager
         public CreateXlsFile _createXlsFile;
         public string _fileName, _menuLang, _measureUnit, _extensionJson = ".json", _extensionXls = ".xls";
         public int _idUserMaster;
-        public ForecastManagerUI _aunthenticationUserInterface;
+        public ForecastInteractions _aunthenticationUserInterface;
         public static DateTime _reciveDate = DateTime.Now;
         private IService _exit;
         public string _dateTimeForFile = _reciveDate.Date.ToString("yyyy-MM-dd");
@@ -34,7 +34,7 @@ namespace Meteo.UI.ForecastManager
             _meteoApi = new MeteoApi();
             _printData = new PrintData();
             _menu = new Menu(queryBuilder, _menuLang, _exit);
-            _aunthenticationUserInterface = new ForecastManagerUI(_menuLang, _menu);
+            _aunthenticationUserInterface = new ForecastInteractions(_menuLang, _menu);
             _filemenager = new FileMenager();
             _emailManager = new EmailManager();
             _createXlsFile = new CreateXlsFile();
@@ -265,12 +265,12 @@ namespace Meteo.UI.ForecastManager
             }
             else if (place != null && OneDayOr5Days == "5Days")
             {
-                var json = _meteoApi.ProcessMeteoByPlaceLast5Day(place, _measureUnit).Result;
+                var json = _meteoApi.ProcessMeteoNextFiveDays(place, _measureUnit).Result;
                 return json;
             }
             else if (lat != null && OneDayOr5Days == "5Days")
             {
-                var json = _meteoApi.ProcessMeteoByCoordinatesLast5Day(lat, lon, _measureUnit).Result;
+                var json = _meteoApi.ProcessMeteoByCoordinatesNextFiveDays(lat, lon, _measureUnit).Result;
                 return json;
             }
             _aunthenticationUserInterface.Exit();

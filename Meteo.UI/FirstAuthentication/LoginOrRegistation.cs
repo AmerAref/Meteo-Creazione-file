@@ -10,7 +10,7 @@ namespace Meteo.UI.FirstAuthentication
         public static IQueryBuilder _queryBuilder;
         public string _lang;
         private Menu _menu;
-        private readonly AuthenticationUI _authenticationUI;
+        private readonly AuthenticationInteractions _authenticationUI;
         public Services.Models.User _authentication;
         private IService _exit;
 
@@ -20,7 +20,7 @@ namespace Meteo.UI.FirstAuthentication
             _lang = lang;
             _queryBuilder = queryBuilderCostr;
             _menu = new Menu(_queryBuilder, _lang, _exit);
-            _authenticationUI = new AuthenticationUI(_lang);
+            _authenticationUI = new AuthenticationInteractions(_lang);
         }
 
         public Services.Models.User RegistrationNewAccount()

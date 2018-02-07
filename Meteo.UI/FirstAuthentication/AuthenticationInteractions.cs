@@ -3,11 +3,11 @@ using Meteo.Services;
 
 namespace Meteo.UI.FirstAuthentication
 {
-    public class AuthenticationUI : ExitService
+    public class AuthenticationInteractions : ExitService
     {
         public string _lang;
 
-        public AuthenticationUI(string lang)
+        public AuthenticationInteractions(string lang)
         {
             _lang = lang;
         }

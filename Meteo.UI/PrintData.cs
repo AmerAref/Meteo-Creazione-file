@@ -45,7 +45,7 @@ namespace Meteo.UI
             }
         }
 
-        public void PrintDataLast5Day(Meteo.Services.OpenWeatherMap.Models.LastFiveDaysForecast jsonObj, string menuLang)
+        public void PrintDataLast5Day(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang)
         {
             foreach (var measure in jsonObj.List)
             {
@@ -83,7 +83,7 @@ namespace Meteo.UI
                 }
             }
         }
-        public void PrintFilteredDataHumidity(Meteo.Services.OpenWeatherMap.Models.LastFiveDaysForecast objFiltred, string menuLang)
+        public void PrintFilteredDataHumidity(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast objFiltred, string menuLang)
         {
             foreach (var measure in objFiltred.List)
             {

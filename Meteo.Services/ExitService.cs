@@ -9,9 +9,9 @@ namespace Meteo.Services
     }
     public class ExitService : IService
     {
-        public void Exit(string readParam)
+        public void Exit(string readRequest)
         {
-            if (readParam == "exit")
+            if (readRequest == "exit")
             {
                 Console.WriteLine("Session ended");
                 Environment.Exit(0);

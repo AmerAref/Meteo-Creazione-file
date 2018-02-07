@@ -16,3 +16,8 @@ namespace Meteo.Services.Infrastructure
         }
     }
 }
+
+
+
+
+//Va spostato su program.cs

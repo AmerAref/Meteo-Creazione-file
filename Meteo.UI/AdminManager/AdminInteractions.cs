@@ -3,12 +3,12 @@ using Meteo.Services;
 
 namespace Meteo.UI.AdminManager
 {
-    public class AdminManagerUI
+    public class AdminInteractions
     {
         public string _lang;
         public IService _exit;
 
-        public AdminManagerUI(string lang, IService exit)
+        public AdminInteractions(string lang, IService exit)
         {
             _lang = lang;
             _exit = exit;
