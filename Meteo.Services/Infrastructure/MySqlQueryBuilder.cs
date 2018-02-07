@@ -246,7 +246,7 @@ namespace Meteo.Services.Infrastructure
             _manager.Close();
             return filteredData;
         }
-        public void UpdateCities(List<CityJsonModels.CityJson> allCity)
+        public void UpdateCities(List<CityJsonModels.CitiesJson> allCity)
         {
             _manager.Open();
 

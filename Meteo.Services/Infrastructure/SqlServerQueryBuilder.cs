@@ -99,7 +99,7 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
-        public void UpdateCities(List<CityJsonModels.CityJson> allCity)
+        public void UpdateCities(List<CityJsonModels.CitiesJson> allCity)
         {
             return;
         }

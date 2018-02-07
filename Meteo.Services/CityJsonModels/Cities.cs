@@ -3,8 +3,8 @@ using Newtonsoft.Json;
 
 namespace Meteo.Services.CityJsonModels
 {
-    public class City
+    public class Cities
     {
-        public List<CityJson> List { get; set; }
+        public List<CitiesJson> List { get; set; }
     }
 }

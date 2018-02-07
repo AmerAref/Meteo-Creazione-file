@@ -2,7 +2,7 @@
 
 namespace Meteo.Services.CityJsonModels
 {
-    public class CityJson
+    public class CitiesJson
     {
         [JsonProperty("id")]
         public string IdCity { get; set; }

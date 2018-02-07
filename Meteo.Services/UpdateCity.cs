@@ -21,7 +21,7 @@ namespace Meteo.Services
             return;
         }
 
-        public List<CityJsonModels.CityJson> DataReadyToUpdateTableCity()
+        public List<CityJsonModels.CitiesJson> DataReadyToUpdateTableCity()
         {
             var pathWhereTheFileIsDownload = Directory.GetCurrentDirectory();
 
@@ -34,7 +34,7 @@ namespace Meteo.Services
             fileName = "/current.city.list.json";
             var pathFileDecompressed = pathWhereTheFileIsDownload + fileName;
 
-            var allCity = JsonConvert.DeserializeObject<List<CityJsonModels.CityJson>>(File.ReadAllText(pathFileDecompressed));
+            var allCity = JsonConvert.DeserializeObject<List<CityJsonModels.CitiesJson>>(File.ReadAllText(pathFileDecompressed));
             File.Delete(pathFileDecompressed); // Delete All files
             File.Delete(pathWhereTheFileIsDownload);
 

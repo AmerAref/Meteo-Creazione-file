@@ -1,9 +1,11 @@
-﻿using Meteo.Services;
+﻿using System.Reflection;
+using Meteo.Services;
 using Meteo.Services.Infrastructure;
 using Meteo.Services.Models;
 using Meteo.UI.AdminManager;
 using Meteo.UI.FirstAuthentication;
 using Meteo.UI.ForecastManager;
+using Ninject;
 
 namespace Meteo.UI
 {
@@ -16,11 +18,18 @@ namespace Meteo.UI
             var choiceSelect = "";
             var userRole = "";
             var user = new User();
-            var queryBuilder = QueryBuilderServices.QueryBuilder();
             var exit = true;
             var lang = "";
 
+
+
+
+            var kernel = new StandardKernel();
+            kernel.Load(Assembly.GetAssembly(typeof(MySqlManager)));
+            var queryBuilder = kernel.Get<IQueryBuilder>();
+            var manager = new MySqlManager(queryBuilder);
             var menu = new Menu(queryBuilder, lang, new ExitService());
+
 
             //scleta prima lingua nel menu
             lang = menu.SelectLanguageStart();
@@ -69,7 +78,7 @@ namespace Meteo.UI
             exit = true;
             while (exit)
             {
-                var forecastManager = new ForecastAction(menuLang, new ExitService(), new PrintData());
+                var forecastManager = new ForecastAction(menuLang, new ExitService(), new PrintData(), queryBuilder);
                 forecastManager.Actions(user.Username, measureUnit);
             }
         }

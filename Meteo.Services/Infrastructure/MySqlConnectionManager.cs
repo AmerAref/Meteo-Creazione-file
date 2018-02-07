@@ -82,7 +82,7 @@ namespace Meteo.Services.Infrastructure
         void DeleteUser(string username);
         void QueryForUpdateRole(string username, int role);
         City GetCityData(string lat, string lon, string place);
-        void UpdateCities(List<CityJsonModels.CityJson> allCity);
+        void UpdateCities(List<CityJsonModels.CitiesJson> allCity);
         void InsertDataIntoForecastTable(dynamic jsonObj, string place, long idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest);
         List<Models.Forecast> GetUserForecastResearch(int idUser);
         List<Models.Forecast> GetForecastFilteredByDate(string dataInizio, string dataFine);

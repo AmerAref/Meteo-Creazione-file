@@ -11,7 +11,7 @@ namespace Meteo.UI.ForecastManager
     public class ForecastAction
     {
         public MeteoApi _meteoApi;
-        public static IQueryBuilder queryBuilder = QueryBuilderServices.QueryBuilder();
+        public static IQueryBuilder _queryBuilder;
         public static Menu _menu;
         public EmailManager _emailManager;
         public FileMenager _filemenager;
@@ -24,8 +24,9 @@ namespace Meteo.UI.ForecastManager
         private IPrintingService _printService;
         public string _dateTimeForFile = _reciveDate.Date.ToString("yyyy-MM-dd");
 
-        public ForecastAction(string lang, IService exit, IPrintingService printService)
+        public ForecastAction(string lang, IService exit, IPrintingService printService, IQueryBuilder queryBuilder)
         {
+            _queryBuilder = queryBuilder;
             _exit = exit;
             _menuLang = lang;
             _meteoApi = new MeteoApi();
@@ -44,7 +45,7 @@ namespace Meteo.UI.ForecastManager
             var searchingFor = "";
             var choseThisDay = "";
             var choseLast5Day = "";
-            _idUserMaster = queryBuilder.GetUser(username).IdUser;
+            _idUserMaster = _queryBuilder.GetUser(username).IdUser;
 
             var choiceSelect = _menu.ShowFirst();
             switch (choiceSelect)
@@ -289,23 +290,23 @@ namespace Meteo.UI.ForecastManager
         {
             long lastInsertedMasterId = 0L;
             var dateOfRequist = _reciveDate.ToString("yyyy-MM-dd HH:mm:ss");
-            var cityName = queryBuilder.GetCityData(lat, lon, place).Name;
-            var idCity = queryBuilder.GetCityData(lat, lon, place).Id;
-            lastInsertedMasterId = queryBuilder.InsertDataMaster(insertChoiceSelected, _idUserMaster, dateOfRequist, idCity);
+            var cityName = _queryBuilder.GetCityData(lat, lon, place).Name;
+            var idCity = _queryBuilder.GetCityData(lat, lon, place).Id;
+            lastInsertedMasterId = _queryBuilder.InsertDataMaster(insertChoiceSelected, _idUserMaster, dateOfRequist, idCity);
 
             if (OneDayOr5Days == "1Day")
             {
-                queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, lastInsertedMasterId, idCity, OneDayOr5Days, dateOfRequist);
+                _queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, lastInsertedMasterId, idCity, OneDayOr5Days, dateOfRequist);
             }
             else if (OneDayOr5Days == "5Days")
             {
-                queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, lastInsertedMasterId, idCity, OneDayOr5Days, dateOfRequist);
+                _queryBuilder.InsertDataIntoForecastTable(jsonObj, cityName, lastInsertedMasterId, idCity, OneDayOr5Days, dateOfRequist);
             }
             return lastInsertedMasterId;
         }
         private void ChoiceCreateFileXlsOneDayOr5Days(string lat, string lon, string place, string OneDayOr5Days, string xlsFile, string dateTime, long lastInsertedMasterId)
         {
-            List<Forecast> forecastData = queryBuilder.GetForecastDataByLastInsertedId(lastInsertedMasterId);
+            List<Forecast> forecastData = _queryBuilder.GetForecastDataByLastInsertedId(lastInsertedMasterId);
             if (lat != null && OneDayOr5Days == "1Day")
             {
                 _createXlsFile.CreateXlsFileWithForecastData(forecastData, place, null, null, xlsFile, dateTime, OneDayOr5Days);
@@ -328,7 +329,7 @@ namespace Meteo.UI.ForecastManager
             dynamic forecastResearch;
             if (exportChoice == "1")
             {
-                forecastResearch = queryBuilder.GetUserForecastResearch(_idUserMaster);
+                forecastResearch = _queryBuilder.GetUserForecastResearch(_idUserMaster);
                 _fileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionXls, null);
                 _createXlsFile.CreateXlsFileWithExportedData(forecastResearch, _fileName, _dateTimeForFile, exportChoice);
             }
@@ -336,7 +337,7 @@ namespace Meteo.UI.ForecastManager
             {
                 var startDate = _aunthenticationUserInterface.InsertStartDate();
                 var endDate = _aunthenticationUserInterface.InsertEndDate();
-                forecastResearch = queryBuilder.GetForecastFilteredByDate(startDate, endDate);
+                forecastResearch = _queryBuilder.GetForecastFilteredByDate(startDate, endDate);
                 _fileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionXls, null);
                 _createXlsFile.CreateXlsFileWithExportedData(forecastResearch, _fileName, _dateTimeForFile, exportChoice);
             }
