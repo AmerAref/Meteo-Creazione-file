@@ -120,7 +120,7 @@ namespace Meteo.UI.ForecastManager
                             try
                             {
 
-                               var dataFiltredByCity = _queryBuilder.FilterSearcheByCity(_place, _idUser);
+                                var dataFiltredByCity = _queryBuilder.FilterSearcheByCity(_place, _idUser);
 
 
                                 _printService.PrintDataFiltred(dataFiltredByCity);
@@ -137,7 +137,7 @@ namespace Meteo.UI.ForecastManager
                             var date0 = _aunthenticationUserInterface.ReadDate();
                             var date1 = _aunthenticationUserInterface.ReadDate();
 
-                            var dataFiltredByDate =  _queryBuilder.GetForecastFilteredByDate(date0, date1, _idUser);
+                            var dataFiltredByDate = _queryBuilder.GetForecastFilteredByDate(date0, date1, _idUser);
                             _printService.PrintDataFiltred(dataFiltredByDate);
 
 
@@ -146,7 +146,7 @@ namespace Meteo.UI.ForecastManager
                         case "3":
                             _menu.ShowFirst();
                             break;
-                          
+
                     }
                     break;
                 case "4":
@@ -158,29 +158,15 @@ namespace Meteo.UI.ForecastManager
                     _aunthenticationUserInterface.AuthenticationUserInterfaceSendEmail();
                     _emailManager.AttempsPasswordAndSendEmail(_fileName, _aunthenticationUserInterface.senderValue, _aunthenticationUserInterface.receiverValue, _aunthenticationUserInterface.bodyValue, _aunthenticationUserInterface.subjectValue, _aunthenticationUserInterface.userValue, _aunthenticationUserInterface.password);
                     break;
-                case "6":
-                    var exportChoice = _menu.ShowExportMenu();
-                    switch (exportChoice)
-                    {
-                        case "1":
-                            CreateXlsWithExportedData(exportChoice, username);
-                            break;
-                        case "2":
-                            CreateXlsWithExportedData(exportChoice, username);
-                            break;
-                        case "3":
-                            _menu.ShowFirst();
-                            break;
-                    }
-                    break;
+
             }
         }
 
         private string GetDecisionAndParam()
         {
             var ChoseSelected = "";
-            var parameters = _menu.ShowSecondMenu();
-            string[] substrings = parameters.Split('=');
+            var parametersNotSplitted = _menu.ShowSecondMenu();
+            var substrings = parametersNotSplitted.Split('=');
 
             if (substrings[0] == "place")
             {
@@ -191,8 +177,8 @@ namespace Meteo.UI.ForecastManager
             if (substrings[0] == "lat" || substrings[0] == "lon")
             {
                 _lon = substrings[2];
-                var latt = substrings[1].Split("&");
-                _lat = latt[0];
+                var latNotSplitted = substrings[1].Split("&");
+                _lat = latNotSplitted[0];
 
                 ChoseSelected = "2";
             }
