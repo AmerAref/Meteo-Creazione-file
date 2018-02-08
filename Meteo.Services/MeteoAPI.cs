@@ -8,7 +8,12 @@ using Meteo.Services.OpenWeatherMap.Models;
 
 namespace Meteo.Services
 {
-    public class MeteoApi
+    public interface IMeteoApiService
+    {
+        Task<OneDayForecast> ProcessMeteoForToday(string place, string lat, string lon, string unitMeasure);
+        Task<FiveDaysForecast> ProcessMeteoForFiveDays(string place, string lat, string lon, string unitMeasure);
+    }
+    public class MeteoApi : IMeteoApiService
     {
         private HttpClient Client { get; }
         private readonly string _appUri;
@@ -20,97 +25,39 @@ namespace Meteo.Services
             _appId = "0dc9854b15fa5612e84597073b150cd3";
             _appUri = "http://api.openweathermap.org/data/2.5/";
         }
-        public async Task<OneDayForecast> ProcessMeteoByPlaceToday(string place, string unitMeasure)
+
+        public async Task<OneDayForecast> ProcessMeteoForToday(string place, string lat, string lon, string unitMeasure)
         {
-            var url = $"{_appUri}weather?q={place}&units={unitMeasure}&appid={_appId}";
+            var url = "";
+            if (place != null)
+            {
+                url = $"{_appUri}weather?q={place}&units={unitMeasure}&appid={_appId}";
+            }
+            else if (lat != null)
+            {
+                url = $"{_appUri}weather?lat={lat}&lon={lon}&units={unitMeasure}&appid={_appId}";
+            }
             var jsonStr = await Client.GetStringAsync(url);
             var jsonObj = JsonConvert.DeserializeObject<OneDayForecast>(jsonStr);
             return jsonObj;
         }
-        public async Task<OneDayForecast> ProcessMeteoByCoordinatesToday(string lat, string lon, string unitMeasure)
-        {
-            var url = $"{_appUri}weather?lat={lat}&lon={lon}&units={unitMeasure}&appid={_appId}";
-            var jsonStr = await Client.GetStringAsync(url);
-            var jsonObj = JsonConvert.DeserializeObject<OneDayForecast>(jsonStr);
-            return jsonObj;
-        }
 
-        public async Task<FiveDaysForecast> ProcessMeteoNextFiveDays(string place, string unitMeasure)
+        public async Task<FiveDaysForecast> ProcessMeteoForFiveDays(string place, string lat, string lon, string unitMeasure)
         {
-            var url = $"{_appUri}forecast?q={place}&units={unitMeasure}&appid={_appId}";
-            var jsonStr = await Client.GetStringAsync(url);
-            var jsonObj = JsonConvert.DeserializeObject<FiveDaysForecast>(jsonStr);
-            return jsonObj;
-        }
-
-        public async Task<FiveDaysForecast> ProcessMeteoByCoordinatesNextFiveDays(string lat, string lon, string unitMeasure)
-        {
-            var url = $"{_appUri}forecast?lat={lat}&lon={lon}&units={unitMeasure}&appid={_appId}";
-            var jsonStr = await Client.GetStringAsync(url);
-            var jsonObj = JsonConvert.DeserializeObject<FiveDaysForecast>(jsonStr);
-            return jsonObj;
-        }
-
-        // effettua i vari filtraggi sul db e non sull'api
-        public async Task<FiveDaysForecast> FilteredMeteoByHumidityNext5Day(string humidity, string place)
-        {
-            var url = $"{_appUri}forecast?q={place}&appid={_appId}";
-            var jsonStr = await Client.GetStringAsync(url);
-            var jsonObj = JsonConvert.DeserializeObject<FiveDaysForecast>(jsonStr);
-            var humidityForFilter = int.Parse(humidity);
-            var objFiltred = jsonObj.List.Where(x => x.Parameters.Humidity.Equals(humidityForFilter));
-
-            var objFiltredReady = new FiveDaysForecast()
+            var url = "";
+            if (place != null)
             {
-                List = objFiltred.ToList()
-            };
-            return objFiltredReady;
-        }
-
-        public async Task<FiveDaysForecast> FilteredMeteoByDateTimeNext5Day(string date, string time, string place)
-        {
-            var url = $"{_appUri}forecast?q={place}&appid={_appId}";
-            var jsonStr = await Client.GetStringAsync(url);
-            var jsonObj = JsonConvert.DeserializeObject<FiveDaysForecast>(jsonStr);
-            var dateTimeUserInput = new DateTimeUserInput(date);
-            var dateTime = $"{date}  {time}";
-            var authenticationData = dateTimeUserInput.GetResponse();
-            var dataReady = true;
-            while (dataReady)
-            {
-                if (authenticationData != null)
-                {
-                    var objFiltred = jsonObj.List.Where(x => x.TimeStamp
-                                                    .Equals(dateTime));
-                    var objFiltredReady = new FiveDaysForecast()
-                    {
-                        List = objFiltred.ToList()
-                    };
-                    return objFiltredReady;
-                }
+                url = $"{_appUri}forecast?q={place}&units={unitMeasure}&appid={_appId}";
             }
-            return null;
-        }
-        public async Task FilteredMeteoByWeatherNext5Day(string typeWeather, string place)
-        {
-            var url = $"{_appUri}forecast?q={place}&appid={_appId}";
+            else if (lat != null)
+            {
+                url = $"{_appUri}forecast?lat={lat}&lon={lon}&units={unitMeasure}&appid={_appId}";
+            }
             var jsonStr = await Client.GetStringAsync(url);
             var jsonObj = JsonConvert.DeserializeObject<FiveDaysForecast>(jsonStr);
-
-            foreach (var item in jsonObj.List)
-            {
-                var objFiltred = item.Weather.Where(x => x.Main.Equals(typeWeather)).ToList();
-
-                foreach (var main in objFiltred)
-                {
-                    Console.WriteLine("Id");
-                    Console.WriteLine(main.Id);
-                    Console.WriteLine("Description");
-                    Console.WriteLine(main.Description);
-                }
-            }
-            return;
+            return jsonObj;
         }
+
         private static HttpClient CreateClient()
         {
             var client = new HttpClient();

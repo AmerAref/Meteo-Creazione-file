@@ -84,7 +84,6 @@ namespace Meteo.UI.ForecastManager
             var choiceSelected = _menu.Chioce();
             Exit(choiceSelected);
 
-
             return choiceSelected;
         }
         public string ChoiceDoFileXls()
@@ -157,7 +156,6 @@ namespace Meteo.UI.ForecastManager
             password = "";
 
             passwordMaskered = DataMaskManager.MaskData(password);
-
         }
         public string ReadHumidityValue()
         {
@@ -172,8 +170,6 @@ namespace Meteo.UI.ForecastManager
 
             var humidity = Console.ReadLine();
             return humidity;
-
-
         }
         public DateTimeUserInput ReadDataTime()
         {
@@ -205,7 +201,6 @@ namespace Meteo.UI.ForecastManager
             time = Console.ReadLine();
             Exit(time);
             return time;
-
         }
         public string ReadQualitySky()
         {
@@ -251,7 +246,6 @@ namespace Meteo.UI.ForecastManager
             return endDate;
         }
 
-
         public void Exit()
         {
             if (_menuLang == "it")
@@ -278,9 +272,6 @@ namespace Meteo.UI.ForecastManager
             var readDate = Console.ReadLine();
             Exit(readDate);
             return readDate;
-
-
         }
-
     }
 }

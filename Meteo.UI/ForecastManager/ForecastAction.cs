@@ -10,7 +10,7 @@ namespace Meteo.UI.ForecastManager
 {
     public class ForecastAction
     {
-        public MeteoApi _meteoApi;
+        public IMeteoApiService _meteoApiService;
         public static IQueryBuilder _queryBuilder;
         public static Menu _menu;
         public EmailManager _emailManager;
@@ -24,12 +24,12 @@ namespace Meteo.UI.ForecastManager
         private IPrintingService _printService;
         public string _dateTimeForFile = _reciveDate.Date.ToString("yyyy-MM-dd");
 
-        public ForecastAction(string lang, IService exit, IPrintingService printService, IQueryBuilder queryBuilder)
+        public ForecastAction(string lang, IService exit, IPrintingService printService, IMeteoApiService meteoApiService, IQueryBuilder queryBuilder)
         {
             _queryBuilder = queryBuilder;
             _exit = exit;
             _menuLang = lang;
-            _meteoApi = new MeteoApi();
+            _meteoApiService = meteoApiService;
             _printService = printService;
             _menu = new Menu(queryBuilder, _menuLang, _exit);
             _aunthenticationUserInterface = new ForecastInteractions(_menuLang, _menu);
@@ -119,12 +119,8 @@ namespace Meteo.UI.ForecastManager
 
                             try
                             {
-
                                 var dataFiltredByCity = _queryBuilder.FilterSearcheByCity(_place, _idUser);
-
-
                                 _printService.PrintDataFiltred(dataFiltredByCity);
-
                                 _aunthenticationUserInterface.RequestSucces();
                             }
                             catch (Exception e)
@@ -134,19 +130,15 @@ namespace Meteo.UI.ForecastManager
                             break;
                         case "2":
                             _place = _aunthenticationUserInterface.InsertNamePlace();
-                            var date0 = _aunthenticationUserInterface.ReadDate();
-                            var date1 = _aunthenticationUserInterface.ReadDate();
-
-                            var dataFiltredByDate = _queryBuilder.GetForecastFilteredByDate(date0, date1, _idUser);
+                            var dateFrom = _aunthenticationUserInterface.ReadDate();
+                            var dateTo = _aunthenticationUserInterface.ReadDate();
+                            var dataFiltredByDate = _queryBuilder.GetForecastFilteredByDate(dateFrom, dateTo, _idUser);
                             _printService.PrintDataFiltred(dataFiltredByDate);
-
-
                             _aunthenticationUserInterface.RequestSucces();
                             break;
                         case "3":
                             _menu.ShowFirst();
                             break;
-
                     }
                     break;
                 case "4":
@@ -158,7 +150,6 @@ namespace Meteo.UI.ForecastManager
                     _aunthenticationUserInterface.AuthenticationUserInterfaceSendEmail();
                     _emailManager.AttempsPasswordAndSendEmail(_fileName, _aunthenticationUserInterface.senderValue, _aunthenticationUserInterface.receiverValue, _aunthenticationUserInterface.bodyValue, _aunthenticationUserInterface.subjectValue, _aunthenticationUserInterface.userValue, _aunthenticationUserInterface.password);
                     break;
-
             }
         }
 
@@ -226,22 +217,22 @@ namespace Meteo.UI.ForecastManager
         {
             if (lat != null && OneDayOr5Days == "1Day")
             {
-                var obj = _meteoApi.ProcessMeteoByCoordinatesToday(lon, lat, _measureUnit).Result;
+                var obj = _meteoApiService.ProcessMeteoForToday(null, lon, lat, _measureUnit).Result;
                 return obj;
             }
             else if (place != null && OneDayOr5Days == "1Day")
             {
-                var jsonObj = _meteoApi.ProcessMeteoByPlaceToday(place, _measureUnit).Result;
+                var jsonObj = _meteoApiService.ProcessMeteoForToday(place, null, null, _measureUnit).Result;
                 return jsonObj;
             }
             else if (place != null && OneDayOr5Days == "5Days")
             {
-                var json = _meteoApi.ProcessMeteoNextFiveDays(place, _measureUnit).Result;
+                var json = _meteoApiService.ProcessMeteoForFiveDays(place, null, null, _measureUnit).Result;
                 return json;
             }
             else if (lat != null && OneDayOr5Days == "5Days")
             {
-                var json = _meteoApi.ProcessMeteoByCoordinatesNextFiveDays(lat, lon, _measureUnit).Result;
+                var json = _meteoApiService.ProcessMeteoForFiveDays(null, lat, lon, _measureUnit).Result;
                 return json;
             }
             _aunthenticationUserInterface.Exit();

@@ -111,6 +111,5 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
-
     }
 }
