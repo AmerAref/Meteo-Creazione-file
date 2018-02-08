@@ -263,11 +263,11 @@ namespace Meteo.UI.ForecastManager
         {
             if (_menuLang == "it")
             {
-                Console.WriteLine("Inserisci Data");
+                Console.WriteLine("Inserisci Data (YYYY-MM-GG)");
             }
             else
             {
-                Console.WriteLine("Read Data");
+                Console.WriteLine("Read Date (YYYY-MM-GG)");
             }
             var readDate = Console.ReadLine();
             Exit(readDate);
