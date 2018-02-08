@@ -11,6 +11,8 @@ namespace Meteo.UI
         void PrintFilteredDataHumidity(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast objFiltred, string menuLang);
         void PrintAllUsers(List<User> allUsers);
         void PrintAllMasterRecords(List<Master> allMasterRecords);
+        void PrintDataFiltred(List<Forecast> DataFiltred);
+
     }
     public class PrintData : IPrintingService
     {
@@ -111,10 +113,10 @@ namespace Meteo.UI
                 Console.WriteLine("Password: " + user.Password);
                 Console.WriteLine("Username: " + user.Username);
                 Console.WriteLine("Language: " + user.Language);
-                Console.WriteLine("UnitOfMeasure: " + user.UnitOfMeasure);
-                Console.WriteLine("IdQuestion: " + user.IdQuestion);
+                Console.WriteLine("Unit Of Measure: " + user.UnitOfMeasure);
+                Console.WriteLine("Id Question: " + user.IdQuestion);
                 Console.WriteLine("Answer: " + user.Answer);
-                Console.WriteLine("IdRole: " + user.IdRole);
+                Console.WriteLine("Id Role: " + user.IdRole);
                 Console.WriteLine("");
             }
         }
@@ -123,13 +125,27 @@ namespace Meteo.UI
         {
             foreach (var record in allMasterRecords)
             {
+                Console.WriteLine("Id Master: " + record.IdMaster);
+                Console.WriteLine("Choice 5 DayOrNow: " + record.Choice5DayOrNow);
+                Console.WriteLine("Date Of Requist: " + record.DateOfRequist);
+                Console.WriteLine("Id User: " + record.IdUser);
+                Console.WriteLine("Id City: " + record.IdCity);
+                Console.WriteLine("");
+            }
+        }
+        public void PrintDataFiltred(List<Forecast> DataFiltred)
+        {
+            foreach (var record in DataFiltred)
+            {
                 Console.WriteLine("IdMaster: " + record.IdMaster);
-                Console.WriteLine("Choice5DayOrNow: " + record.Choice5DayOrNow);
-                Console.WriteLine("DateOfRequist: " + record.DateOfRequist);
-                Console.WriteLine("IdUser: " + record.IdUser);
+                Console.WriteLine("Temperature: " + record.Temperature);
+                Console.WriteLine("Weather Date: " + record.WeatherDate);
+                Console.WriteLine("City Name: " + record.CityName);
                 Console.WriteLine("IdCity: " + record.IdCity);
                 Console.WriteLine("");
             }
         }
+
+
     }
 }

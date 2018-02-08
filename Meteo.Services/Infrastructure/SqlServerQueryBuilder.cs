@@ -107,5 +107,10 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
+        public List<Models.Forecast> FilterSearcheByCity(string place, int idUser)
+        {
+            return null;
+        }
+
     }
 }

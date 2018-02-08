@@ -85,5 +85,7 @@ namespace Meteo.Services.Infrastructure
         List<Models.Forecast> GetUserForecastResearch(int idUser);
         List<Models.Forecast> GetForecastFilteredByDate(string dataInizio, string dataFine, int idUser);
         List<Forecast> GetForecastDataByLastInsertedId(long lastInsertedForecastId);
+        List<Models.Forecast> FilterSearcheByCity(string place, int idUser);
+
     }
 }

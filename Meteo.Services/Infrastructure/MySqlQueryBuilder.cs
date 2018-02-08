@@ -259,5 +259,14 @@ namespace Meteo.Services.Infrastructure
             _manager.Close();
             return;
         }
+        public List<Models.Forecast> FilterSearcheByCity(string place, int idUser)
+        {
+            _manager.Open();
+            var query = $"SELECT * FROM `Forecast`, `Master`, `City`  WHERE Master.IdUser = '{idUser}' AND Forecast.CityName = '{place}'";
+            var cmd = _manager.GetCommand(query);
+            var filteredData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
+            _manager.Close();
+            return filteredData;
+        }
     }
 }

@@ -314,20 +314,18 @@ namespace Meteo.UI
                     Console.WriteLine("");
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************    Digitare il valore del menu    ***********");
-                    Console.WriteLine("****1 - Filtra dati relativi a umidità                    *");
-                    Console.WriteLine("****2 - Filtra dati per data e/o ora                      *");
-                    Console.WriteLine("****3 - Filtra per Qualità cielo                          *");
-                    Console.WriteLine("****4 - Torna al menu principale                          *");
+                    Console.WriteLine("****1 - Fitra ricerche per città                          *");
+                    Console.WriteLine("****2 - Filtra ricerche per data                          *");
+                    Console.WriteLine("****3 - Torna al menu principale                          *");
                     Console.WriteLine("***********************************************************");
                     break;
                 case "en":
                     Console.WriteLine("");
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************            Digit value            ***********");
-                    Console.WriteLine("****1 - Filter humidity data                              *");
-                    Console.WriteLine("****2 - Filter data by date and / or time                 *");
-                    Console.WriteLine("****3 - Filter by sky quality                             *");
-                    Console.WriteLine("****4 - Go back to the main menu                          *");
+                    Console.WriteLine("****1 - filter searches by city                           *");
+                    Console.WriteLine("****2 - filter searches by data                           *");
+                    Console.WriteLine("****3 - Go back to the main menu                          *");
                     Console.WriteLine("***********************************************************");
                     break;
             }
