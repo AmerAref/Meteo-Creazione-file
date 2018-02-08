@@ -83,7 +83,7 @@ namespace Meteo.Services.Infrastructure
         void UpdateCities(List<CityJsonModels.CitiesJson> allCity);
         void InsertDataIntoForecastTable(dynamic jsonObj, string place, long idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest);
         List<Models.Forecast> GetUserForecastResearch(int idUser);
-        List<Models.Forecast> GetForecastFilteredByDate(string dataInizio, string dataFine);
+        List<Models.Forecast> GetForecastFilteredByDate(string dataInizio, string dataFine, int idUser);
         List<Forecast> GetForecastDataByLastInsertedId(long lastInsertedForecastId);
     }
 }

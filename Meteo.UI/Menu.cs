@@ -4,7 +4,7 @@ using Meteo.Services.Infrastructure;
 
 namespace Meteo.UI
 {
-    public class Menu 
+    public class Menu
     {
         private IService _exit;
         private IQueryBuilder _queryBuilder { get; set; }
@@ -27,7 +27,8 @@ namespace Meteo.UI
             var exit = true;
             while (exit)
             {
-                Console.WriteLine("\n************************************************************");
+                Console.WriteLine("");
+                Console.WriteLine("**************************************************************");
                 Console.WriteLine("*****        Scegli la lingua/Select the language         ****");
                 Console.WriteLine("****1 - Italiano/Italian (it)                                *");
                 Console.WriteLine("****2 - Inglese/English  (en)                                *");
@@ -49,19 +50,19 @@ namespace Meteo.UI
             switch (_lang)
             {
                 case "it":
+                    Console.WriteLine("");
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************    Digitare il valore del menu    ***********");
                     Console.WriteLine("****1 - Effettua Login                                    *");
                     Console.WriteLine("****2 - Crea nuovo utente                                 *");
-                    Console.WriteLine("****3 - Termina sessione                                  *");
                     Console.WriteLine("***********************************************************");
                     break;
                 case "en":
+                    Console.WriteLine("");
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************            Digit value            ***********");
                     Console.WriteLine("****1 - Login                                             *");
                     Console.WriteLine("****2 - Create new account                                *");
-                    Console.WriteLine("****3 - End session                                       *");
                     Console.WriteLine("***********************************************************");
                     break;
             }
@@ -75,7 +76,8 @@ namespace Meteo.UI
             {
                 case "it":
                     var allQuestionObj = _queryBuilder.AllQuestionsIT();
-                    Console.WriteLine("\n**********************************************************");
+                    Console.WriteLine("");
+                    Console.WriteLine("************************************************************");
                     Console.WriteLine(" Digitare il valore del menu per scelta domanda di sicurezza");
 
                     foreach (var question in allQuestionObj)
@@ -86,7 +88,8 @@ namespace Meteo.UI
                     break;
                 case "en":
                     allQuestionObj = _queryBuilder.AllQuestionsEN();
-                    Console.WriteLine("\n**********************************************************");
+                    Console.WriteLine("");
+                    Console.WriteLine("************************************************************");
                     Console.WriteLine(" Digit value  ");
                     foreach (var question in allQuestionObj)
                     {
@@ -104,6 +107,7 @@ namespace Meteo.UI
             switch (_lang)
             {
                 case "it":
+                    Console.WriteLine("");
                     Console.WriteLine("\n**********************************************************");
                     Console.WriteLine("******** Digitare il valore del menu per conferma risposta *");
                     Console.WriteLine("****1 - Conferma                                           *");
@@ -111,6 +115,7 @@ namespace Meteo.UI
                     Console.WriteLine("************************************************************");
                     break;
                 case "en":
+                    Console.WriteLine("");
                     Console.WriteLine("\n**********************************************************");
                     Console.WriteLine("*************            Digit value            ************");
                     Console.WriteLine("****1 - Confirm                                            *");
@@ -129,6 +134,7 @@ namespace Meteo.UI
             switch (_lang)
             {
                 case "it":
+                    Console.WriteLine("");
                     Console.WriteLine("\n************************************************************");
                     Console.WriteLine("***** Digitare il valore del menu per scelta della lingua ****");
                     Console.WriteLine("****1 - Italiano                                             *");
@@ -136,15 +142,16 @@ namespace Meteo.UI
                     Console.WriteLine("**************************************************************");
                     break;
                 case "en":
-                    Console.WriteLine("\n*********************************************************");
-                    Console.WriteLine("*************            Digit value            ***********");
-                    Console.WriteLine("****1 - Italian                                           *");
-                    Console.WriteLine("****2 - English                                           *");
-                    Console.WriteLine("***********************************************************");
+                    Console.WriteLine("");
+                    Console.WriteLine("\n************************************************************");
+                    Console.WriteLine("**************            Digit value            *************");
+                    Console.WriteLine("****1 - Italian                                              *");
+                    Console.WriteLine("****2 - English                                              *");
+                    Console.WriteLine("**************************************************************");
                     break;
             }
             var langToInsert = Console.ReadLine();
-                _exit.Exit(langToInsert);
+            _exit.Exit(langToInsert);
 
             return langToInsert;
         }
@@ -153,6 +160,7 @@ namespace Meteo.UI
             switch (_lang)
             {
                 case "it":
+                    Console.WriteLine("");
                     Console.WriteLine("*****************************************************************");
                     Console.WriteLine("*************       Digitare il valore del menu       ***********");
                     Console.WriteLine("****1 - Visualizza tutti gli utenti registrati                  *");
@@ -163,6 +171,7 @@ namespace Meteo.UI
                     Console.WriteLine("*****************************************************************");
                     break;
                 case "en":
+                    Console.WriteLine("");
                     Console.WriteLine("*****************************************************************");
                     Console.WriteLine("*************       Digitare il valore del menu       ***********");
                     Console.WriteLine("****1 - View all the registrated users                          *");
@@ -183,6 +192,7 @@ namespace Meteo.UI
             switch (_lang)
             {
                 case "it":
+                    Console.WriteLine("");
                     Console.WriteLine("*****************************************************************");
                     Console.WriteLine("****1 - Vuoi eliminare un utente?                               *");
                     Console.WriteLine("****2 - Vuoi modificare la password di un utente?               *");
@@ -191,7 +201,7 @@ namespace Meteo.UI
                     Console.WriteLine("*****************************************************************");
                     break;
                 case "en":
-
+                    Console.WriteLine("");
                     Console.WriteLine("*****************************************************************");
                     Console.WriteLine("****1 - Do you want to delete an user?                          *");
                     Console.WriteLine("****2 - Do you want to modify an users password?                *");
@@ -211,7 +221,8 @@ namespace Meteo.UI
             {
                 case "it":
                     var allRoles = _queryBuilder.AllRoles();
-                    Console.WriteLine("\n**********************************************************");
+                    Console.WriteLine("");
+                    Console.WriteLine("************************************************************");
                     Console.WriteLine("Digitare il valore del menu per scelta del ruolo           *");
                     foreach (var role in allRoles)
                     {
@@ -221,7 +232,8 @@ namespace Meteo.UI
                     break;
                 case "en":
                     allRoles = _queryBuilder.AllRoles();
-                    Console.WriteLine("\n**********************************************************");
+                    Console.WriteLine("");
+                    Console.WriteLine("************************************************************");
                     Console.WriteLine("*************            Digit value            ************");
                     foreach (var role in allRoles)
                     {
@@ -244,6 +256,7 @@ namespace Meteo.UI
             switch (_lang)
             {
                 case "it":
+                    Console.WriteLine("");
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************    Digitare il valore del menu    ***********");
                     Console.WriteLine("****1 - Leggi dati relativi ad oggi                       *");
@@ -255,6 +268,7 @@ namespace Meteo.UI
                     Console.WriteLine("***********************************************************");
                     break;
                 case "en":
+                    Console.WriteLine("");
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************            Digit value            ***********");
                     Console.WriteLine("****1 - Read for data related to today                    *");
@@ -276,11 +290,13 @@ namespace Meteo.UI
             switch (_lang)
             {
                 case "it":
+                    Console.WriteLine("");
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("****       Inserisci parametri di ricerca                 *");
                     Console.WriteLine("***********************************************************");
                     break;
                 case "en":
+                    Console.WriteLine("");
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************   Enter parameters to search     * **********");
                     Console.WriteLine("***********************************************************");
@@ -295,6 +311,7 @@ namespace Meteo.UI
             switch (_lang)
             {
                 case "it":
+                    Console.WriteLine("");
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************    Digitare il valore del menu    ***********");
                     Console.WriteLine("****1 - Filtra dati relativi a umidità                    *");
@@ -304,6 +321,7 @@ namespace Meteo.UI
                     Console.WriteLine("***********************************************************");
                     break;
                 case "en":
+                    Console.WriteLine("");
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************            Digit value            ***********");
                     Console.WriteLine("****1 - Filter humidity data                              *");
@@ -323,6 +341,7 @@ namespace Meteo.UI
             switch (_lang)
             {
                 case "it":
+                    Console.WriteLine("");
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************    Digitare il valore del menu    ***********");
                     Console.WriteLine("****1 - Esporta dati relativi alle ricerce                *");
@@ -331,6 +350,7 @@ namespace Meteo.UI
                     Console.WriteLine("***********************************************************");
                     break;
                 case "en":
+                    Console.WriteLine("");
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************            Digit value            ***********");
                     Console.WriteLine("****1 - Export forecast research                          *");
@@ -340,7 +360,7 @@ namespace Meteo.UI
                     break;
             }
             var exportChoice = Console.ReadLine();
-          _exit.Exit(exportChoice);
+            _exit.Exit(exportChoice);
 
             return exportChoice;
         }
@@ -350,14 +370,16 @@ namespace Meteo.UI
             switch (_lang)
             {
                 case "it":
-                    Console.WriteLine("\n**********************************************************");
+                    Console.WriteLine("");
+                    Console.WriteLine("************************************************************");
                     Console.WriteLine("********       Digitare il valore del menu     *************");
                     Console.WriteLine("****1 - SI                                                 *");
                     Console.WriteLine("****2 - No                                                 *");
                     Console.WriteLine("************************************************************");
                     break;
                 case "en":
-                    Console.WriteLine("\n**********************************************************");
+                    Console.WriteLine("");
+                    Console.WriteLine("************************************************************");
                     Console.WriteLine("********               Digit value             *************");
                     Console.WriteLine("****1 - YES                                                *");
                     Console.WriteLine("****2 - No                                                 *");
@@ -365,7 +387,7 @@ namespace Meteo.UI
                     break;
             }
             var choseSelected = Console.ReadLine();
-           _exit.Exit(choseSelected);
+            _exit.Exit(choseSelected);
 
             return choseSelected;
         }

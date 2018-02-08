@@ -22,8 +22,6 @@ namespace Meteo.UI
             var lang = "";
             var kernel = new StandardKernel();
 
-
-
             kernel.Load(Assembly.GetAssembly(typeof(MySqlManager)));
             var queryBuilder = kernel.Get<IQueryBuilder>();
             var manager = new MySqlManager(queryBuilder);
@@ -45,8 +43,6 @@ namespace Meteo.UI
                 case "2":
                     user = loginOrRegistration.RegistrationNewAccount();
                     break;
-                case "3":
-                    return;
             }
             menuLang = user.Language;
             measureUnit = user.UnitOfMeasure;
@@ -56,7 +52,6 @@ namespace Meteo.UI
             exit = true;
             if (userRole == "1")
             {
-
                 var admin = new AdminActions(menuLang, queryBuilder, new ExitService());
 
                 while (exit)
@@ -69,8 +64,6 @@ namespace Meteo.UI
                     }
                 }
             }
-
-
 
             exit = true;
             while (exit)

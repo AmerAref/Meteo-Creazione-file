@@ -76,9 +76,6 @@ namespace Meteo.UI.ForecastManager
                             break;
                         case "3":
                             break;
-                        case "4":
-                            Environment.Exit(0);
-                            break;
                     }
                     break;
                 case "2":
@@ -151,9 +148,6 @@ namespace Meteo.UI.ForecastManager
                         case "4":
                             _menu.ShowFirst();
                             break;
-                        case "5":
-                            _aunthenticationUserInterface.Exit();
-                            break;
                     }
                     break;
                 case "4":
@@ -178,13 +172,7 @@ namespace Meteo.UI.ForecastManager
                         case "3":
                             _menu.ShowFirst();
                             break;
-                        case "4":
-                            _aunthenticationUserInterface.Exit();
-                            break;
                     }
-                    break;
-                case "7":
-                    _aunthenticationUserInterface.Exit();
                     break;
             }
         }
@@ -337,8 +325,7 @@ namespace Meteo.UI.ForecastManager
             {
                 var startDate = _aunthenticationUserInterface.InsertStartDate();
                 var endDate = _aunthenticationUserInterface.InsertEndDate();
-                forecastResearch = _queryBuilder.GetForecastFilteredByDate(startDate, endDate);
-                _fileName = _aunthenticationUserInterface.InsertNameFile(_dateTimeForFile, _extensionXls, null);
+                forecastResearch = _queryBuilder.GetForecastFilteredByDate(startDate, endDate, _idUserMaster);
                 _createXlsFile.CreateXlsFileWithExportedData(forecastResearch, _fileName, _dateTimeForFile, exportChoice);
             }
         }

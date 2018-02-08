@@ -20,37 +20,25 @@ namespace Meteo.UI
         public void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang)
         {
             if (menuLang == "it")
-            {
-                Console.WriteLine("Pressione");
-                Console.WriteLine(jsonObj.Parameters.Pressure);
-                Console.WriteLine("Temperatura");
-                Console.WriteLine(jsonObj.Parameters.Temp);
-                Console.WriteLine("Umidità");
-                Console.WriteLine(jsonObj.Parameters.Humidity);
-                Console.WriteLine("Temperatura minima");
-                Console.WriteLine(jsonObj.Parameters.TempMin);
-                Console.WriteLine("Temperatura massima");
-                Console.WriteLine(jsonObj.Parameters.TempMax);
-                Console.WriteLine("Data e ora della stampa");
-                Console.WriteLine(str);
-                Console.WriteLine("");
-            }
-            else
-            {
-                Console.WriteLine("Pressure");
-                Console.WriteLine(jsonObj.Parameters.Pressure);
-                Console.WriteLine("Temperature");
-                Console.WriteLine(jsonObj.Parameters.Temp);
-                Console.WriteLine("Humidity");
-                Console.WriteLine(jsonObj.Parameters.Humidity);
-                Console.WriteLine("Temperature min");
-                Console.WriteLine(jsonObj.Parameters.TempMin);
-                Console.WriteLine("Temperature max");
-                Console.WriteLine(jsonObj.Parameters.TempMax);
-                Console.WriteLine("Date and time of the print");
-                Console.WriteLine(str);
-                Console.WriteLine("");
-            }
+                {
+                    Console.WriteLine("Pressione: " + jsonObj.Parameters.Pressure);
+                    Console.WriteLine("Temperatura: " + jsonObj.Parameters.Temp);
+                    Console.WriteLine("Umidità: " + jsonObj.Parameters.Humidity);
+                    Console.WriteLine("Temperatura minima: " + jsonObj.Parameters.TempMin);
+                    Console.WriteLine("Temperatura massima: " + jsonObj.Parameters.TempMax);
+                    Console.WriteLine("Data e ora della stampa: " + str);
+                    Console.WriteLine("");
+                }
+                else
+                {
+                    Console.WriteLine("Pressure: " + jsonObj.Parameters.Pressure);
+                    Console.WriteLine("Temperature: " + jsonObj.Parameters.Temp);
+                    Console.WriteLine("Humidity: " + jsonObj.Parameters.Humidity);
+                    Console.WriteLine("Temperature min: " + jsonObj.Parameters.TempMin);
+                    Console.WriteLine("Temperature max: " + jsonObj.Parameters.TempMax);
+                    Console.WriteLine("Date and time of the print: " + str);
+                    Console.WriteLine("");
+                }
         }
 
         public void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang)
@@ -59,64 +47,55 @@ namespace Meteo.UI
             {
                 if (menuLang == "it")
                 {
-                    Console.WriteLine("Pressione");
-                    Console.WriteLine(measure.Parameters.Pressure);
-                    Console.WriteLine("Temperatura");
-                    Console.WriteLine(measure.Parameters.Temp);
-                    Console.WriteLine("Umidità");
-                    Console.WriteLine(measure.Parameters.Humidity);
-                    Console.WriteLine("Temperatura minima");
-                    Console.WriteLine(measure.Parameters.TempMin);
-                    Console.WriteLine("Temperatura massima");
-                    Console.WriteLine(measure.Parameters.TempMax);
-                    Console.WriteLine("Data e ora della stampa");
-                    Console.WriteLine(str);
+                    Console.WriteLine("Pressione: " + measure.Parameters.Pressure);
+                    Console.WriteLine("Temperatura: " + measure.Parameters.Temp);
+                    Console.WriteLine("Umidità: " + measure.Parameters.Humidity);
+                    Console.WriteLine("Temperatura minima: " + measure.Parameters.TempMin);
+                    Console.WriteLine("Temperatura massima: " + measure.Parameters.TempMax);
+                    Console.WriteLine("Data e ora della previsione: " + measure.TimeStamp);
                     Console.WriteLine("");
                 }
                 else
                 {
-                    Console.WriteLine("Pressure");
-                    Console.WriteLine(measure.Parameters.Pressure);
-                    Console.WriteLine("Temperature");
-                    Console.WriteLine(measure.Parameters.Temp);
-                    Console.WriteLine("Humidity");
-                    Console.WriteLine(measure.Parameters.Humidity);
-                    Console.WriteLine("Temperature min");
-                    Console.WriteLine(measure.Parameters.TempMin);
-                    Console.WriteLine("Temperature max");
-                    Console.WriteLine(measure.Parameters.TempMax);
-                    Console.WriteLine("Date and time of the print");
-                    Console.WriteLine(str);
+                    Console.WriteLine("Pressure: " + measure.Parameters.Pressure);
+                    Console.WriteLine("Temperature: " + measure.Parameters.Temp);
+                    Console.WriteLine("Humidity: " + measure.Parameters.Humidity);
+                    Console.WriteLine("Temperature min: " + measure.Parameters.TempMin);
+                    Console.WriteLine("Temperature max: " + measure.Parameters.TempMax);
+                    Console.WriteLine("Date and time of the forecast: " + measure.TimeStamp);
                     Console.WriteLine("");
                 }
             }
         }
+
         public void PrintFilteredDataHumidity(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast objFiltred, string menuLang)
         {
             foreach (var measure in objFiltred.List)
             {
                 if (menuLang == "it")
                 {
-                    Console.WriteLine("Ora e data");
-                    Console.WriteLine(measure.TimeStamp);
+                    Console.WriteLine("Ora e data: " + measure.TimeStamp);
+                    // Console.WriteLine(measure.TimeStamp);
                 }
                 else
                 {
-                    Console.WriteLine("Date and time");
-                    Console.WriteLine(measure.TimeStamp);
+                    Console.WriteLine("Date and time: " + measure.TimeStamp);
+                    // Console.WriteLine(measure.TimeStamp);
                 }
 
                 foreach (var weather in measure.Weather)
                 {
                     if (menuLang == "it")
                     {
-                        Console.Write("Cielo");
-                        Console.WriteLine(weather.Main);
+                        Console.Write("Cielo: " + weather.Main);
+                        Console.WriteLine("");
+                        // Console.WriteLine(weather.Main);
                     }
                     else
                     {
-                        Console.Write("Sky");
-                        Console.WriteLine(weather.Main);
+                        Console.Write("Sky: " + weather.Main);
+                        Console.WriteLine("");
+                        // Console.WriteLine(weather.Main);
                     }
                 }
             }
@@ -126,26 +105,16 @@ namespace Meteo.UI
         {
             foreach (var user in allUsers)
             {
-                Console.WriteLine("IdUser");
-                Console.WriteLine(user.IdUser);
-                Console.WriteLine("Name");
-                Console.WriteLine(user.Name);
-                Console.WriteLine("Surname");
-                Console.WriteLine(user.Surname);
-                Console.WriteLine("Password");
-                Console.WriteLine(user.Password);
-                Console.WriteLine("Username");
-                Console.WriteLine(user.Username);
-                Console.WriteLine("Language");
-                Console.WriteLine(user.Language);
-                Console.WriteLine("UnitOfMeasure");
-                Console.WriteLine(user.UnitOfMeasure);
-                Console.WriteLine("IdQuestion");
-                Console.WriteLine(user.IdQuestion);
-                Console.WriteLine("Answer");
-                Console.WriteLine(user.Answer);
-                Console.WriteLine("IdRole");
-                Console.WriteLine(user.IdRole);
+                Console.WriteLine("IdUser: " + user.IdUser);
+                Console.WriteLine("Name: " + user.Name);
+                Console.WriteLine("Surname: " + user.Surname);
+                Console.WriteLine("Password: " + user.Password);
+                Console.WriteLine("Username: " + user.Username);
+                Console.WriteLine("Language: " + user.Language);
+                Console.WriteLine("UnitOfMeasure: " + user.UnitOfMeasure);
+                Console.WriteLine("IdQuestion: " + user.IdQuestion);
+                Console.WriteLine("Answer: " + user.Answer);
+                Console.WriteLine("IdRole: " + user.IdRole);
                 Console.WriteLine("");
             }
         }
@@ -154,14 +123,11 @@ namespace Meteo.UI
         {
             foreach (var record in allMasterRecords)
             {
-                Console.WriteLine("IdMaster");
-                Console.WriteLine(record.IdMaster);
-                Console.WriteLine("Choice5DayOrNow");
-                Console.WriteLine(record.Choice5DayOrNow);
-                Console.WriteLine("DateOfRequist");
-                Console.WriteLine(record.DateOfRequist);
-                Console.WriteLine("IdUser");
-                Console.WriteLine(record.IdUser);
+                Console.WriteLine("IdMaster: " + record.IdMaster);
+                Console.WriteLine("Choice5DayOrNow: " + record.Choice5DayOrNow);
+                Console.WriteLine("DateOfRequist: " + record.DateOfRequist);
+                Console.WriteLine("IdUser: " + record.IdUser);
+                Console.WriteLine("IdCity: " + record.IdCity);
                 Console.WriteLine("");
             }
         }

@@ -24,6 +24,12 @@ namespace Meteo.ExcelManager
                 {
                     worksheet = pkg.Workbook.Worksheets.Add($"{oneOrFiveDaysChoice} meteo for Latitude: {latitude} & Longitude: {longitude}");
                 }
+                worksheet.Cells["A1:G1"].Style.Font.Bold = true;
+                worksheet.Cells["A1:G1"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                worksheet.Cells["A1:G1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkGray);
+                for (int i = 1; i < 8; i++)
+                { worksheet.Column(i).Width = 20; }
+
                 worksheet.Cells[1, 1].Value = "Pressure";
                 worksheet.Cells[1, 2].Value = "Humidity";
                 worksheet.Cells[1, 3].Value = "Temparature";
@@ -49,7 +55,12 @@ namespace Meteo.ExcelManager
 
         public void CreateXlsFileWithExportedData(List<Forecast> forecastResearchData, string xlsFileName, string dateTime, string exportChoice)
         {
-            var newFile = new FileInfo(_destinationPath + $@"{xlsFileName}" + "Exported" + dateTime + ".xls");
+            var dataTypeName = "";
+            if (exportChoice == "1")
+            { dataTypeName = "Exported"; }
+            else
+            { dataTypeName = "ExportedFiltered"; }
+            var newFile = new FileInfo(_destinationPath + $@"{xlsFileName}" + dataTypeName + dateTime + ".xls");
             ExcelWorksheet worksheet;
 
             using (var pkg = new ExcelPackage(newFile))
@@ -62,6 +73,12 @@ namespace Meteo.ExcelManager
                 {
                     worksheet = pkg.Workbook.Worksheets.Add("Exported filtered data");
                 }
+
+                worksheet.Cells["A1:G1"].Style.Font.Bold = true;
+                worksheet.Cells["A1:G1"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                worksheet.Cells["A1:G1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkGray);
+                for (int i = 1; i < 8; i++)
+                { worksheet.Column(i).Width = 20; }
 
                 worksheet.Cells[1, 1].Value = "Pressure";
                 worksheet.Cells[1, 2].Value = "Humidity";

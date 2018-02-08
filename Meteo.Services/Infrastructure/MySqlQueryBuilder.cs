@@ -230,18 +230,18 @@ namespace Meteo.Services.Infrastructure
         public List<Models.Forecast> GetUserForecastResearch(int idUser)
         {
             _manager.Open();
-            var query = $"SELECT * FROM `Forecast`, `User`, `Master` WHERE User.IdUser = '{idUser}' AND Master.IdUser = User.IdUser AND Master.IdMaster = Forecast.IdMaster";
+            var query = $"SELECT * FROM `Forecast`, `Master` WHERE Master.IdUser = '{idUser}' AND Master.IdUser = User.IdUser AND Master.IdMaster = Forecast.IdMaster";
             var cmd = _manager.GetCommand(query);
             var researchData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
             _manager.Close();
             return researchData;
         }
 
-        public List<Models.Forecast> GetForecastFilteredByDate(string dataInizio, string dataFine)
+        public List<Models.Forecast> GetForecastFilteredByDate(string dataInizio, string dataFine, int idUser)
         {
             _manager.Open();
-            var query = $"SELECT * FROM `Forecast`, `Master` WHERE (Forecast.WeatherDate  BETWEEN '{dataInizio}' AND '{dataFine}')";
-            var cmd = _manager.GetCommand(query);
+            var query = $"SELECT * FROM `Forecast`, `Master` WHERE Master.IdUser = '{idUser}' AND (Master.DateOfRequist  BETWEEN '{dataInizio}' AND '{dataFine}') AND Master.IdMaster = Forecast.IdMaster";
+            var cmd = _manager.GetCommand(query);   
             var filteredData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
             _manager.Close();
             return filteredData;

@@ -52,7 +52,6 @@ namespace Meteo.Services
         }
 
         // effettua i vari filtraggi sul db e non sull'api
-
         public async Task<FiveDaysForecast> FilteredMeteoByHumidityNext5Day(string humidity, string place)
         {
             var url = $"{_appUri}forecast?q={place}&appid={_appId}";
