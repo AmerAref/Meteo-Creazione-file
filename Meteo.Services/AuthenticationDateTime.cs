@@ -1,4 +1,6 @@
-﻿﻿using System;
+﻿using System;
+using System.Collections.Generic;
+using Meteo.Services.CityJsonModels;
 
 namespace Meteo.Services
 {
@@ -9,7 +11,7 @@ namespace Meteo.Services
     }
     public class UserResponse<T>
     {
-        T Value { get; set; }
+        public T Value { get; set; }
         public UserResponse(T obj)
         {
             Value = obj;
@@ -36,7 +38,6 @@ namespace Meteo.Services
 
         public abstract T Parse();
         public abstract TResponse GetResponse();
-
         public abstract bool Validate();
     }
 
@@ -53,12 +54,18 @@ namespace Meteo.Services
         {
             DateTime result;
             var check = DateTime.TryParse(_input, out result);
-            return result;
+            if (check)
+            {
+                return result;
+
+            }
+            return DateTime.MinValue;
         }
 
-        public override bool Validate(DateTime date)
+        public override bool Validate(DateTime userInput)
         {
-            if (date.Year < 2018)
+            var date = Convert.ToDateTime(userInput);
+            if (date.Year < DateTime.Now.Year)
             {
                 return false;
             }
@@ -66,6 +73,7 @@ namespace Meteo.Services
         }
         public override UserResponse<DateTime> GetResponse()
         {
+
             var date = Parse();
             var validate = Validate(date);
             if (validate)
@@ -75,49 +83,136 @@ namespace Meteo.Services
             return null;
         }
 
+
+
         public override bool Validate()
         {
             throw new NotImplementedException();
         }
     }
 
-    public class CoordinatesUserInput : UserInput<double, UserResponse<double>>
+    public class UserSearchInput : UserInput<object, UserResponse<object>>
     {
+        public Coordinates coordate = new Coordinates();
+        public CitiesJson city = new CitiesJson();
+
+        List<string> _param = new List<string>();
+
+
+        Dictionary<string, string> data = new Dictionary<string, string>();
         private string _input;
 
-        public CoordinatesUserInput(string input) : base(input)
+
+
+        public UserSearchInput(string input) : base(input)
         {
             _input = input;
         }
-        public override double Parse()
+
+        public override Object Parse()
         {
-            double result;
-            var check = double.TryParse(_input.Replace(',', '.'), out result);
-            return result;
+
+            var inputFirstParse = _input.Split('&');
+
+            foreach (var reciveKeyValue in inputFirstParse)
+            {
+                var keyAndValue = reciveKeyValue.Split('=');
+                data.Add(keyAndValue[0], keyAndValue[1]);
+            }
+
+            foreach (var dataValue in data)
+            {
+                if (dataValue.Key == "lat")
+                {
+
+                    var latWithReplace =  dataValue.Value.Replace(".", ",");
+                    var lat = Convert.ToDouble(latWithReplace);
+                    _param.Add(latWithReplace);
+                    coordate.Latitude = lat;
+
+
+                }
+                if (dataValue.Key == "lon")
+                {
+                   var lonWithReplace =  dataValue.Value.Replace(".", ",");
+
+                    var lon = Convert.ToDouble(lonWithReplace);
+
+                    _param.Add(lonWithReplace);
+
+                    coordate.Longitude = lon;
+                }
+
+
+                if (dataValue.Key == "place")
+
+                {
+                    var place = dataValue.Value;
+                    var key = dataValue.Key;
+
+                    _param.Add(place);
+                    _param.Add(key);
+                    city.Name = place;
+
+                }
+
+                if (dataValue.Key == "country")
+                {
+                    var country = dataValue.Value;
+                    var key = dataValue.Key;
+                    _param.Add(country);
+                    city.Country = country;
+                    
+                }
+
+            }
+            return coordate;
+
+
         }
 
-        public override bool Validate(double coordinate)
+
+        public override bool Validate()
         {
-            if(coordinate >=-180 && coordinate<=180)
+
+            var lat = Convert.ToDouble(_param[0]);
+            var lon = Convert.ToDouble(_param[1]);
+            if (lat >= -90.0 && lat <= 90.0 && lon >= -180.0 && lon <= 180.0)
             {
-                return false;
+                return true;
             }
-            return true;
+
+            return false;
         }
-        public override UserResponse<double> GetResponse()
+
+        public override UserResponse<object> GetResponse()
         {
-            var coordinate = Parse();
-            var validate = Validate(coordinate);
-            if (validate)
+            Parse();
+            var validate = false;
+            if (_param!= null)
             {
-                return new UserResponse<double>(coordinate);
+                return new UserResponse<object>(city);
             }
+            else
+            {
+                validate = Validate();
+
+                if (validate)
+                {
+                    return new UserResponse<object>(coordate);
+                }
+            }
+
+
             return null;
         }
 
-        public override bool Validate()
+
+
+        public override bool Validate(object userInput)
         {
             throw new NotImplementedException();
         }
     }
 }
+

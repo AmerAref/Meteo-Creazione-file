@@ -16,5 +16,12 @@ namespace Meteo.Services
                 Environment.Exit(0);
             }
         }
+        public void Back(string readRequest)
+        {
+            if (readRequest == "back")
+            {
+                return;
+            }
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace Meteo.UI.ForecastManager
         private IService _exit;
         private IPrintingService _printService;
         public string _dateTimeForFile = _reciveDate.Date.ToString("yyyy-MM-dd");
+        public string _country;
 
         public ForecastAction(string lang, IService exit, IPrintingService printService, IQueryBuilder queryBuilder)
         {
@@ -39,7 +40,6 @@ namespace Meteo.UI.ForecastManager
         }
         public void Actions(string username, string measureUnit)
         {
-            //_aunthenticationUserInterface.GetMenuLang(menuLang); dovrebbe funzionare senza dato che la passo come proprieta 
             _measureUnit = measureUnit;
             var OneDayOr5Days = "";
             var searchingFor = "";
@@ -51,7 +51,11 @@ namespace Meteo.UI.ForecastManager
             switch (choiceSelect)
             {
                 case "1":
-                    choseThisDay = GetDecisionAndParam();
+                    var parametersNotSplitted = _menu.ShowSecondMenu();
+                    choseThisDay = ChoiceSelected(parametersNotSplitted);
+
+                    var readDataAndValidate1Day = new UserSearchInput(parametersNotSplitted);
+
 
                     switch (choseThisDay)
                     {
@@ -59,15 +63,21 @@ namespace Meteo.UI.ForecastManager
                             OneDayOr5Days = "1Day";
                             searchingFor = "city";
 
-                            ProcessRequestsForecasts(_place, null, null, searchingFor, OneDayOr5Days, username);
+                            GetPlace(readDataAndValidate1Day);
+
+
+
+
+                            ProcessRequestsForecasts(_place, null, null, searchingFor, OneDayOr5Days, username, _country);
                             break;
                         case "2":
                             OneDayOr5Days = "1Day";
                             searchingFor = "coordinates";
+                            GetCoordinates(readDataAndValidate1Day);
 
                             try
                             {
-                                ProcessRequestsForecasts(null, _lat, _lon, searchingFor, OneDayOr5Days, username);
+                                ProcessRequestsForecasts(null, _lat, _lon, searchingFor, OneDayOr5Days, username, null);
                             }
                             catch (Exception e)
                             {
@@ -79,16 +89,24 @@ namespace Meteo.UI.ForecastManager
                     }
                     break;
                 case "2":
-                    choseLast5Day = GetDecisionAndParam();
+                    parametersNotSplitted = _menu.ShowSecondMenu();
+                    choseLast5Day = ChoiceSelected(parametersNotSplitted);
+                    var readDataAndValidate5Day = new UserSearchInput(parametersNotSplitted);
+
+
 
                     switch (choseLast5Day)
                     {
+
+
                         case "1":
                             try
                             {
                                 OneDayOr5Days = "5Days";
                                 searchingFor = "city";
-                                ProcessRequestsForecasts(_place, null, null, searchingFor, OneDayOr5Days, username);
+                                GetPlace(readDataAndValidate5Day);
+
+                                ProcessRequestsForecasts(_place, null, null, searchingFor, OneDayOr5Days, username, _country);
                                 break;
                             }
                             catch (Exception e)
@@ -99,9 +117,11 @@ namespace Meteo.UI.ForecastManager
                         case "2":
                             OneDayOr5Days = "5Days";
                             searchingFor = "coordinates";
+                            GetCoordinates(readDataAndValidate5Day);
+
                             try
                             {
-                                ProcessRequestsForecasts(null, _lat, _lon, searchingFor, OneDayOr5Days, username);
+                                ProcessRequestsForecasts(null, _lat, _lon, searchingFor, OneDayOr5Days, username, null);
                             }
                             catch (Exception e)
                             {
@@ -162,30 +182,9 @@ namespace Meteo.UI.ForecastManager
             }
         }
 
-        private string GetDecisionAndParam()
-        {
-            var ChoseSelected = "";
-            var parametersNotSplitted = _menu.ShowSecondMenu();
-            var substrings = parametersNotSplitted.Split('=');
 
-            if (substrings[0] == "place")
-            {
-                _place = substrings[1];
-                ChoseSelected = "1";
-            }
 
-            if (substrings[0] == "lat" || substrings[0] == "lon")
-            {
-                _lon = substrings[2];
-                var latNotSplitted = substrings[1].Split("&");
-                _lat = latNotSplitted[0];
-
-                ChoseSelected = "2";
-            }
-            return ChoseSelected;
-        }
-
-        public void ProcessRequestsForecasts(string place, string lat, string lon, string requestFor, string OneDayOr5DaysChoice, string username)
+        public void ProcessRequestsForecasts(string place, string lat, string lon, string requestFor, string OneDayOr5DaysChoice, string username, string country)
         {
             var choiceSelected = "";
             var jsonObj = ReciveJsonObj(lat, lon, place, OneDayOr5DaysChoice);
@@ -231,12 +230,12 @@ namespace Meteo.UI.ForecastManager
             }
             else if (place != null && OneDayOr5Days == "1Day")
             {
-                var jsonObj = _meteoApi.ProcessMeteoByPlaceToday(place, _measureUnit).Result;
+                var jsonObj = _meteoApi.ProcessMeteoByPlaceToday(place, _measureUnit, _country).Result;
                 return jsonObj;
             }
             else if (place != null && OneDayOr5Days == "5Days")
             {
-                var json = _meteoApi.ProcessMeteoNextFiveDays(place, _measureUnit).Result;
+                var json = _meteoApi.ProcessMeteoNextFiveDays(place, _measureUnit, _country).Result;
                 return json;
             }
             else if (lat != null && OneDayOr5Days == "5Days")
@@ -314,32 +313,43 @@ namespace Meteo.UI.ForecastManager
                 _createXlsFile.CreateXlsFileWithExportedData(forecastResearch, _fileName, _dateTimeForFile, exportChoice);
             }
         }
-        public void ControlCoordinates(string lat, string lon)
+        public string ChoiceSelected(string parametersNotSplitted)
         {
-            var latUserInput = new CoordinatesUserInput(lat);
-            var lonUserInput = new CoordinatesUserInput(lon);
-            var authenticateLat = latUserInput.GetResponse();
-            var authenticateLon = lonUserInput.GetResponse();
-            var coordsReady = true;
-            while (coordsReady)
+            var choseSelected = "";
+            var paramSplitted = parametersNotSplitted.Split("=");
+            if (paramSplitted[0] == "place")
             {
-                try
-                {
-                    if (authenticateLat != null && authenticateLon != null)
-                    {
-                        coordsReady = false;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Coordinate sbagliate");
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                    coordsReady = false;
-                }
+                choseSelected = "1";
             }
+            else
+                choseSelected = "2";
+            return choseSelected;
+
         }
+        public void GetPlace(UserSearchInput readDataAndValidate)
+        {
+
+            readDataAndValidate.GetResponse();
+
+            _place = readDataAndValidate.city.Name;
+            _country = readDataAndValidate.city.Country;
+            if (!string.IsNullOrEmpty(_country))
+            {
+                var app = $",{_country}";
+                _country = app; 
+
+            }
+
+        }
+
+
+        public void GetCoordinates(UserSearchInput readDataAndValidate)
+        {
+            readDataAndValidate.GetResponse();
+            _lat = Convert.ToString(readDataAndValidate.coordate.Latitude);
+            _lon = Convert.ToString(readDataAndValidate.coordate.Longitude);
+
+        }
+
     }
 }

@@ -20,9 +20,9 @@ namespace Meteo.Services
             _appId = "0dc9854b15fa5612e84597073b150cd3";
             _appUri = "http://api.openweathermap.org/data/2.5/";
         }
-        public async Task<OneDayForecast> ProcessMeteoByPlaceToday(string place, string unitMeasure)
+        public async Task<OneDayForecast> ProcessMeteoByPlaceToday(string place, string unitMeasure, string countryCode)
         {
-            var url = $"{_appUri}weather?q={place}&units={unitMeasure}&appid={_appId}";
+            var url = $"{_appUri}weather?q={place}{countryCode}&units={unitMeasure}&appid={_appId}";
             var jsonStr = await Client.GetStringAsync(url);
             var jsonObj = JsonConvert.DeserializeObject<OneDayForecast>(jsonStr);
             return jsonObj;
@@ -35,9 +35,9 @@ namespace Meteo.Services
             return jsonObj;
         }
 
-        public async Task<FiveDaysForecast> ProcessMeteoNextFiveDays(string place, string unitMeasure)
+        public async Task<FiveDaysForecast> ProcessMeteoNextFiveDays(string place, string unitMeasure, string countryCode)
         {
-            var url = $"{_appUri}forecast?q={place}&units={unitMeasure}&appid={_appId}";
+            var url = $"{_appUri}forecast?q={place}{countryCode}º&units={unitMeasure}&appid={_appId}";
             var jsonStr = await Client.GetStringAsync(url);
             var jsonObj = JsonConvert.DeserializeObject<FiveDaysForecast>(jsonStr);
             return jsonObj;
