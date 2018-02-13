@@ -13,15 +13,10 @@ namespace Meteo.UI
     {
         static void Main(string[] args)
         {
-            var menuLang = "";
-            var measureUnit = "";
-            var choiceSelect = "";
-            var userRole = "";
             var user = new User();
-            var exit = true;
             var lang = "";
+            
             var kernel = new StandardKernel();
-
             kernel.Load(Assembly.GetAssembly(typeof(MySqlManager)));
             var queryBuilder = kernel.Get<IQueryBuilder>();
             var manager = new MySqlManager(queryBuilder);
@@ -44,19 +39,19 @@ namespace Meteo.UI
                     user = loginOrRegistration.RegistrationNewAccount();
                     break;
             }
-            menuLang = user.Language;
-            measureUnit = user.UnitOfMeasure;
-            userRole = user.IdRole.ToString();
+            var menuLang = user.Language;
+            var measureUnit = user.UnitOfMeasure;
+            var userRole = user.IdRole.ToString();
             var username = user.Username;
-
-            exit = true;
+            
+            var exit = true;
             if (userRole == "1")
             {
                 var admin = new AdminActions(menuLang, queryBuilder, new ExitService());
 
                 while (exit)
                 {
-                    choiceSelect = menu.ShowFirtsMenuAdmin();
+                    var choiceSelect = menu.ShowFirtsMenuAdmin();
                     admin.AdminLogic(choiceSelect);
                     if (choiceSelect == "4")
                     {
@@ -68,7 +63,7 @@ namespace Meteo.UI
             exit = true;
             while (exit)
             {
-                var forecastManager = new ForecastAction(menuLang, new ExitService(), new PrintData(), queryBuilder);
+                var forecastManager = new ForecastAction(menuLang, new ExitService(), new PrintData(), new MeteoApi(), queryBuilder);
                 forecastManager.Actions(user.Username, measureUnit);
             }
         }

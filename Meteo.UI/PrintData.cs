@@ -8,7 +8,6 @@ namespace Meteo.UI
     {
         void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang);
         void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang);
-        void PrintFilteredDataHumidity(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast objFiltred, string menuLang);
         void PrintAllUsers(List<User> allUsers);
         void PrintAllMasterRecords(List<Master> allMasterRecords);
         void PrintDataFiltred(List<Forecast> DataFiltred);
@@ -70,39 +69,6 @@ namespace Meteo.UI
             }
         }
 
-        public void PrintFilteredDataHumidity(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast objFiltred, string menuLang)
-        {
-            foreach (var measure in objFiltred.List)
-            {
-                if (menuLang == "it")
-                {
-                    Console.WriteLine("Ora e data: " + measure.TimeStamp);
-                    // Console.WriteLine(measure.TimeStamp);
-                }
-                else
-                {
-                    Console.WriteLine("Date and time: " + measure.TimeStamp);
-                    // Console.WriteLine(measure.TimeStamp);
-                }
-
-                foreach (var weather in measure.Weather)
-                {
-                    if (menuLang == "it")
-                    {
-                        Console.Write("Cielo: " + weather.Main);
-                        Console.WriteLine("");
-                        // Console.WriteLine(weather.Main);
-                    }
-                    else
-                    {
-                        Console.Write("Sky: " + weather.Main);
-                        Console.WriteLine("");
-                        // Console.WriteLine(weather.Main);
-                    }
-                }
-            }
-        }
-
         public void PrintAllUsers(List<User> allUsers)
         {
             foreach (var user in allUsers)
@@ -145,7 +111,5 @@ namespace Meteo.UI
                 Console.WriteLine("");
             }
         }
-
-
     }
 }
