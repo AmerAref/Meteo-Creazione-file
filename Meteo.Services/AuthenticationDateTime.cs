@@ -35,7 +35,7 @@ namespace Meteo.Services
             }
             return true;
         }
-
+        public abstract void GetParameters(string value);
         public abstract T Parse();
         public abstract TResponse GetResponse();
         public abstract bool Validate();
@@ -86,6 +86,11 @@ namespace Meteo.Services
 
 
         public override bool Validate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void GetParameters(string value)
         {
             throw new NotImplementedException();
         }
@@ -212,6 +217,11 @@ namespace Meteo.Services
         public override bool Validate(object userInput)
         {
             throw new NotImplementedException();
+        }
+
+        public override void GetParameters(string value)
+        {
+            _input = value;
         }
     }
 }

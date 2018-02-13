@@ -46,24 +46,24 @@ namespace Meteo.UI.ForecastManager
             var choseThisDay = "";
             var choseLast5Day = "";
             _idUser = _queryBuilder.GetUser(username).IdUser;
+            var parametersNotSplitted = "";
+            var readDataAndValidate = new UserSearchInput(parametersNotSplitted);
 
             var choiceSelect = _menu.ShowFirst();
             switch (choiceSelect)
             {
                 case "1":
-                    var parametersNotSplitted = _menu.ShowSecondMenu();
+                    parametersNotSplitted = _menu.ShowSecondMenu();
                     choseThisDay = ChoiceSelected(parametersNotSplitted);
 
-                    var readDataAndValidate1Day = new UserSearchInput(parametersNotSplitted);
-
-
+                    readDataAndValidate.GetParameters(parametersNotSplitted);
                     switch (choseThisDay)
                     {
                         case "1":
                             OneDayOr5Days = "1Day";
                             searchingFor = "city";
 
-                            GetPlace(readDataAndValidate1Day);
+                            GetPlace(readDataAndValidate);
 
 
 
@@ -73,7 +73,7 @@ namespace Meteo.UI.ForecastManager
                         case "2":
                             OneDayOr5Days = "1Day";
                             searchingFor = "coordinates";
-                            GetCoordinates(readDataAndValidate1Day);
+                            GetCoordinates(readDataAndValidate);
 
                             try
                             {
@@ -91,8 +91,8 @@ namespace Meteo.UI.ForecastManager
                 case "2":
                     parametersNotSplitted = _menu.ShowSecondMenu();
                     choseLast5Day = ChoiceSelected(parametersNotSplitted);
-                    var readDataAndValidate5Day = new UserSearchInput(parametersNotSplitted);
 
+                    readDataAndValidate.GetParameters(parametersNotSplitted);
 
 
                     switch (choseLast5Day)
@@ -104,7 +104,7 @@ namespace Meteo.UI.ForecastManager
                             {
                                 OneDayOr5Days = "5Days";
                                 searchingFor = "city";
-                                GetPlace(readDataAndValidate5Day);
+                                GetPlace(readDataAndValidate);
 
                                 ProcessRequestsForecasts(_place, null, null, searchingFor, OneDayOr5Days, username, _country);
                                 break;
@@ -117,7 +117,7 @@ namespace Meteo.UI.ForecastManager
                         case "2":
                             OneDayOr5Days = "5Days";
                             searchingFor = "coordinates";
-                            GetCoordinates(readDataAndValidate5Day);
+                            GetCoordinates(readDataAndValidate);
 
                             try
                             {
