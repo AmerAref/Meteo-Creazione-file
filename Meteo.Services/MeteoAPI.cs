@@ -10,8 +10,8 @@ namespace Meteo.Services
 {
     public interface IMeteoApiService
     {
-        Task<OneDayForecast> ProcessMeteoForToday(string place, string lat, string lon, string unitMeasure);
-        Task<FiveDaysForecast> ProcessMeteoForFiveDays(string place, string lat, string lon, string unitMeasure);
+        Task<OneDayForecast> ProcessMeteoForToday(string place, string lat, string lon, string unitMeasure, string country);
+        Task<FiveDaysForecast> ProcessMeteoForFiveDays(string place, string lat, string lon, string unitMeasure, string country);
     }
     public class MeteoApi : IMeteoApiService
     {
@@ -26,14 +26,14 @@ namespace Meteo.Services
             _appUri = "http://api.openweathermap.org/data/2.5/";
         }
 
-        public async Task<OneDayForecast> ProcessMeteoForToday(string place, string lat, string lon, string unitMeasure)
+        public async Task<OneDayForecast> ProcessMeteoForToday(string place, string lat, string lon, string unitMeasure, string country)
         {
             var url = "";
-            if (place != null)
+            if (!string.IsNullOrEmpty(place))
             {
-                url = $"{_appUri}weather?q={place}&units={unitMeasure}&appid={_appId}";
+                url = $"{_appUri}weather?q={place}{country}&units={unitMeasure}&appid={_appId}";
             }
-            else if (lat != null)
+            else if (!string.IsNullOrEmpty(lat + lon))
             {
                 url = $"{_appUri}weather?lat={lat}&lon={lon}&units={unitMeasure}&appid={_appId}";
             }
@@ -42,12 +42,12 @@ namespace Meteo.Services
             return jsonObj;
         }
 
-        public async Task<FiveDaysForecast> ProcessMeteoForFiveDays(string place, string lat, string lon, string unitMeasure)
+        public async Task<FiveDaysForecast> ProcessMeteoForFiveDays(string place, string lat, string lon, string unitMeasure, string country)
         {
             var url = "";
             if (place != null)
             {
-                url = $"{_appUri}forecast?q={place}&units={unitMeasure}&appid={_appId}";
+                url = $"{_appUri}forecast?q={place}{country}&units={unitMeasure}&appid={_appId}";
             }
             else if (lat != null)
             {

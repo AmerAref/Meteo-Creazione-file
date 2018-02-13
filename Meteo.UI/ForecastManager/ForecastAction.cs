@@ -214,26 +214,18 @@ namespace Meteo.UI.ForecastManager
 
         private dynamic ReciveJsonObj(string lat, string lon, string place, string OneDayOr5Days)
         {
-            if (lat != null && OneDayOr5Days == "1Day")
+            if  (OneDayOr5Days == "1Day")
             {
-                var obj = _meteoApiService.ProcessMeteoForToday(null, lon, lat, _measureUnit).Result;
+                var obj = _meteoApiService.ProcessMeteoForToday(place, lon, lat, _measureUnit, _country).Result;
                 return obj;
             }
-            else if (place != null && OneDayOr5Days == "1Day")
-            {
-                var jsonObj = _meteoApiService.ProcessMeteoForToday(place, null, null, _measureUnit).Result;
-                return jsonObj;
-            }
+          
             else if (place != null && OneDayOr5Days == "5Days")
             {
-                var json = _meteoApiService.ProcessMeteoForFiveDays(place, null, null, _measureUnit).Result;
+                var json = _meteoApiService.ProcessMeteoForFiveDays(place, lat, lon, _measureUnit, _country).Result;
                 return json;
             }
-            else if (lat != null && OneDayOr5Days == "5Days")
-            {
-                var json = _meteoApiService.ProcessMeteoForFiveDays(null, lat, lon, _measureUnit).Result;
-                return json;
-            }
+          
             _aunthenticationUserInterface.Exit();
             return null;
         }
