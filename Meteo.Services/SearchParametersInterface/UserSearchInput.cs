@@ -1,101 +1,9 @@
-﻿using System;
+﻿using Meteo.Services.CityJsonModels;
+using System;
 using System.Collections.Generic;
-using Meteo.Services.CityJsonModels;
 
-namespace Meteo.Services
+namespace Meteo.Services.SearchParametersInterface
 {
-    public interface IUserInput<T>
-    {
-        bool Validate();
-        T Parse();
-    }
-    public class UserResponse<T>
-    {
-        public T Value { get; set; }
-        public UserResponse(T obj)
-        {
-            Value = obj;
-        }
-    }
-
-    public abstract class UserInput<T, TResponse> : IUserInput<T> where TResponse : UserResponse<T>
-    {
-        private string _input;
-        protected UserInput(string input)
-        {
-            _input = input;
-        }
-
-        public abstract bool Validate(T userInput);
-        public bool CheckSpecialCharacter()
-        {
-            if (_input.Contains("%"))
-            {
-                return false;
-            }
-            return true;
-        }
-        public abstract void GetParameters(string value);
-        public abstract T Parse();
-        public abstract TResponse GetResponse();
-        public abstract bool Validate();
-    }
-
-    public class DateTimeUserInput : UserInput<DateTime, UserResponse<DateTime>>
-    {
-        private string _input;
-
-        public DateTimeUserInput(string input) : base(input)
-        {
-            _input = input;
-        }
-
-        public override DateTime Parse()
-        {
-            DateTime result;
-            var check = DateTime.TryParse(_input, out result);
-            if (check)
-            {
-                return result;
-
-            }
-            return DateTime.MinValue;
-        }
-
-        public override bool Validate(DateTime userInput)
-        {
-            var date = Convert.ToDateTime(userInput);
-            if (date.Year < DateTime.Now.Year)
-            {
-                return false;
-            }
-            return true;
-        }
-        public override UserResponse<DateTime> GetResponse()
-        {
-
-            var date = Parse();
-            var validate = Validate(date);
-            if (validate)
-            {
-                return new UserResponse<DateTime>(date);
-            }
-            return null;
-        }
-
-
-
-        public override bool Validate()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void GetParameters(string value)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class UserSearchInput : UserInput<object, UserResponse<object>>
     {
         public Coordinates coordate = new Coordinates();
@@ -129,17 +37,14 @@ namespace Meteo.Services
             {
                 if (dataValue.Key == "lat")
                 {
-
-                    var latWithReplace =  dataValue.Value.Replace(".", ",");
+                    var latWithReplace = dataValue.Value.Replace(".", ",");
                     var lat = Convert.ToDouble(latWithReplace);
                     _param.Add(latWithReplace);
                     coordate.Latitude = lat;
-
-
                 }
                 if (dataValue.Key == "lon")
                 {
-                   var lonWithReplace =  dataValue.Value.Replace(".", ",");
+                    var lonWithReplace = dataValue.Value.Replace(".", ",");
 
                     var lon = Convert.ToDouble(lonWithReplace);
 
@@ -148,9 +53,7 @@ namespace Meteo.Services
                     coordate.Longitude = lon;
                 }
 
-
                 if (dataValue.Key == "place")
-
                 {
                     var place = dataValue.Value;
                     var key = dataValue.Key;
@@ -158,7 +61,6 @@ namespace Meteo.Services
                     _param.Add(place);
                     _param.Add(key);
                     city.Name = place;
-
                 }
 
                 if (dataValue.Key == "country")
@@ -167,13 +69,9 @@ namespace Meteo.Services
                     var key = dataValue.Key;
                     _param.Add(country);
                     city.Country = country;
-                    
                 }
-
             }
             return coordate;
-
-
         }
 
 
@@ -194,7 +92,7 @@ namespace Meteo.Services
         {
             Parse();
             var validate = false;
-            if (_param!= null)
+            if (_param != null)
             {
                 return new UserResponse<object>(city);
             }
@@ -225,4 +123,3 @@ namespace Meteo.Services
         }
     }
 }
-

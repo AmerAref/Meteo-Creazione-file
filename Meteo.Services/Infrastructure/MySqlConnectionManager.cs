@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Data;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
@@ -81,11 +81,14 @@ namespace Meteo.Services.Infrastructure
         void QueryForUpdateRole(string username, int role);
         City GetCityData(string lat, string lon, string place);
         void UpdateCities(List<CityJsonModels.CitiesJson> allCity);
-        void InsertDataIntoForecastTable(dynamic jsonObj, string place, long idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest);
+        long InsertDataIntoForecastTable(dynamic jsonObj, string place, long idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest);
         List<Models.Forecast> GetUserForecastResearch(int idUser);
         List<Models.Forecast> GetForecastFilteredByDate(string dataInizio, string dataFine, int idUser);
         List<Forecast> GetForecastDataByLastInsertedId(long lastInsertedForecastId);
         List<Models.Forecast> FilterSearcheByCity(string place, int idUser);
-
+        void InsertMeasureValue(dynamic jsonObj, long lastForecastId, string lang, string oneOrFiveDays);
+        List<Master> GetAllMasterRecordsByUserId(int idUser);
+        void DeleteMasterRecord(string idMaster);
+        MeasureControl GetMeasureTriggerValues(int idUser);
     }
 }

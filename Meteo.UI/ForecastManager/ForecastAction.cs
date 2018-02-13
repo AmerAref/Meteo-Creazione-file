@@ -5,6 +5,7 @@ using Meteo.Services.Models;
 using Newtonsoft.Json;
 using Meteo.ExcelManager;
 using System.Collections.Generic;
+using Meteo.Services.SearchParametersInterface;
 
 namespace Meteo.UI.ForecastManager
 {
@@ -68,7 +69,7 @@ namespace Meteo.UI.ForecastManager
 
 
 
-                            ProcessRequestsForecasts(_place, null, null, searchingFor, OneDayOr5Days, username, _country);
+                            ProcessRequestsForecasts(_place, null, null, searchingFor, OneDayOr5Days, username, _country, _idUser);
                             break;
                         case "2":
                             OneDayOr5Days = "1Day";
@@ -77,7 +78,7 @@ namespace Meteo.UI.ForecastManager
 
                             try
                             {
-                                ProcessRequestsForecasts(null, _lat, _lon, searchingFor, OneDayOr5Days, username, null);
+                                ProcessRequestsForecasts(null, _lat, _lon, searchingFor, OneDayOr5Days, username, null, _idUser);
                             }
                             catch (Exception e)
                             {
@@ -106,7 +107,7 @@ namespace Meteo.UI.ForecastManager
                                 searchingFor = "city";
                                 GetPlace(readDataAndValidate);
 
-                                ProcessRequestsForecasts(_place, null, null, searchingFor, OneDayOr5Days, username, _country);
+                                ProcessRequestsForecasts(_place, null, null, searchingFor, OneDayOr5Days, username, _country, _idUser);
                                 break;
                             }
                             catch (Exception e)
@@ -121,7 +122,7 @@ namespace Meteo.UI.ForecastManager
 
                             try
                             {
-                                ProcessRequestsForecasts(null, _lat, _lon, searchingFor, OneDayOr5Days, username, null);
+                                ProcessRequestsForecasts(null, _lat, _lon, searchingFor, OneDayOr5Days, username, null, _idUser);
                             }
                             catch (Exception e)
                             {
@@ -170,18 +171,20 @@ namespace Meteo.UI.ForecastManager
                     _aunthenticationUserInterface.AuthenticationUserInterfaceSendEmail();
                     _emailManager.AttempsPasswordAndSendEmail(_fileName, _aunthenticationUserInterface.senderValue, _aunthenticationUserInterface.receiverValue, _aunthenticationUserInterface.bodyValue, _aunthenticationUserInterface.subjectValue, _aunthenticationUserInterface.userValue, _aunthenticationUserInterface.password);
                     break;
+                case "6":
+                    DeleteUserRecords(_idUser);
+                    break;
             }
         }
 
 
-
-        public void ProcessRequestsForecasts(string place, string lat, string lon, string requestFor, string OneDayOr5DaysChoice, string username, string country)
+        public void ProcessRequestsForecasts(string place, string lat, string lon, string requestFor, string OneDayOr5DaysChoice, string username, string country, int idUser)
         {
             var choiceSelected = "";
             var jsonObj = ReciveJsonObj(lat, lon, place, OneDayOr5DaysChoice);
             var insertChoiceSelected = _aunthenticationUserInterface.MeteoChoice(requestFor, OneDayOr5DaysChoice);
 
-            PrintData(jsonObj, OneDayOr5DaysChoice);
+            PrintData(jsonObj, OneDayOr5DaysChoice, idUser);
 
             var lastInsertedMasterId = InsertData(jsonObj, OneDayOr5DaysChoice, place, lat, lon, insertChoiceSelected, username);
             _aunthenticationUserInterface.RequestSucces();
@@ -229,16 +232,17 @@ namespace Meteo.UI.ForecastManager
             _aunthenticationUserInterface.Exit();
             return null;
         }
-        private void PrintData(dynamic jsonObj, string OneDayOr5Days)
+        private void PrintData(dynamic jsonObj, string OneDayOr5Days, int idUser)
         {
+            var triggerMeasures = _queryBuilder.GetMeasureTriggerValues(idUser);
             if (OneDayOr5Days == "1Day")
             {
-                _printService.PrintForData(jsonObj, _menuLang);
+                _printService.PrintForData(jsonObj, _menuLang, triggerMeasures);
             }
 
             else if (OneDayOr5Days == "5Days")
             {
-                _printService.PrintDataFor5Days(jsonObj, _menuLang);
+                _printService.PrintDataFor5Days(jsonObj, _menuLang, triggerMeasures);
             }
         }
         private long InsertData(dynamic jsonObj, string OneDayOr5Days, string place, string lat, string lon, string insertChoiceSelected, string username)
@@ -322,17 +326,28 @@ namespace Meteo.UI.ForecastManager
                 _country = app; 
 
             }
-
         }
-
 
         public void GetCoordinates(UserSearchInput readDataAndValidate)
         {
             readDataAndValidate.GetResponse();
             _lat = Convert.ToString(readDataAndValidate.coordate.Latitude);
             _lon = Convert.ToString(readDataAndValidate.coordate.Longitude);
-
         }
 
+        public void DeleteUserRecords(int idUser)
+        {
+            var masterRecords = _queryBuilder.GetAllMasterRecordsByUserId(idUser);
+            _printService.PrintAllMasterRecords(masterRecords);
+            var idMasterToBeDeleted = _aunthenticationUserInterface.InsertIdMasterToDelete();
+            try
+            {
+                _queryBuilder.DeleteMasterRecord(idMasterToBeDeleted);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
     }
 }

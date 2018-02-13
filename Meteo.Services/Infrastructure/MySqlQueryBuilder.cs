@@ -150,16 +150,18 @@ namespace Meteo.Services.Infrastructure
             }
             return city[0];
         }
-        public void InsertDataIntoForecastTable(dynamic jsonObj, string place, long idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
+        public long InsertDataIntoForecastTable(dynamic jsonObj, string place, long idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
         {
+            long lastInsertedForecastId = 0L;
             if (oneDayOrFiveDays == "1Day")
             {
                 var oneDay = jsonObj.Parameters;
 
                 _manager.Open();
-                var query = $"INSERT INTO `Forecast`(`CityName`, `IdCity`, `Pressure`, `Humidity`, `Temperature`, `TemperatureMin`, `TemperatureMax`, `WeatherDate`, `IdMaster`) VALUES ('{place}', '{idCity}', '{oneDay.Pressure}', '{oneDay.Humidity}', '{oneDay.Temp}', '{oneDay.TempMin}', '{oneDay.TempMax}', '{dateOfRequest}', '{idMaster}')";
+                var query = $"INSERT INTO `Forecast`(`WeatherDate`, `IdMaster`) VALUES ('{dateOfRequest}', '{idMaster}')";
                 var cmd = _manager.GetCommand(query);
                 cmd.ExecuteNonQuery();
+                lastInsertedForecastId = cmd.LastInsertedId;
                 _manager.Close();
             }
             else if (oneDayOrFiveDays == "5Days")
@@ -169,13 +171,86 @@ namespace Meteo.Services.Infrastructure
                 _manager.Open();
                 foreach (var data in fiveDays)
                 {
-                    var query = $"INSERT INTO `Forecast`(`CityName`, `IdCity`, `Pressure`, `Humidity`, `Temperature`, `TemperatureMin`, `TemperatureMax`, `WeatherDate`, `IdMaster`) VALUES ('{place}', '{idCity}', '{data.Parameters.Pressure}', '{data.Parameters.Humidity}', '{data.Parameters.Temp}', '{data.Parameters.TempMin}', '{data.Parameters.TempMax}', '{data.TimeStamp}', '{idMaster}')";
+                    var query = $"INSERT INTO `Forecast`(`WeatherDate`, `IdMaster`) VALUES ('{data.TimeStamp}', '{idMaster}')";
                     var cmd = _manager.GetCommand(query);
                     cmd.ExecuteNonQuery();
+                    lastInsertedForecastId = cmd.LastInsertedId;
+                }
+                _manager.Close();
+            }
+            return lastInsertedForecastId;
+        }
+
+        public void InsertMeasureValue(dynamic jsonObj, long lastForecastId, string lang, string oneOrFiveDays)
+        {
+            if (oneOrFiveDays == "1Day")
+            {
+                _manager.Open();
+                var oneDay = jsonObj.Parameters;
+                string queryTemp = "", queryTempMin = "", queryTempMax = "";
+
+                var queryHum = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.Humidity}', '1', '{lastForecastId}')";
+                var queryPres = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.Pressure}', '2', '{lastForecastId}')";
+                if (lang == "it")
+                {
+                    queryTemp = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.Temp}', '3', '{lastForecastId}')";
+                    queryTempMin = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.TempMin}', '4', '{lastForecastId}')";
+                    queryTempMax = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.TempMax}', '5', '{lastForecastId}')";
+                }
+                else if (lang == "en")
+                {
+                    queryTemp = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.Temp}', '6', '{lastForecastId}')";
+                    queryTempMin = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.TempMin}', '7', '{lastForecastId}')";
+                    queryTempMax = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.TempMax}', '8', '{lastForecastId}')";
+                }
+                var cmdHum = _manager.GetCommand(queryHum);
+                var cmdPres = _manager.GetCommand(queryPres);
+                var cmdTemp = _manager.GetCommand(queryTemp);
+                var cmdTempMin = _manager.GetCommand(queryTempMin);
+                var cmdTempMax = _manager.GetCommand(queryTempMax);
+                cmdHum.ExecuteNonQuery();
+                cmdPres.ExecuteNonQuery();
+                cmdTemp.ExecuteNonQuery();
+                cmdTempMin.ExecuteNonQuery();
+                cmdTempMax.ExecuteNonQuery();
+                _manager.Close();
+            }
+            else if (oneOrFiveDays == "5Days")
+            {
+                _manager.Open();
+                var fiveDays = jsonObj.List;
+                string queryTemp = "", queryTempMin = "", queryTempMax = "";
+                foreach (var data in fiveDays)
+                {
+                    var queryHum = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.Humidity}', '1', '{lastForecastId}')";
+                    var queryPres = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.Pressure}', '2', '{lastForecastId}')";
+                    if (lang == "it")
+                    {
+                        queryTemp = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.Temp}', '3', '{lastForecastId}')";
+                        queryTempMin = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.TempMin}', '4', '{lastForecastId}')";
+                        queryTempMax = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.TempMax}', '5', '{lastForecastId}')";
+                    }
+                    else if (lang == "en")
+                    {
+                        queryTemp = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.Temp}', '6', '{lastForecastId}')";
+                        queryTempMin = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.TempMin}', '7', '{lastForecastId}')";
+                        queryTempMax = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.TempMax}', '8', '{lastForecastId}')";
+                    }
+                    var cmdHum = _manager.GetCommand(queryHum);
+                    var cmdPres = _manager.GetCommand(queryPres);
+                    var cmdTemp = _manager.GetCommand(queryTemp);
+                    var cmdTempMin = _manager.GetCommand(queryTempMin);
+                    var cmdTempMax = _manager.GetCommand(queryTempMax);
+                    cmdHum.ExecuteNonQuery();
+                    cmdPres.ExecuteNonQuery();
+                    cmdTemp.ExecuteNonQuery();
+                    cmdTempMin.ExecuteNonQuery();
+                    cmdTempMax.ExecuteNonQuery();
                 }
                 _manager.Close();
             }
         }
+
         public List<Forecast> GetForecastDataByLastInsertedId(long lastInsertedForecastId)
         {
             _manager.Open();
@@ -226,6 +301,37 @@ namespace Meteo.Services.Infrastructure
             return;
         }
 
+        public MeasureControl GetMeasureTriggerValues(int idUser)
+        {
+            _manager.Open();
+            var query = $"SELECT * FROM `MeasureTrigger`, `City`  WHERE MeasureTrigger.IdTrigger = City.IdTrigger";
+            var cmd = _manager.GetCommand(query);
+            var measure = cmd.ExecuteReader().DataReaderMapToList<MeasureControl>();
+            _manager.Close();
+
+            return measure[0];
+        }
+
+        public List<Master> GetAllMasterRecordsByUserId(int idUser)
+        {
+            _manager.Open();
+            var query = $"SELECT * FROM Master WHERE IdUser = '{idUser}'";
+            var cmd = _manager.GetCommand(query);
+            var records = cmd.ExecuteReader().DataReaderMapToList<Master>();
+            _manager.Close();
+
+            return records;
+        }
+
+        public void DeleteMasterRecord(string idMaster)
+        {
+            _manager.Open();
+            var query = $"DELETE FROM `Master` WHERE `IdMaster` = '{idMaster}';";
+            var cmd = _manager.GetCommand(query);
+            cmd.ExecuteNonQuery();
+            _manager.Close();
+        }
+
         //Query per l'export dei dati
         public List<Models.Forecast> GetUserForecastResearch(int idUser)
         {
@@ -241,7 +347,7 @@ namespace Meteo.Services.Infrastructure
         {
             _manager.Open();
             var query = $"SELECT * FROM `Forecast`, `Master` WHERE Master.IdUser = '{idUser}' AND (Master.DateOfRequist  BETWEEN '{dataInizio}' AND '{dataFine}') AND Master.IdMaster = Forecast.IdMaster";
-            var cmd = _manager.GetCommand(query);   
+            var cmd = _manager.GetCommand(query);
             var filteredData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
             _manager.Close();
             return filteredData;

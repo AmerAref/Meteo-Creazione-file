@@ -87,9 +87,9 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
-        public void InsertDataIntoForecastTable(dynamic jsonObj, string place, long idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
+        public long InsertDataIntoForecastTable(dynamic jsonObj, string place, long idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest)
         {
-            return;
+            return 0;
         }
         public List<Models.Forecast> GetUserForecastResearch(int idUser)
         {
@@ -108,6 +108,22 @@ namespace Meteo.Services.Infrastructure
             return null;
         }
         public List<Models.Forecast> FilterSearcheByCity(string place, int idUser)
+        {
+            return null;
+        }
+        public void InsertMeasureValue(dynamic jsonObj, long lastForecastId, string lang, string oneOrFiveDays)
+        {
+            return;
+        }
+        public List<Master> GetAllMasterRecordsByUserId(int idUser)
+        {
+            return null;
+        }
+        public void DeleteMasterRecord(string idMaster)
+        {
+            return;
+        }
+        public MeasureControl GetMeasureTriggerValues(int idUser)
         {
             return null;
         }

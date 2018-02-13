@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Meteo.Services;
-
+using Meteo.Services.SearchParametersInterface;
 
 namespace Meteo.UI.ForecastManager
 {
@@ -272,6 +272,20 @@ namespace Meteo.UI.ForecastManager
             var readDate = Console.ReadLine();
             Exit(readDate);
             return readDate;
+        }
+
+        public string InsertIdMasterToDelete()
+        {
+            if (_menuLang == "it")
+            {
+                Console.WriteLine("Inserisci l'ID della tabella 'Master' che vuoi eliminare");
+            }
+            else
+            {
+                Console.WriteLine("Insert the 'Master' table ID that you want to delete");
+            }
+            var idMaster = Console.ReadLine();
+            return idMaster;
         }
     }
 }

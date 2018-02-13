@@ -6,8 +6,8 @@ namespace Meteo.UI
 {
     public interface IPrintingService
     {
-        void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang);
-        void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang);
+        void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang, MeasureControl triggerMeasures);
+        void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang, MeasureControl triggerMeasures);
         void PrintAllUsers(List<User> allUsers);
         void PrintAllMasterRecords(List<Master> allMasterRecords);
         void PrintDataFiltred(List<Forecast> DataFiltred);
@@ -18,51 +18,164 @@ namespace Meteo.UI
         static DateTime masterDate = DateTime.Now;
         static string format = "yyyy-MM-dd hh:mm:ss";
         static string str = masterDate.ToString(format);
-        public void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang)
+        public void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang, MeasureControl triggerMeasures)
         {
             if (menuLang == "it")
+            {
+                var minTempTriggerCelsius = triggerMeasures.MinTemperatureCelsius;
+                var maxTempTriggerCelsius = triggerMeasures.MaxTemperatureCelsius;
+
+                Console.WriteLine("Pressione: " + jsonObj.Parameters.Pressure);
+                Console.WriteLine("Umidità: " + jsonObj.Parameters.Humidity);
+                if (jsonObj.Parameters.Temp < minTempTriggerCelsius)
                 {
-                    Console.WriteLine("Pressione: " + jsonObj.Parameters.Pressure);
-                    Console.WriteLine("Temperatura: " + jsonObj.Parameters.Temp);
-                    Console.WriteLine("Umidità: " + jsonObj.Parameters.Humidity);
-                    Console.WriteLine("Temperatura minima: " + jsonObj.Parameters.TempMin);
-                    Console.WriteLine("Temperatura massima: " + jsonObj.Parameters.TempMax);
-                    Console.WriteLine("Data e ora della stampa: " + str);
-                    Console.WriteLine("");
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
                 }
-                else
+                else if (jsonObj.Parameters.Temp > maxTempTriggerCelsius)
                 {
-                    Console.WriteLine("Pressure: " + jsonObj.Parameters.Pressure);
-                    Console.WriteLine("Temperature: " + jsonObj.Parameters.Temp);
-                    Console.WriteLine("Humidity: " + jsonObj.Parameters.Humidity);
-                    Console.WriteLine("Temperature min: " + jsonObj.Parameters.TempMin);
-                    Console.WriteLine("Temperature max: " + jsonObj.Parameters.TempMax);
-                    Console.WriteLine("Date and time of the print: " + str);
-                    Console.WriteLine("");
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
                 }
+                Console.WriteLine("Temperatura: " + jsonObj.Parameters.Temp);
+                if (jsonObj.Parameters.TempMin < minTempTriggerCelsius)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                }
+                else if (jsonObj.Parameters.TempMin > maxTempTriggerCelsius)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                }
+                Console.WriteLine("Temperatura minima: " + jsonObj.Parameters.TempMin);
+                if (jsonObj.Parameters.TempMax < minTempTriggerCelsius)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                }
+                else if (jsonObj.Parameters.TempMax > maxTempTriggerCelsius)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                }
+                Console.WriteLine("Temperatura massima: " + jsonObj.Parameters.TempMax);
+                Console.ResetColor();
+                Console.WriteLine("Data e ora della stampa: " + str);
+                Console.WriteLine("");
+            }
+            else
+            {
+                var minTempTriggerFahrenheit = triggerMeasures.MinTemperatureFahrenheit;
+                var maxTempTriggerFahrenheit = triggerMeasures.MaxTemperatureFahrenheit;
+
+                Console.WriteLine("Pressure: " + jsonObj.Parameters.Pressure);
+                Console.WriteLine("Humidity: " + jsonObj.Parameters.Humidity);
+                if (jsonObj.Parameters.Temp < minTempTriggerFahrenheit)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                }
+                else if (jsonObj.Parameters.Temp > maxTempTriggerFahrenheit)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                }
+                Console.WriteLine("Temperatura: " + jsonObj.Parameters.Temp);
+                if (jsonObj.Parameters.TempMin < minTempTriggerFahrenheit)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                }
+                else if (jsonObj.Parameters.TempMin > maxTempTriggerFahrenheit)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                }
+                Console.WriteLine("Temperatura minima: " + jsonObj.Parameters.TempMin);
+                if (jsonObj.Parameters.TempMax < minTempTriggerFahrenheit)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                }
+                else if (jsonObj.Parameters.TempMax > maxTempTriggerFahrenheit)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                }
+                Console.WriteLine("Temperatura massima: " + jsonObj.Parameters.TempMax);
+                Console.ResetColor();
+                Console.WriteLine("Date and time of the print: " + str);
+                Console.WriteLine("");
+            }
         }
 
-        public void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang)
+        public void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang, MeasureControl triggerMeasures)
         {
             foreach (var measure in jsonObj.List)
             {
                 if (menuLang == "it")
                 {
+                    var minTempTriggerCelsius = triggerMeasures.MinTemperatureCelsius;
+                    var maxTempTriggerCelsius = triggerMeasures.MaxTemperatureCelsius;
+
                     Console.WriteLine("Pressione: " + measure.Parameters.Pressure);
-                    Console.WriteLine("Temperatura: " + measure.Parameters.Temp);
                     Console.WriteLine("Umidità: " + measure.Parameters.Humidity);
+                    if (measure.Parameters.Temp < minTempTriggerCelsius)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    }
+                    else if (measure.Parameters.Temp > maxTempTriggerCelsius)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                    }
+                    Console.WriteLine("Temperatura: " + measure.Parameters.Temp);
+                    if (measure.Parameters.TempMin < minTempTriggerCelsius)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    }
+                    else if (measure.Parameters.TempMin > maxTempTriggerCelsius)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                    }
                     Console.WriteLine("Temperatura minima: " + measure.Parameters.TempMin);
+                    if (measure.Parameters.TempMax < minTempTriggerCelsius)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    }
+                    else if (measure.Parameters.TempMax > maxTempTriggerCelsius)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                    }
                     Console.WriteLine("Temperatura massima: " + measure.Parameters.TempMax);
+                    Console.ResetColor();
+
                     Console.WriteLine("Data e ora della previsione: " + measure.TimeStamp);
                     Console.WriteLine("");
                 }
                 else
                 {
+                    var minTempTriggerFahrenheit = triggerMeasures.MinTemperatureFahrenheit;
+                    var maxTempTriggerFahrenheit = triggerMeasures.MaxTemperatureFahrenheit;
+
                     Console.WriteLine("Pressure: " + measure.Parameters.Pressure);
-                    Console.WriteLine("Temperature: " + measure.Parameters.Temp);
                     Console.WriteLine("Humidity: " + measure.Parameters.Humidity);
-                    Console.WriteLine("Temperature min: " + measure.Parameters.TempMin);
-                    Console.WriteLine("Temperature max: " + measure.Parameters.TempMax);
+                    if (measure.Parameters.Temp < minTempTriggerFahrenheit)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    }
+                    else if (measure.Parameters.Temp > maxTempTriggerFahrenheit)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                    }
+                    Console.WriteLine("Temperatura: " + measure.Parameters.Temp);
+                    if (measure.Parameters.TempMin < minTempTriggerFahrenheit)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    }
+                    else if (measure.Parameters.TempMin > maxTempTriggerFahrenheit)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                    }
+                    Console.WriteLine("Temperatura minima: " + measure.Parameters.TempMin);
+                    if (measure.Parameters.TempMax < minTempTriggerFahrenheit)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    }
+                    else if (measure.Parameters.TempMax > maxTempTriggerFahrenheit)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                    }
+                    Console.WriteLine("Temperatura massima: " + measure.Parameters.TempMax);
+                    Console.ResetColor();
                     Console.WriteLine("Date and time of the forecast: " + measure.TimeStamp);
                     Console.WriteLine("");
                 }
