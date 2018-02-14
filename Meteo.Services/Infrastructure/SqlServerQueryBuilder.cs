@@ -123,7 +123,7 @@ namespace Meteo.Services.Infrastructure
         {
             return;
         }
-        public MeasureControl GetMeasureTriggerValues(int idUser)
+        public MeasureTrigger GetMeasureTriggerValues(int idUser)
         {
             return null;
         }

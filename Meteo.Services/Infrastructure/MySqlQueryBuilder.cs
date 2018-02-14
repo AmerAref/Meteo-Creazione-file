@@ -301,12 +301,12 @@ namespace Meteo.Services.Infrastructure
             return;
         }
 
-        public MeasureControl GetMeasureTriggerValues(int idUser)
+        public MeasureTrigger GetMeasureTriggerValues(int idUser)
         {
             _manager.Open();
-            var query = $"SELECT * FROM `MeasureTrigger`, `City`  WHERE MeasureTrigger.IdTrigger = City.IdTrigger";
+            var query = $"SELECT * FROM `MeasureTrigger` INNER JOIN City ON MeasureTrigger.IdTrigger = City.IdTrigger";
             var cmd = _manager.GetCommand(query);
-            var measure = cmd.ExecuteReader().DataReaderMapToList<MeasureControl>();
+            var measure = cmd.ExecuteReader().DataReaderMapToList<MeasureTrigger>();
             _manager.Close();
 
             return measure[0];
@@ -336,7 +336,7 @@ namespace Meteo.Services.Infrastructure
         public List<Models.Forecast> GetUserForecastResearch(int idUser)
         {
             _manager.Open();
-            var query = $"SELECT * FROM `Forecast`, `Master` WHERE Master.IdUser = '{idUser}' AND Master.IdUser = User.IdUser AND Master.IdMaster = Forecast.IdMaster";
+            var query = $"SELECT * FROM `Forecast`, `Master` WHERE Master.IdUser = '{idUser}' AND Master.IdMaster = Forecast.IdMaster";
             var cmd = _manager.GetCommand(query);
             var researchData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
             _manager.Close();
@@ -368,7 +368,7 @@ namespace Meteo.Services.Infrastructure
         public List<Models.Forecast> FilterSearcheByCity(string place, int idUser)
         {
             _manager.Open();
-            var query = $"SELECT * FROM `Forecast`, `Master`, `City`  WHERE Master.IdUser = '{idUser}' AND Forecast.CityName = '{place}'";
+            var query = $"SELECT * FROM `Forecast`, `Master` WHERE Master.IdUser = '{idUser}' AND Master.IdCity = (SELECT Id FROM `City` WHERE Name = '{place}') AND Master.IdForecast = Forecast.IdForecast";
             var cmd = _manager.GetCommand(query);
             var filteredData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
             _manager.Close();

@@ -2,7 +2,7 @@
 
 namespace Meteo.Services.Models
 {
-    public class MeasureControl
+    public class MeasureTrigger
     {
         [Key]
         public int IdTrigger { get; set; }

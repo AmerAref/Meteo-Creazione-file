@@ -89,6 +89,6 @@ namespace Meteo.Services.Infrastructure
         void InsertMeasureValue(dynamic jsonObj, long lastForecastId, string lang, string oneOrFiveDays);
         List<Master> GetAllMasterRecordsByUserId(int idUser);
         void DeleteMasterRecord(string idMaster);
-        MeasureControl GetMeasureTriggerValues(int idUser);
+        MeasureTrigger GetMeasureTriggerValues(int idUser);
     }
 }

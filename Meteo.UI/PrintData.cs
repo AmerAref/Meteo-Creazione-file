@@ -6,8 +6,8 @@ namespace Meteo.UI
 {
     public interface IPrintingService
     {
-        void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang, MeasureControl triggerMeasures);
-        void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang, MeasureControl triggerMeasures);
+        void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang, MeasureTrigger triggerMeasures);
+        void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang, MeasureTrigger triggerMeasures);
         void PrintAllUsers(List<User> allUsers);
         void PrintAllMasterRecords(List<Master> allMasterRecords);
         void PrintDataFiltred(List<Forecast> DataFiltred);
@@ -18,7 +18,7 @@ namespace Meteo.UI
         static DateTime masterDate = DateTime.Now;
         static string format = "yyyy-MM-dd hh:mm:ss";
         static string str = masterDate.ToString(format);
-        public void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang, MeasureControl triggerMeasures)
+        public void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang, MeasureTrigger triggerMeasures)
         {
             if (menuLang == "it")
             {
@@ -98,7 +98,7 @@ namespace Meteo.UI
             }
         }
 
-        public void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang, MeasureControl triggerMeasures)
+        public void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang, MeasureTrigger triggerMeasures)
         {
             foreach (var measure in jsonObj.List)
             {
