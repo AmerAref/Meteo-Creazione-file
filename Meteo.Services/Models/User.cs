@@ -10,12 +10,12 @@ namespace Meteo.Services.Models
         public string Surname { get; set; }
         public string Password { get; set; }
         public string Username { get; set; }
-        public string Language { get; set; }
         public string UnitOfMeasure { get; set; }
 
         public int IdQuestion { get; set; }
         public string Answer { get; set; }
 
         public int IdRole { get; set; }
+        public int IdLanguage { get; set; }
     }
 }

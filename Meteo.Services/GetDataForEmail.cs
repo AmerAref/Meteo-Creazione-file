@@ -5,11 +5,11 @@ namespace Meteo.Services
 {
     public class GetDataForEmail
     {
-        public static Dictionary<string, string> InsertDataForEmail(string lang)
+        public static Dictionary<string, string> InsertDataForEmail(int lang)
         {
             string insertSender = "", insertReciver = "", insertBody = "", insertSubject = "";
             var dictionaryForEmail = new Dictionary<string, string>();
-            if (lang == "it")
+            if (lang == 1)
             {
                 insertSender = "Inserisci email del mittente";
                 insertReciver = "Inserisci email del destinatario";
@@ -42,7 +42,7 @@ namespace Meteo.Services
             dictionaryForEmail.Add("bodyKey", body);
             dictionaryForEmail.Add("subjectKey", subject);
             dictionaryForEmail.Add("userKey", user);
-            if (lang == "it")
+            if (lang == 1)
             { Console.WriteLine("Inserisci password"); }
             else
             { Console.WriteLine("Insert password"); }

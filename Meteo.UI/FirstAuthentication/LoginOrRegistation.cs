@@ -8,13 +8,13 @@ namespace Meteo.UI.FirstAuthentication
     public class LoginOrRegistration
     {
         public static IQueryBuilder _queryBuilder;
-        public string _lang;
+        public int _lang;
         private Menu _menu;
         private readonly AuthenticationInteractions _authenticationUI;
         public Services.Models.User _authentication;
         private IService _exit;
 
-        public LoginOrRegistration(string lang, IQueryBuilder queryBuilderCostr, IService exit)
+        public LoginOrRegistration(int lang, IQueryBuilder queryBuilderCostr, IService exit)
         {
             _exit = exit;
             _lang = lang;
@@ -31,7 +31,7 @@ namespace Meteo.UI.FirstAuthentication
             var newUsername = "";
             var idSelectedForQuestion = 0;
             var measureUnit = "";
-            var languageNewAccunt = "";
+            var languageNewAccunt = 0;
             var encryptedAnswer = "";
             var encryptedPwd = "";
 
@@ -46,14 +46,14 @@ namespace Meteo.UI.FirstAuthentication
             encryptedAnswer = ReadAnswerAndEcrypted(questionselect);
             _lang = _menu.SelectLanguage();
 
-            if (_lang == "1")
+            if (_lang == 1)
             {
-                languageNewAccunt = "it";
+                languageNewAccunt = 1;
                 measureUnit = "metric";
             }
             else
             {
-                languageNewAccunt = "en";
+                languageNewAccunt = 2;
                 measureUnit = "imperial";
             }
             var roleNewAccount = 2;

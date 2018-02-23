@@ -14,8 +14,8 @@ namespace Meteo.UI
         static void Main(string[] args)
         {
             var user = new User();
-            var lang = "";
-            
+            var lang = 0;
+
             var kernel = new StandardKernel();
             kernel.Load(Assembly.GetAssembly(typeof(MySqlManager)));
             var queryBuilder = kernel.Get<IQueryBuilder>();
@@ -39,11 +39,11 @@ namespace Meteo.UI
                     user = loginOrRegistration.RegistrationNewAccount();
                     break;
             }
-            var menuLang = user.Language;
+            var menuLang = user.IdLanguage;
             var measureUnit = user.UnitOfMeasure;
             var userRole = user.IdRole.ToString();
             var username = user.Username;
-            
+
             var exit = true;
             if (userRole == "1")
             {

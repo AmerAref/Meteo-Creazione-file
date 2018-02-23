@@ -6,8 +6,8 @@ namespace Meteo.UI
 {
     public interface IPrintingService
     {
-        void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang, MeasureTrigger triggerMeasures);
-        void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang, MeasureTrigger triggerMeasures);
+        void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, int menuLang, MeasureTrigger triggerMeasures);
+        void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, int menuLang, MeasureTrigger triggerMeasures);
         void PrintAllUsers(List<User> allUsers);
         void PrintAllMasterRecords(List<Master> allMasterRecords);
         void PrintDataFiltred(List<Forecast> DataFiltred);
@@ -18,9 +18,9 @@ namespace Meteo.UI
         static DateTime masterDate = DateTime.Now;
         static string format = "yyyy-MM-dd hh:mm:ss";
         static string str = masterDate.ToString(format);
-        public void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, string menuLang, MeasureTrigger triggerMeasures)
+        public void PrintForData(Meteo.Services.OpenWeatherMap.Models.OneDayForecast jsonObj, int menuLang, MeasureTrigger triggerMeasures)
         {
-            if (menuLang == "it")
+            if (menuLang == 1)
             {
                 var minTempTriggerCelsius = triggerMeasures.MinTemperatureCelsius;
                 var maxTempTriggerCelsius = triggerMeasures.MaxTemperatureCelsius;
@@ -98,11 +98,11 @@ namespace Meteo.UI
             }
         }
 
-        public void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, string menuLang, MeasureTrigger triggerMeasures)
+        public void PrintDataFor5Days(Meteo.Services.OpenWeatherMap.Models.FiveDaysForecast jsonObj, int menuLang, MeasureTrigger triggerMeasures)
         {
             foreach (var measure in jsonObj.List)
             {
-                if (menuLang == "it")
+                if (menuLang == 1)
                 {
                     var minTempTriggerCelsius = triggerMeasures.MinTemperatureCelsius;
                     var maxTempTriggerCelsius = triggerMeasures.MaxTemperatureCelsius;
@@ -191,11 +191,11 @@ namespace Meteo.UI
                 Console.WriteLine("Surname: " + user.Surname);
                 Console.WriteLine("Password: " + user.Password);
                 Console.WriteLine("Username: " + user.Username);
-                Console.WriteLine("Language: " + user.Language);
                 Console.WriteLine("Unit Of Measure: " + user.UnitOfMeasure);
                 Console.WriteLine("Id Question: " + user.IdQuestion);
                 Console.WriteLine("Answer: " + user.Answer);
                 Console.WriteLine("Id Role: " + user.IdRole);
+                Console.WriteLine("IdLanguage: " + user.IdLanguage);
                 Console.WriteLine("");
             }
         }
@@ -217,10 +217,7 @@ namespace Meteo.UI
             foreach (var record in DataFiltred)
             {
                 Console.WriteLine("IdMaster: " + record.IdMaster);
-                Console.WriteLine("Temperature: " + record.Temperature);
                 Console.WriteLine("Weather Date: " + record.WeatherDate);
-                Console.WriteLine("City Name: " + record.CityName);
-                Console.WriteLine("IdCity: " + record.IdCity);
                 Console.WriteLine("");
             }
         }

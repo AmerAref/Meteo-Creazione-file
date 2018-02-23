@@ -67,7 +67,7 @@ namespace Meteo.Services.Infrastructure
         void CreateInsert<T>(T obj);
         Question GetQuestion(int IdQuestion);
         User GetUser(string username);
-        void InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit, int role);
+        void InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, int languageNewAccount, string measureUnit, int role);
         User GetUserIfExist(string username, string psw);
         User AutentiationWithAnswer(string answer, string username);
         void QueryForUpdatePsw(string psw, string username);
@@ -82,13 +82,14 @@ namespace Meteo.Services.Infrastructure
         City GetCityData(string lat, string lon, string place);
         void UpdateCities(List<CityJsonModels.CitiesJson> allCity);
         long InsertDataIntoForecastTable(dynamic jsonObj, string place, long idMaster, int idCity, string oneDayOrFiveDays, string dateOfRequest);
-        List<Models.Forecast> GetUserForecastResearch(int idUser);
+        List<MeasureValue> GetUserForecastResearch(int idUser, int idMeasureType);
         List<Models.Forecast> GetForecastFilteredByDate(string dataInizio, string dataFine, int idUser);
         List<Forecast> GetForecastDataByLastInsertedId(long lastInsertedForecastId);
         List<Models.Forecast> FilterSearcheByCity(string place, int idUser);
-        void InsertMeasureValue(dynamic jsonObj, long lastForecastId, string lang, string oneOrFiveDays);
+        void InsertMeasureValue(dynamic jsonObj, long lastForecastId, int lang, string oneOrFiveDays);
         List<Master> GetAllMasterRecordsByUserId(int idUser);
         void DeleteMasterRecord(string idMaster);
         MeasureTrigger GetMeasureTriggerValues(int idUser);
+        List<Languages> GetAllLanguages();
     }
 }

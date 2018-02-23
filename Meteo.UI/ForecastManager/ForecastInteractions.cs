@@ -7,7 +7,7 @@ namespace Meteo.UI.ForecastManager
 {
     public class ForecastInteractions : ExitService
     {
-        public string _menuLang;
+        public int _menuLang;
         public Menu _menu;
         public Dictionary<string, string> dataForEmail { get; set; }
         public string senderValue { get; set; }
@@ -18,19 +18,19 @@ namespace Meteo.UI.ForecastManager
         public string password { get; set; }
         public string passwordMaskered { get; set; }
 
-        public ForecastInteractions(string menuLang, Menu menu)
+        public ForecastInteractions(int menuLang, Menu menu)
         {
             _menuLang = menuLang;
             _menu = menu;
         }
-        public void GetMenuLang(string menuLang)
+        public void GetMenuLang(int menuLang)
         {
             _menuLang = menuLang;
         }
 
         public string InsertNamePlace()
         {
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine(DataInterface.insertNamePlaceIT);
             }
@@ -47,7 +47,7 @@ namespace Meteo.UI.ForecastManager
         {
             var meteoChoiceForDB = "";
 
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 meteoChoiceForDB = $"Previsioni {OneDayOr5DaysChoice} ({searchingFor})";
             }
@@ -61,7 +61,7 @@ namespace Meteo.UI.ForecastManager
 
         public void RequestSucces()
         {
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine(DataInterface.successIT);
             }
@@ -73,7 +73,7 @@ namespace Meteo.UI.ForecastManager
 
         public string ChoiceDoFileJson()
         {
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine(DataInterface.choiceDoFileIT);
             }
@@ -88,7 +88,7 @@ namespace Meteo.UI.ForecastManager
         }
         public string ChoiceDoFileXls()
         {
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine(DataInterface.choiceCreateXlsFileIT);
             }
@@ -103,7 +103,7 @@ namespace Meteo.UI.ForecastManager
         }
         public string InsertNameFile(string dataPrinted, string extension, string OneDayOr5Days)
         {
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine(DataInterface.insertNameFileIT + $"({extension})");
             }
@@ -132,7 +132,7 @@ namespace Meteo.UI.ForecastManager
         }
         public string ChoceSendEmail()
         {
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine(DataInterface.choiceSendEmailIT);
             }
@@ -159,7 +159,7 @@ namespace Meteo.UI.ForecastManager
         }
         public string ReadHumidityValue()
         {
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine("Inserisci valore umidità richiesta riguardante gli ultimi 5 giorni");
             }
@@ -173,7 +173,7 @@ namespace Meteo.UI.ForecastManager
         }
         public DateTimeUserInput ReadDataTime()
         {
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine("Inserisci data con il seguente formato YYYY-mm-GG");
             }
@@ -190,7 +190,7 @@ namespace Meteo.UI.ForecastManager
         public string ReadTime()
         {
             var time = "00:00:00";
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine("Inserisci orario con il seguente formato HH:MM:SS");
             }
@@ -204,7 +204,7 @@ namespace Meteo.UI.ForecastManager
         }
         public string ReadQualitySky()
         {
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine("Iserisci tipologia di tempo richiesta");
             }
@@ -219,7 +219,7 @@ namespace Meteo.UI.ForecastManager
 
         public string InsertStartDate()
         {
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine("Iserisci la data di inizio");
             }
@@ -233,7 +233,7 @@ namespace Meteo.UI.ForecastManager
         }
         public string InsertEndDate()
         {
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine("Iserisci la data di fine");
             }
@@ -248,7 +248,7 @@ namespace Meteo.UI.ForecastManager
 
         public void Exit()
         {
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine("Sessione terminata");
             }
@@ -261,7 +261,7 @@ namespace Meteo.UI.ForecastManager
         }
         public string ReadDate()
         {
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine("Inserisci Data (YYYY-MM-GG)");
             }
@@ -276,7 +276,7 @@ namespace Meteo.UI.ForecastManager
 
         public string InsertIdMasterToDelete()
         {
-            if (_menuLang == "it")
+            if (_menuLang == 1)
             {
                 Console.WriteLine("Inserisci l'ID della tabella 'Master' che vuoi eliminare");
             }

@@ -35,7 +35,7 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
-        public void InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit, int role)
+        public void InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, int languageNewAccount, string measureUnit, int role)
         {
             return;
         }
@@ -91,7 +91,7 @@ namespace Meteo.Services.Infrastructure
         {
             return 0;
         }
-        public List<Models.Forecast> GetUserForecastResearch(int idUser)
+        public List<MeasureValue> GetUserForecastResearch(int idUser, int idMeasureType)
         {
             return null;
         }
@@ -111,7 +111,7 @@ namespace Meteo.Services.Infrastructure
         {
             return null;
         }
-        public void InsertMeasureValue(dynamic jsonObj, long lastForecastId, string lang, string oneOrFiveDays)
+        public void InsertMeasureValue(dynamic jsonObj, long lastForecastId, int lang, string oneOrFiveDays)
         {
             return;
         }
@@ -124,6 +124,11 @@ namespace Meteo.Services.Infrastructure
             return;
         }
         public MeasureTrigger GetMeasureTriggerValues(int idUser)
+        {
+            return null;
+        }
+
+        public List<Languages> GetAllLanguages()
         {
             return null;
         }

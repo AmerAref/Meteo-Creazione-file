@@ -7,13 +7,13 @@ namespace Meteo.UI.AdminManager
     public class AdminActions
     {
         public static AdminInteractions _adminInteractions;
-        public static string _lang;
+        public static int _lang;
         public static IQueryBuilder _queryBuilder;
         public static Menu _menu;
         public IService _exit;
 
 
-        public AdminActions(string menuLang, IQueryBuilder queryBuilderForCostr, IService exit)
+        public AdminActions(int menuLang, IQueryBuilder queryBuilderForCostr, IService exit)
         {
             _exit = exit;
             _lang = menuLang;

@@ -53,10 +53,10 @@ namespace Meteo.Services.Infrastructure
             else
             { return null; }
         }
-        public void InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, string languageNewAccount, string measureUnit, int role)
+        public void InsertNewUser(string encryptedPwd, string usernameNewAccount, string surnameNewAccount, string nameNewAccount, int selectQuestion, string encryptedAnswer, int languageNewAccount, string measureUnit, int role)
         {
             _manager.Open();
-            var query = $"INSERT INTO User (`Name`, `Surname`, `Username`, `Password`, `IdQuestion`, `Answer`, `Language`, `UnitOfMeasure`, `IdRole`) VALUES ('{nameNewAccount}', '{surnameNewAccount}','{usernameNewAccount}', '{encryptedPwd}', {selectQuestion}, '{encryptedAnswer}', '{languageNewAccount}', '{measureUnit}',  {role})";
+            var query = $"INSERT INTO User (`Name`, `Surname`, `Username`, `Password`, `IdQuestion`, `Answer`, `UnitOfMeasure`, `IdRole`, `IdLanguage`) VALUES ('{nameNewAccount}', '{surnameNewAccount}','{usernameNewAccount}', '{encryptedPwd}', {selectQuestion}, '{encryptedAnswer}', '{measureUnit}',  {role}, {languageNewAccount})";
             var cmd = _manager.GetCommand(query);
             cmd.ExecuteReader().DataReaderMapToList<User>();
             _manager.Close();
@@ -107,7 +107,7 @@ namespace Meteo.Services.Infrastructure
         public List<Question> AllQuestionsEN()
         {
             _manager.Open();
-            var query = $"SELECT * FROM Question WHERE Language = 'en'";
+            var query = $"SELECT * FROM Question WHERE IdLanguage = 2";
             var cmd = _manager.GetCommand(query);
             var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
             _manager.Close();
@@ -117,12 +117,22 @@ namespace Meteo.Services.Infrastructure
         public List<Question> AllQuestionsIT()
         {
             _manager.Open();
-            var query = $"SELECT * FROM Question WHERE Language = 'it'";
+            var query = "SELECT * FROM Question WHERE IdLanguage = 1";
             var cmd = _manager.GetCommand(query);
             var question = cmd.ExecuteReader().DataReaderMapToList<Question>();
             _manager.Close();
 
             return question;
+        }
+
+        public List<Languages> GetAllLanguages()
+        {
+            _manager.Open();
+            var query = "SELECT * FROM Language";
+            var cmd = _manager.GetCommand(query);
+            var language = cmd.ExecuteReader().DataReaderMapToList<Languages>();
+            _manager.Close();
+            return language;
         }
         public long InsertDataMaster(string meteoChoiceDb, int idUserMaster, string dateOfRequist, int idCity)
         {
@@ -181,7 +191,7 @@ namespace Meteo.Services.Infrastructure
             return lastInsertedForecastId;
         }
 
-        public void InsertMeasureValue(dynamic jsonObj, long lastForecastId, string lang, string oneOrFiveDays)
+        public void InsertMeasureValue(dynamic jsonObj, long lastForecastId, int lang, string oneOrFiveDays)
         {
             if (oneOrFiveDays == "1Day")
             {
@@ -191,13 +201,13 @@ namespace Meteo.Services.Infrastructure
 
                 var queryHum = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.Humidity}', '1', '{lastForecastId}')";
                 var queryPres = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.Pressure}', '2', '{lastForecastId}')";
-                if (lang == "it")
+                if (lang == 1)
                 {
                     queryTemp = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.Temp}', '3', '{lastForecastId}')";
                     queryTempMin = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.TempMin}', '4', '{lastForecastId}')";
                     queryTempMax = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.TempMax}', '5', '{lastForecastId}')";
                 }
-                else if (lang == "en")
+                else if (lang == 2)
                 {
                     queryTemp = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.Temp}', '6', '{lastForecastId}')";
                     queryTempMin = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{oneDay.TempMin}', '7', '{lastForecastId}')";
@@ -224,13 +234,13 @@ namespace Meteo.Services.Infrastructure
                 {
                     var queryHum = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.Humidity}', '1', '{lastForecastId}')";
                     var queryPres = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.Pressure}', '2', '{lastForecastId}')";
-                    if (lang == "it")
+                    if (lang == 1)
                     {
                         queryTemp = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.Temp}', '3', '{lastForecastId}')";
                         queryTempMin = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.TempMin}', '4', '{lastForecastId}')";
                         queryTempMax = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.TempMax}', '5', '{lastForecastId}')";
                     }
-                    else if (lang == "en")
+                    else if (lang == 2)
                     {
                         queryTemp = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.Temp}', '6', '{lastForecastId}')";
                         queryTempMin = $"INSERT INTO `MeasureValue` (`Value`, `IdMeasureType`, `IdForecast`) VALUES ('{data.Parameters.TempMin}', '7', '{lastForecastId}')";
@@ -332,17 +342,6 @@ namespace Meteo.Services.Infrastructure
             _manager.Close();
         }
 
-        //Query per l'export dei dati
-        public List<Models.Forecast> GetUserForecastResearch(int idUser)
-        {
-            _manager.Open();
-            var query = $"SELECT * FROM `Forecast`, `Master` WHERE Master.IdUser = '{idUser}' AND Master.IdMaster = Forecast.IdMaster";
-            var cmd = _manager.GetCommand(query);
-            var researchData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
-            _manager.Close();
-            return researchData;
-        }
-
         public List<Models.Forecast> GetForecastFilteredByDate(string dataInizio, string dataFine, int idUser)
         {
             _manager.Open();
@@ -373,6 +372,20 @@ namespace Meteo.Services.Infrastructure
             var filteredData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
             _manager.Close();
             return filteredData;
+        }
+
+
+        //Query per l'export dei dati
+        public List<MeasureValue> GetUserForecastResearch(int idUser, int idMeasureType)
+        {
+            _manager.Open();
+            var query = $"SELECT measurevalue.IdMeasureValue, measurevalue.Value, measurevalue.IdMeasureType, measurevalue.IdForecast " +
+                "FROM `MeasureValue`, `Master`, `Forecast` " +
+                $"WHERE MeasureValue.IdMeasureType = '{idMeasureType}' AND Master.IdUser = '{idUser}' AND Master.IdMaster = forecast.IdMaster AND forecast.IdForecast = measurevalue.IdForecast";
+            var cmd = _manager.GetCommand(query);
+            var researchData = cmd.ExecuteReader().DataReaderMapToList<MeasureValue>();
+            _manager.Close();
+            return researchData;
         }
     }
 }

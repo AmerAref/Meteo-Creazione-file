@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Meteo.Services.Models
 {
-    class MeasureValue
+    public class MeasureValue
     {
         [Key]
         public int IdMeasureValue { get; set; }

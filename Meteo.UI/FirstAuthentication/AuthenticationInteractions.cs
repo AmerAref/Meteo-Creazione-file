@@ -5,15 +5,15 @@ namespace Meteo.UI.FirstAuthentication
 {
     public class AuthenticationInteractions : ExitService
     {
-        public string _lang;
+        public int _lang;
 
-        public AuthenticationInteractions(string lang)
+        public AuthenticationInteractions(int lang)
         {
             _lang = lang;
         }
         public string ReadName()
         {
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine("Inserisci Nome");
             }
@@ -28,7 +28,7 @@ namespace Meteo.UI.FirstAuthentication
         }
         public string ReadSurname()
         {
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine("Inserisci il Cognome");
             }
@@ -43,7 +43,7 @@ namespace Meteo.UI.FirstAuthentication
         }
         public string ReadUsername()
         {
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine(DataInterface.insertUserIT);
             }
@@ -57,7 +57,7 @@ namespace Meteo.UI.FirstAuthentication
         }
         public void IfUsernameExist()
         {
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine("Username già esistente. Provare con uno diverso!");
             }
@@ -70,7 +70,7 @@ namespace Meteo.UI.FirstAuthentication
         public string ReadPsw()
         {
             var passwordRegistration = "";
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine($"\n{DataInterface.insertPswIT}");
             }
@@ -85,7 +85,7 @@ namespace Meteo.UI.FirstAuthentication
         public string ReadPswSecondTime()
         {
             var passwordRegistration = "";
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine("\nI criteri di sicurezza non sono stati soddisfatti (Inserire almeno 1 lettera maiuscola, 1 numero, 1 carattere speciale. La lunghezza deve essere maggiore o uguale ad 8)");
                 Console.WriteLine("\nReinserisci Password.");
@@ -103,7 +103,7 @@ namespace Meteo.UI.FirstAuthentication
         public string ComparisonPsw()
         {
             var passwordComparisonNotEcrypted = "";
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine("\nReinserisci Password.");
             }
@@ -118,7 +118,7 @@ namespace Meteo.UI.FirstAuthentication
         }
         public void PswNotEquals()
         {
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine($"\nLe due password inserite non corrispondono! {DataInterface.reinsertUserPswIT}");
             }
@@ -130,7 +130,7 @@ namespace Meteo.UI.FirstAuthentication
         public string ReadAnswer()
         {
             var answerNotEcrypted = "";
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine("Inserisci risposta di sicurezza");
             }
@@ -145,7 +145,7 @@ namespace Meteo.UI.FirstAuthentication
         }
         public void ConfirmationAnswer(string insertAnswer)
         {
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine("La risposta richiesta è la seguente? ");
                 Console.WriteLine(insertAnswer);
@@ -159,7 +159,7 @@ namespace Meteo.UI.FirstAuthentication
         public void WelcomeUser(string username)
         {
             Console.WriteLine("\n");
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine("Benvenuto" + " " + $"{username}");
             }
@@ -170,7 +170,7 @@ namespace Meteo.UI.FirstAuthentication
         }
         public string ReadUsernameForSecureQuestion()
         {
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine($"\n{DataInterface.secureQuestionIT}");
             }

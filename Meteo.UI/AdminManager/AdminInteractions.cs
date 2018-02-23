@@ -5,10 +5,10 @@ namespace Meteo.UI.AdminManager
 {
     public class AdminInteractions
     {
-        public string _lang;
+        public int _lang;
         public IService _exit;
 
-        public AdminInteractions(string lang, IService exit)
+        public AdminInteractions(int lang, IService exit)
         {
             _lang = lang;
             _exit = exit;
@@ -16,7 +16,7 @@ namespace Meteo.UI.AdminManager
         public void Exit()
         {
 
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine("Sessione terminata");
             }
@@ -27,7 +27,7 @@ namespace Meteo.UI.AdminManager
         }
         public string InsertUsernameToDelete()
         {
-            if (_lang == "it")
+            if (_lang == 1)
             {
 
                 Console.WriteLine("Inserisci l'username dell'utente da eliminare");
@@ -46,7 +46,7 @@ namespace Meteo.UI.AdminManager
         public string InsertNameUserToModfy()
         {
 
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine("Inserisci l'username dell'utente da modificare");
             }
@@ -62,7 +62,7 @@ namespace Meteo.UI.AdminManager
         public string InsertFirstPsw()
         {
             var pswModify = "";
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine("\nInserisci la nuova password dell'utente");
             }
@@ -80,7 +80,7 @@ namespace Meteo.UI.AdminManager
         {
             var pswModify = "";
 
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine("\nReinserisci la nuova password dell'utente");
             }
@@ -94,7 +94,7 @@ namespace Meteo.UI.AdminManager
         }
         public void AttemptsPsw(int pswModifyCount)
         {
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine($"\nLe due password non combaciano! Hai ancora {pswModifyCount} tentativi.");
             }
@@ -105,7 +105,7 @@ namespace Meteo.UI.AdminManager
         }
         public void AttemtsRegexPsw()
         {
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine($"\nLa psw non rispetta i criteri di sicurezza");
             }
@@ -116,7 +116,7 @@ namespace Meteo.UI.AdminManager
         }
         public void RequestSucces()
         {
-            if (_lang == "it")
+            if (_lang == 1)
             {
                 Console.WriteLine(DataInterface.successIT);
             }
