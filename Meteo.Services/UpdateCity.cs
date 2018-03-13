@@ -32,7 +32,7 @@ namespace Meteo.Services
             Decompress(fileToDecompress);
 
             fileName = "/current.city.list.json";
-            var pathFileDecompressed = pathWhereTheFileIsDownload + fileName;
+            var pathFileDecompressed = "/Users/air/Documents/Progetti/MeteoConsoleApp/Meteo.UI/" + fileName;
 
             var allCity = JsonConvert.DeserializeObject<List<CityJsonModels.CitiesJson>>(File.ReadAllText(pathFileDecompressed));
             File.Delete(pathFileDecompressed); // Delete All files

@@ -357,7 +357,11 @@ namespace Meteo.Services.Infrastructure
 
             foreach (var city in allCity)
             {
-                var query = $"UPDATE  `City` SET `IdCity` = '{city.IdCity}' , `Country` = '{city.Country}', `Longitude` = '{city.Coord.Longitude}', `Latitude`= '{city.Coord.Latitude}', `Name`='{city.Name}'  WHERE `IdCity` = '{city.IdCity}'";
+                var replacementLat = city.Coord.Longitude.ToString();
+                var lat = replacementLat.Replace(",", ".");
+                var replacementLon = city.Coord.Latitude.ToString();
+                var lon = replacementLon.Replace(",", ".");
+                var query = $"UPDATE  `City` SET `IdCity` = '{city.IdCity}' , `Country` = '{city.Country}', `Longitude` = '{lon}', `Latitude`= '{lat}', `Name`='{city.Name}'  WHERE `IdCity` = '{city.IdCity}'";
                 var cmd = _manager.GetCommand(query);
                 cmd.ExecuteNonQuery();
             }
@@ -367,7 +371,7 @@ namespace Meteo.Services.Infrastructure
         public List<Models.Forecast> FilterSearcheByCity(string place, int idUser)
         {
             _manager.Open();
-            var query = $"SELECT * FROM `Forecast`, `Master` WHERE Master.IdUser = '{idUser}' AND Master.IdCity = (SELECT Id FROM `City` WHERE Name = '{place}') AND Master.IdForecast = Forecast.IdForecast";
+            var query = $"SELECT forecast.WeatherDate, master.DateOfRequist, measurevalue.Value, measuretype.UnitOfMeasure FROM `Forecast`, `measuretype`, `Master`, `measurevalue` WHERE Master.IdUser = '{idUser}' AND Master.IdCity = (SELECT Id FROM `City` WHERE Name = '{place}') and master.IdMaster = forecast.IdForecast AND measurevalue.IdForecast = forecast.IdForecast and measurevalue.IdMeasureType = measuretype.IdMeasureType";
             var cmd = _manager.GetCommand(query);
             var filteredData = cmd.ExecuteReader().DataReaderMapToList<Models.Forecast>();
             _manager.Close();

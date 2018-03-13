@@ -10,6 +10,6 @@ namespace Meteo.Services.Models
         [Key]
         public int IdLanguage { get; set; }
 
-        public string Language { get; set; }
+        public string LanguageType { get; set; }
     }
 }

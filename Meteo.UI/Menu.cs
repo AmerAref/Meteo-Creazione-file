@@ -33,6 +33,7 @@ namespace Meteo.UI
                 Console.WriteLine("****1 - Italiano/Italian (1)                                 *");
                 Console.WriteLine("****2 - Inglese/English  (2)                                 *");
                 Console.WriteLine("**************************************************************");
+
                 var lang = Convert.ToInt32(Console.ReadLine());
                 if (lang != 1 && lang != 2)
                 {
@@ -113,7 +114,7 @@ namespace Meteo.UI
                     Console.WriteLine("***************** Scegli la tua lingua *********************");
                     foreach (var language in allLanguages)
                     {
-                        Console.WriteLine($"{language.IdLanguage} - {language.Language}");
+                        Console.WriteLine($"{language.IdLanguage} - {language.LanguageType}");
                     }
                     Console.WriteLine("************************************************************");
                     break;
@@ -122,7 +123,7 @@ namespace Meteo.UI
                     Console.WriteLine("***************** Choose your language *********************");
                     foreach (var language in allLanguages)
                     {
-                        Console.WriteLine($"{language.IdLanguage} - {language.Language}");
+                        Console.WriteLine($"{language.IdLanguage} - {language.LanguageType}");
                     }
                     Console.WriteLine("************************************************************");
                     break;
@@ -267,10 +268,12 @@ namespace Meteo.UI
                     Console.WriteLine("***********************************************************");
                     Console.WriteLine("*************    Digitare il valore del menu    ***********");
                     Console.WriteLine("****1 - Leggi dati relativi ad oggi                       *");
-                    Console.WriteLine("****2 - Leggi dati riferiti agli ultimi 5 giorni          *");
+                    Console.WriteLine("****2 - Leggi dati riferiti ai prossimi 5 giorni          *");
                     Console.WriteLine("****3 - Accedi al menu filtraggio dati per città          *");
                     Console.WriteLine("****4 - Vuoi eliminare file nella cartella ?              *");
-                    Console.WriteLine("****5 - Accedi al menu per l'esportazione di dati dal DB  *");
+                    Console.WriteLine("****5 - Manda una email contenente un file a scelta       *");
+                    Console.WriteLine("****6 - Elimina record delle ricerche affettuate          *");
+                    Console.WriteLine("****7 - Esporta dati sulle ricerche effettuate            *");
                     Console.WriteLine("***********************************************************");
                     break;
                 case 2:
@@ -281,7 +284,9 @@ namespace Meteo.UI
                     Console.WriteLine("****2 - Read for data related to the last 5 days          *");
                     Console.WriteLine("****3 - Access the data filtering menu by city            *");
                     Console.WriteLine("****4 - Do you want to delete files in the folder?        *");
-                    Console.WriteLine("****5 - Access the DB data export menu                    *");
+                    Console.WriteLine("****5 - Send an email with a file in it                   *");
+                    Console.WriteLine("****6 - Delete records from the researches                *");
+                    Console.WriteLine("****7 - Export the research data                          *");
                     Console.WriteLine("***********************************************************");
                     break;
             }
